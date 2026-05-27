@@ -1,0 +1,251 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─────────────────────────────────────────
+// AUTH (Better Auth génère ces tables)
+// ─────────────────────────────────────────
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  role Role @default(ELEVE)
+
+  sessions Session[]
+  accounts Account[]
+
+  // Relations métier
+  eleve      Eleve?
+  professeur Professeur?
+  parent     Parent?
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+  @@index([userId])
+}
+
+model Account {
+  id           String    @id @default(cuid())
+  userId       String
+  accountId    String
+  providerId   String
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  password     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+
+  @@map("account")
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+  @@index([identifier])
+}
+
+// ─────────────────────────────────────────
+// RÔLES
+// ─────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  PROFESSEUR
+  ELEVE
+  PARENT
+}
+
+// ─────────────────────────────────────────
+// MÉTIER
+// ─────────────────────────────────────────
+
+model Eleve {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  matricule     String    @unique
+  dateNaissance DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classe   Classe? @relation(fields: [classeId], references: [id])
+  classeId String?
+
+  notes   Note[]
+  parents ParentEleve[]
+
+  @@map("eleve")
+}
+
+model Parent {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  telephone String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enfants ParentEleve[]
+
+  @@map("parent")
+}
+
+// Table de jonction Parent <-> Eleve (un parent peut avoir plusieurs enfants)
+
+model ParentEleve {
+  parentId String
+  eleveId  String
+
+  parent Parent @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  eleve  Eleve  @relation(fields: [eleveId], references: [id], onDelete: Cascade)
+
+  @@id([parentId, eleveId])
+  @@map("parent_eleve")
+}
+
+model Professeur {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  specialite String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  matieres    ProfesseurMatiere[]
+  evaluations Evaluation[]
+
+  @@map("professeur")
+}
+
+model Classe {
+  id        String   @id @default(cuid())
+  nom       String // ex: "6ème A", "Terminale S"
+  niveau    String // ex: "6ème", "Terminale"
+  annee     String // ex: "2024-2025"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eleves   Eleve[]
+  matieres Matiere[]
+
+  @@map("classe")
+}
+
+model Matiere {
+  id          String   @id @default(cuid())
+  nom         String // ex: "Mathématiques"
+  coefficient Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  classeId String
+  classe   Classe @relation(fields: [classeId], references: [id], onDelete: Cascade)
+
+  professeurs ProfesseurMatiere[]
+  evaluations Evaluation[]
+
+  @@map("matiere")
+}
+
+// Table de jonction Professeur <-> Matiere
+
+model ProfesseurMatiere {
+  professeurId String
+  matiereId    String
+
+  professeur Professeur @relation(fields: [professeurId], references: [id], onDelete: Cascade)
+  matiere    Matiere    @relation(fields: [matiereId], references: [id], onDelete: Cascade)
+
+  @@id([professeurId, matiereId])
+  @@map("professeur_matiere")
+}
+
+model Evaluation {
+  id        String   @id @default(cuid())
+  titre     String // ex: "Devoir 1", "Examen trimestriel"
+  type      EvalType
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matiereId String
+  matiere   Matiere @relation(fields: [matiereId], references: [id], onDelete: Cascade)
+
+  professeurId String
+  professeur   Professeur @relation(fields: [professeurId], references: [id])
+
+  notes Note[]
+
+  @@map("evaluation")
+}
+
+enum EvalType {
+  DEVOIR
+  INTERROGATION
+  EXAMEN
+  RATTRAPAGE
+}
+
+model Note {
+  id           String   @id @default(cuid())
+  valeur       Float // note sur 20
+  appreciation String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  eleveId String
+  eleve   Eleve  @relation(fields: [eleveId], references: [id], onDelete: Cascade)
+
+  evaluationId String
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+
+  // un élève a une seule note par évaluation
+  @@unique([eleveId, evaluationId])
+  @@map("note")
+}
