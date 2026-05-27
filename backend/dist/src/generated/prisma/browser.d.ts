@@ -1,0 +1,17 @@
+import * as Prisma from './internal/prismaNamespaceBrowser.js';
+export { Prisma };
+export * as $Enums from './enums.js';
+export * from './enums.js';
+export type User = Prisma.UserModel;
+export type Session = Prisma.SessionModel;
+export type Account = Prisma.AccountModel;
+export type Verification = Prisma.VerificationModel;
+export type Eleve = Prisma.EleveModel;
+export type Parent = Prisma.ParentModel;
+export type ParentEleve = Prisma.ParentEleveModel;
+export type Professeur = Prisma.ProfesseurModel;
+export type Classe = Prisma.ClasseModel;
+export type Matiere = Prisma.MatiereModel;
+export type ProfesseurMatiere = Prisma.ProfesseurMatiereModel;
+export type Evaluation = Prisma.EvaluationModel;
+export type Note = Prisma.NoteModel;
