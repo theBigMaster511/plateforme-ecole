@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin — Gestion Scolaire</title>
+  <!-- Icônes Tabler -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <!-- Polices Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <!-- Liaison avec votre fichier CSS externe -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="icon"><i class="ti ti-school"></i></div>
+    <div>
+      <span>GS Admin</span>
+      <small>Tableau de bord</small>
+    </div>
+  </div>
+
+  <div class="nav-section-label">Principal</div>
+  <a class="nav-item active" href="dashboard-admin.html">
+    <i class="ti ti-layout-dashboard"></i> Tableau de bord
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-users"></i> Élèves
+    <span class="badge">342</span>
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-chalkboard"></i> Professeurs
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-building"></i> Classes
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-book"></i> Matières
+  </a>
+
+  <div class="nav-section-label">Académique</div>
+  <a class="nav-item" href="#">
+    <i class="ti ti-clipboard-list"></i> Notes & Moyennes
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-file-analytics"></i> Bulletins PDF
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-calendar"></i> Emplois du temps
+  </a>
+
+  <div class="nav-section-label">Système</div>
+  <a class="nav-item" href="#">
+    <i class="ti ti-shield-lock"></i> Rôles & Permissions
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-settings"></i> Paramètres
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="user-block">
+      <div class="avatar">MA</div>
+      <div class="user-info">
+        <span>Moussa Admin</span>
+        <small>Administrateur</small>
+      </div>
+      <button class="logout-btn" title="Déconnexion" onclick="window.location.href='login.html'">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div>
+      <h1>Tableau de bord</h1>
+      <p>Année scolaire 2025 — 2026 · Semestre 1</p>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-outline"><i class="ti ti-download"></i> Exporter</button>
+      <button class="btn btn-primary"><i class="ti ti-plus"></i> Nouvel élève</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total élèves</span>
+        <div class="stat-icon blue"><i class="ti ti-users"></i></div>
+      </div>
+      <div class="stat-value">342</div>
+      <div class="stat-trend trend-up">↑ +12 depuis la rentrée</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Professeurs actifs</span>
+        <div class="stat-icon green"><i class="ti ti-chalkboard"></i></div>
+      </div>
+      <div class="stat-value">28</div>
+      <div class="stat-trend">Toutes matières confondues</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Moyenne générale</span>
+        <div class="stat-icon amber"><i class="ti ti-chart-bar"></i></div>
+      </div>
+      <div class="stat-value">12.4</div>
+      <div class="stat-trend trend-down">↓ −0.3 vs semestre dernier</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Classes</span>
+        <div class="stat-icon purple"><i class="ti ti-building"></i></div>
+      </div>
+      <div class="stat-value">14</div>
+      <div class="stat-trend">De la 6e à la Terminale</div>
+    </div>
+  </div>
+
+  <!-- Tableau élèves + Activité -->
+  <div class="grid-3-1">
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="ti ti-users header-icon"></i>Élèves récents</h3>
+        <a href="#">Voir tous les élèves →</a>
+      </div>
+      <div class="card-body card-body-flush">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Classe</th>
+              <th>Moyenne</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="student-name">Fatou Diallo</span><br><span class="student-email">fatou.diallo@ecole.sn</span></td>
+              <td><span class="pill pill-blue">3e A</span></td>
+              <td><strong>14.8</strong></td>
+              <td><span class="pill pill-green">Actif</span></td>
+              <td><button class="btn btn-outline btn-sm"><i class="ti ti-eye"></i></button></td>
+            </tr>
+            <tr>
+              <td><span class="student-name">Ibrahima Sow</span><br><span class="student-email">i.sow@ecole.sn</span></td>
+              <td><span class="pill pill-purple">Tle S</span></td>
+              <td><strong>11.2</strong></td>
+              <td><span class="pill pill-green">Actif</span></td>
+              <td><button class="btn btn-outline btn-sm"><i class="ti ti-eye"></i></button></td>
+            </tr>
+            <tr>
+              <td><span class="student-name">Aminata Ndiaye</span><br><span class="student-email">a.ndiaye@ecole.sn</span></td>
+              <td><span class="pill pill-amber">1re L</span></td>
+              <td><strong>9.5</strong></td>
+              <td><span class="pill pill-red">En alerte</span></td>
+              <td><button class="btn btn-outline btn-sm"><i class="ti ti-eye"></i></button></td>
+            </tr>
+            <tr>
+              <td><span class="student-name">Oumar Mbaye</span><br><span class="student-email">o.mbaye@ecole.sn</span></td>
+              <td><span class="pill pill-blue">4e B</span></td>
+              <td><strong>13.1</strong></td>
+              <td><span class="pill pill-green">Actif</span></td>
+              <td><button class="btn btn-outline btn-sm"><i class="ti ti-eye"></i></button></td>
+            </tr>
+            <tr>
+              <td><span class="student-name">Rokhaya Faye</span><br><span class="student-email">r.faye@ecole.sn</span></td>
+              <td><span class="pill pill-purple">2de C</span></td>
+              <td><strong>15.7</strong></td>
+              <td><span class="pill pill-green">Actif</span></td>
+              <td><button class="btn btn-outline btn-sm"><i class="ti ti-eye"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Activité -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="ti ti-activity header-icon"></i>Activité récente</h3>
+      </div>
+      <div class="card-body card-body-activity">
+        <ul class="activity-list">
+          <li class="activity-item">
+            <div class="act-icon icon-bg-green"><i class="ti ti-clipboard-check icon-green"></i></div>
+            <div>
+              <div class="act-text"><strong>M. Diop</strong> a saisi les notes de Maths — 3e A</div>
+              <div class="act-time">Il y a 10 min</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-icon icon-bg-blue"><i class="ti ti-user-plus icon-blue"></i></div>
+            <div>
+              <div class="act-text">Nouvel élève inscrit : <strong>Khadija Ba</strong></div>
+              <div class="act-time">Il y a 45 min</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-icon icon-bg-amber"><i class="ti ti-file-export icon-amber"></i></div>
+            <div>
+              <div class="act-text">Bulletins générés — <strong>Tle S</strong></div>
+              <div class="act-time">Il y a 2h</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-icon icon-bg-purple"><i class="ti ti-edit icon-purple"></i></div>
+            <div>
+              <div class="act-text"><strong>Mme Sarr</strong> a modifié une note — 1re L</div>
+              <div class="act-time">Il y a 3h</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-icon icon-bg-red"><i class="ti ti-alert-triangle icon-red"></i></div>
+            <div>
+              <div class="act-text"><strong>Aminata Ndiaye</strong> en dessous de la moyenne</div>
+              <div class="act-time">Aujourd'hui, 08:15</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Classes + Matières + Alertes -->
+  <div class="grid-2">
+    <!-- Moyennes par classe -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="ti ti-building header-icon"></i>Moyennes par classe</h3>
+        <a href="#">Voir tout →</a>
+      </div>
+      <div class="card-body">
+        <div class="class-item">
+          <div class="class-info">
+            <div class="class-dot bar-blue"></div>
+            <div><div class="class-name">Terminale S</div><div class="class-meta">32 élèves · M. Diallo</div></div>
+          </div>
+          <div class="class-avg-wrapper">
+            <div class="class-avg">13.8</div>
+            <div class="progress-bar progress-w80"><div class="progress-fill fill-69"></div></div>
+          </div>
+        </div>
+        <div class="class-item">
+          <div class="class-info">
+            <div class="class-dot bar-purple-light"></div>
+            <div><div class="class-name">Terminale L</div><div class="class-meta">28 élèves · Mme Sarr</div></div>
+          </div>
+          <div class="class-avg-wrapper">
+            <div class="class-avg">12.1</div>
+            <div class="progress-bar progress-w80"><div class="progress-fill fill-60 bar-purple-light"></div></div>
+          </div>
+        </div>
+        <div class="class-item">
+          <div class="class-info">
+            <div class="class-dot bar-green-light"></div>
+            <div><div class="class-name">1re S</div><div class="class-meta">30 élèves · M. Sène</div></div>
+          </div>
+          <div class="class-avg-wrapper">
+            <div class="class-avg">14.2</div>
+            <div class="progress-bar progress-w80"><div class="progress-fill fill-71 bar-green-light"></div></div>
+          </div>
+        </div>
+        <div class="class-item">
+          <div class="class-info">
+            <div class="class-dot bar-amber-light"></div>
+            <div><div class="class-name">3e A</div><div class="class-meta">35 élèves · Mme Diop</div></div>
+          </div>
+          <div class="class-avg-wrapper">
+            <div class="class-avg">11.6</div>
+            <div class="progress-bar progress-w80"><div class="progress-fill fill-58 bar-amber-light"></div></div>
+          </div>
+        </div>
+        <div class="class-item">
+          <div class="class-info">
+            <div class="class-dot bar-orange"></div>
+            <div><div class="class-name">4e B</div><div class="class-meta">33 élèves · M. Fall</div></div>
+          </div>
+          <div class="class-avg-wrapper">
+            <div class="class-avg">10.9</div>
+            <div class="progress-bar progress-w80"><div class="progress-fill fill-54 bar-orange"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Matières + Alertes -->
+    <div class="right-column-grid">
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="ti ti-book header-icon"></i>Moyennes par matière</h3>
+        </div>
+        <div class="card-body">
+          <div class="subject-row">
+            <span class="subject-name">Mathématiques</span>
+            <div class="subject-bar"><div class="progress-bar"><div class="progress-fill fill-56"></div></div></div>
+            <span class="subject-avg">11.2</span>
+          </div>
+          <div class="subject-row">
+            <span class="subject-name">Français</span>
+            <div class="subject-bar"><div class="progress-bar"><div class="progress-fill fill-66 bar-purple-light"></div></div></div>
+            <span class="subject-avg">13.2</span>
+          </div>
+          <div class="subject-row">
+            <span class="subject-name">SVT</span>
+            <div class="subject-bar"><div class="progress-bar"><div class="progress-fill fill-72 bar-green-light"></div></div></div>
+            <span class="subject-avg">14.4</span>
+          </div>
+          <div class="subject-row">
+            <span class="subject-name">Physique-Chimie</span>
+            <div class="subject-bar"><div class="progress-bar"><div class="progress-fill fill-49 bar-amber-light"></div></div></div>
+            <span class="subject-avg">9.8</span>
+          </div>
+          <div class="subject-row">
+            <span class="subject-name">Histoire-Géo</span>
+            <div class="subject-bar"><div class="progress-bar"><div class="progress-fill fill-63 bar-pink"></div></div></div>
+            <span class="subject-avg">12.6</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="ti ti-alert-triangle header-icon icon-amber"></i>Alertes</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert-item alert-danger">
+            <i class="ti ti-user-exclamation"></i>
+            <div class="alert-text">
+              <strong>3 élèves en échec</strong>
+              <span>Moyenne générale sous 8/20</span>
+            </div>
+          </div>
+          <div class="alert-item alert-warn">
+            <i class="ti ti-clipboard-x"></i>
+            <div class="alert-text">
+              <strong>Notes manquantes — 2de C</strong>
+              <span>Physique-Chimie non saisie</span>
+            </div>
+          </div>
+          <div class="alert-item alert-info">
+            <i class="ti ti-file-analytics"></i>
+            <div class="alert-text">
+              <strong>Bulletins prêts à générer</strong>
+              <span>Semestre 1 — 14 classes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

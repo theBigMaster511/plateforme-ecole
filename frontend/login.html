@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion — Gestion Scolaire</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="left">
+    <div class="brand">
+      <div class="brand-icon"><i class="ti ti-school"></i></div>
+      <h1>Système de Gestion Scolaire</h1>
+      <p>Plateforme unifiée pour administrer, enseigner et suivre la progression des élèves.</p>
+    </div>
+
+    <div class="features">
+      <div class="feat">
+        <div class="feat-dot"><i class="ti ti-clipboard-list"></i></div>
+        <span>Saisie et consultation des notes en temps réel</span>
+      </div>
+      <div class="feat">
+        <div class="feat-dot"><i class="ti ti-users"></i></div>
+        <span>Gestion des classes, matières et emplois du temps</span>
+      </div>
+      <div class="feat">
+        <div class="feat-dot"><i class="ti ti-file-analytics"></i></div>
+        <span>Bulletins scolaires générés automatiquement</span>
+      </div>
+      <div class="feat">
+        <div class="feat-dot"><i class="ti ti-shield-lock"></i></div>
+        <span>Accès sécurisé selon votre rôle</span>
+      </div>
+    </div>
+
+    <div class="school-year">Année scolaire 2025 — 2026</div>
+  </div>
+
+  <div class="right">
+    <div class="form-header">
+      <h2>Bienvenue 👋</h2>
+      <p>Connectez-vous à votre espace personnel</p>
+    </div>
+
+    <div class="role-tabs">
+      <button class="tab active" onclick="setRole(this, 'admin')">
+        <i class="ti ti-shield"></i>Admin
+      </button>
+      <button class="tab" onclick="setRole(this, 'prof')">
+        <i class="ti ti-chalkboard"></i>Professeur
+      </button>
+      <button class="tab" onclick="setRole(this, 'eleve')">
+        <i class="ti ti-user-circle"></i>Élève / Parent
+      </button>
+    </div>
+
+    <div class="error-msg" id="error-msg">
+      <i class="ti ti-alert-circle"></i> Identifiant ou mot de passe incorrect.
+    </div>
+
+    <div class="field">
+      <label for="identifiant">Identifiant</label>
+      <input type="text" id="identifiant" placeholder="admin@ecole.sn" autocomplete="username"/>
+    </div>
+
+    <div class="field">
+      <div class="field-row">
+        <label for="mdp">Mot de passe</label>
+        <a class="forgot" href="#">Mot de passe oublié ?</a>
+      </div>
+      <input type="password" id="mdp" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+
+    <button class="btn-login" onclick="handleLogin()">
+      <i class="ti ti-login"></i>
+      <span id="btn-text">Se connecter en tant qu'Admin</span>
+    </button>
+
+    <div class="divider"><hr /><span>ou</span><hr /></div>
+    <div class="help">Problème de connexion ? <a href="#">Contacter l'administration</a></div>
+  </div>
+
+</div>
+
+<script>
+  const roles = {
+    admin: {
+      label: "Admin",
+      placeholder: "admin@ecole.sn",
+      redirect: "dashboard-admin.html"
+    },
+    prof: {
+      label: "Professeur",
+      placeholder: "prof.nom@ecole.sn",
+      redirect: "dashboard-prof.html"
+    },
+    eleve: {
+      label: "Élève / Parent",
+      placeholder: "Matricule ou identifiant",
+      redirect: "dashboard-eleve.html"
+    }
+  };
+
+  let currentRole = 'admin';
+
+  function setRole(el, role) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentRole = role;
+    document.getElementById('identifiant').placeholder = roles[role].placeholder;
+    document.getElementById('btn-text').textContent = 'Se connecter en tant que ' + roles[role].label;
+    document.getElementById('error-msg').style.display = 'none';
+  }
+
+  function handleLogin() {
+    const id  = document.getElementById('identifiant').value.trim();
+    const mdp = document.getElementById('mdp').value.trim();
+    const err = document.getElementById('error-msg');
+
+    if (!id || !mdp) {
+      err.style.display = 'block';
+      err.textContent = '⚠ Veuillez remplir tous les champs.';
+      return;
+    }
+
+    err.style.display = 'none';
+
+    // Simulation de connexion (À lier plus tard avec ton backend)
+    alert('Redirection vers : ' + roles[currentRole].redirect);
+    // window.location.href = roles[currentRole].redirect;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleLogin();
+  });
+</script>
+
+</body>
+</html>

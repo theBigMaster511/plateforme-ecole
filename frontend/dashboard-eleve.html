@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Espace Élève — Gestion Scolaire</title>
+  <!-- Icônes Tabler -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <!-- Polices Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <!-- Fichier CSS Externe -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="icon"><i class="ti ti-user-circle"></i></div>
+    <div>
+      <span>Mon Espace</span>
+      <small>Élève / Parent</small>
+    </div>
+  </div>
+
+  <div class="nav-section-label">Navigation</div>
+  <a class="nav-item active" href="#">
+    <i class="ti ti-layout-dashboard"></i> Tableau de bord
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-clipboard-list"></i> Mes notes
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-file-analytics"></i> Bulletins
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-calendar"></i> Emploi du temps
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-clock"></i> Absences
+  </a>
+  <a class="nav-item" href="#">
+    <i class="ti ti-message"></i> Messagerie
+  </a>
+
+  <div class="nav-section-label">Compte</div>
+  <a class="nav-item" href="#">
+    <i class="ti ti-settings"></i> Paramètres
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="user-block">
+      <div class="avatar" style="background:#7F77DD">FD</div>
+      <div class="user-info">
+        <span>Fatou Diallo</span>
+        <small>3e A · N°001</small>
+      </div>
+      <button class="logout-btn" onclick="window.location.href='login.html'">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Tableau de bord</h1>
+      <p>Semestre 1 · Année scolaire 2025–2026</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="mode-toggle" onclick="toggleParent(this)">
+        <i class="ti ti-eye" style="font-size:16px;color:#6b7280"></i>
+        <span id="mode-label">Vue élève</span>
+        <div class="toggle-switch" id="parent-toggle">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary">
+        <i class="ti ti-download"></i> Bulletin PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Bannière profil -->
+  <div class="profil-banner">
+    <div class="profil-avatar">FD</div>
+    <div class="profil-info">
+      <h2>Fatou Diallo</h2>
+      <p>Matricule N°001 · Classe de 3e A</p>
+      <div class="profil-badges">
+        <span class="profil-badge"><i class="ti ti-building"></i> Collège Mariama Bâ</span>
+        <span class="profil-badge"><i class="ti ti-user"></i> Mme Diop, prof. principale</span>
+        <span class="profil-badge"><i class="ti ti-calendar"></i> 2025–2026</span>
+      </div>
+    </div>
+    <div class="profil-stats">
+      <div>
+        <div class="profil-stat-val">14.8</div>
+        <div class="profil-stat-lbl">Moyenne générale</div>
+      </div>
+      <div>
+        <div class="profil-stat-val">2e</div>
+        <div class="profil-stat-lbl">Rang classe</div>
+      </div>
+      <div>
+        <div class="profil-stat-val">35</div>
+        <div class="profil-stat-lbl">Élèves</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes + Planning -->
+  <div class="grid-3-1">
+
+    <!-- Tableau notes -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="ti ti-clipboard-list" style="font-size:15px;vertical-align:-2px;margin-right:6px;color:#6b7280"></i>Mes notes — Semestre 1</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="rang-badge"><i class="ti ti-trophy" style="font-size:14px"></i> 2e / 35</span>
+          <a href="#">Voir tout →</a>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="notes-table">
+          <thead>
+            <tr>
+              <th>Matière</th>
+              <th style="text-align:center">DS1</th>
+              <th style="text-align:center">Interro</th>
+              <th style="text-align:center">DS2</th>
+              <th style="text-align:center">Coeff.</th>
+              <th style="text-align:center">Moy.</th>
+              <th style="text-align:center">Appréciation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="matiere-name">Mathématiques</div><div class="matiere-prof">M. Diop</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">16</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">15</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">17</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×3</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-high">16.0</span></td>
+              <td style="text-align:center"><span class="pill pill-green">Excellent</span></td>
+            </tr>
+            <tr>
+              <td><div class="matiere-name">Français</div><div class="matiere-prof">Mme Sarr</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">12</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">14</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">13</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×3</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-mid">13.0</span></td>
+              <td style="text-align:center"><span class="pill pill-blue">Bien</span></td>
+            </tr>
+            <tr>
+              <td><div class="matiere-name">SVT</div><div class="matiere-prof">M. Sène</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">15</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">16</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">14</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×2</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-high">15.0</span></td>
+              <td style="text-align:center"><span class="pill pill-green">Très bien</span></td>
+            </tr>
+            <tr>
+              <td><div class="matiere-name">Physique-Chimie</div><div class="matiere-prof">Mme Fall</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">11</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">13</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-empty">—</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×2</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-mid">12.0</span></td>
+              <td style="text-align:center"><span class="pill pill-blue">Assez bien</span></td>
+            </tr>
+            <tr>
+              <td><div class="matiere-name">Histoire-Géo</div><div class="matiere-prof">M. Ba</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">17</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">15</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">16</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×2</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-high">16.0</span></td>
+              <td style="text-align:center"><span class="pill pill-green">Excellent</span></td>
+            </tr>
+            <tr>
+              <td><div class="matiere-name">Anglais</div><div class="matiere-prof">Mme Ndiaye</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">13</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">12</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-mid">14</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×2</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-mid">13.0</span></td>
+              <td style="text-align:center"><span class="pill pill-blue">Bien</span></td>
+            </tr>
+            <tr>
+              <td><div class="matiere-name">EPS</div><div class="matiere-prof">M. Mbaye</div></td>
+              <td style="text-align:center"><span class="note-bubble nb-high">18</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-empty">—</span></td>
+              <td style="text-align:center"><span class="note-bubble nb-empty">—</span></td>
+              <td style="text-align:center"><span class="coeff-badge">×1</span></td>
+              <td style="text-align:center"><span class="moy-cell moy-high">18.0</span></td>
+              <td style="text-align:center"><span class="pill pill-green">Excellent</span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="background:#faf9ff">
+              <td colspan="4" style="font-weight:600;color:#1a1a2e;padding:12px 14px">Moyenne générale pondérée</td>
+              <td></td>
+              <td style="text-align:center;font-size:18px;font-weight:600;color:#3C3489;padding:12px 14px">14.8</td>
+              <td style="text-align:center;padding:12px 14px"><span class="pill pill-green">Très bien</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sidebar droite -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+
+      <!-- Prochaines évaluations -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="ti ti-calendar-event" style="font-size:15px;vertical-align:-2px;margin-right:6px;color:#6b7280"></i>Prochaines éval.</h3>
+        </div>
+        <div class="card-body" style="padding:1rem">
+          <div class="planning-item">
+            <div class="planning-date">
+              <div class="day">02</div>
+              <div class="mois">déc</div>
+            </div>
+            <div style="flex:1">
+              <div class="planning-title">DS — Physique-Chimie</div>
+              <div class="planning-meta">Coeff. 2 · Mme Fall</div>
+            </div>
+            <div class="planning-type"><span class="pill pill-amber">DS</span></div>
+          </div>
+          <div class="planning-item">
+            <div class="planning-date">
+              <div class="day">05</div>
+              <div class="mois">déc</div>
+            </div>
+            <div style="flex:1">
+              <div class="planning-title">Interro — Maths</div>
+              <div class="planning-meta">Coeff. 1 · M. Diop</div>
+            </div>
+            <div class="planning-type"><span class="pill pill-purple">Interro</span></div>
+          </div>
+          <div class="planning-item">
+            <div class="planning-date">
+              <div class="day">10</div>
+              <div class="mois">déc</div>
+            </div>
+            <div style="flex:1">
+              <div class="planning-title">DS — Français</div>
+              <div class="planning-meta">Coeff. 3 · Mme Sarr</div>
+            </div>
+            <div class="planning-type"><span class="pill pill-amber">DS</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bulletin -->
+      <div class="card">
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <i class="ti ti-file-analytics" style="font-size:30px;color:#7F77DD;flex-shrink:0;margin-top:2px"></i>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:600;color:#2d1b69;margin-bottom:3px">Bulletin S1 disponible</div>
+              <div style="font-size:12px;color:#534AB7;margin-bottom:12px">Moyenne : 14.8 · Rang : 2e/35</div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;padding:8px">
+                <i class="ti ti-download"></i> Télécharger PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Absences + Progression par matière -->
+  <div class="grid-2">
+
+    <!-- Absences -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="ti ti-clock" style="font-size:15px;vertical-align:-2px;margin-right:6px;color:#6b7280"></i>Absences & retards</h3>
+        <span class="pill pill-green" style="font-size:12px">2 absences ce semestre</span>
+      </div>
+      <div class="card-body">
+        <div class="absence-item">
+          <div class="abs-icon" style="background:#FCEBEB"><i class="ti ti-user-off" style="color:#A32D2D"></i></div>
+          <div class="abs-date">14 nov. 2025</div>
+          <div class="abs-matiere">SVT — M. Sène</div>
+          <span class="pill pill-green">Justifiée</span>
+        </div>
+        <div class="absence-item">
+          <div class="abs-icon" style="background:#FAEEDA"><i class="ti ti-clock-off" style="color:#854F0B"></i></div>
+          <div class="abs-date">07 nov. 2025</div>
+          <div class="abs-matiere">Français — Mme Sarr</div>
+          <span class="pill pill-amber">Retard</span>
+        </div>
+        <div class="absence-item">
+          <div class="abs-icon" style="background:#FCEBEB"><i class="ti ti-user-off" style="color:#A32D2D"></i></div>
+          <div class="abs-date">21 oct. 2025</div>
+          <div class="abs-matiere">Maths — M. Diop</div>
+          <span class="pill pill-green">Justifiée</span>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid #f5f5f5;display:flex;gap:16px">
+          <div style="text-align:center;flex:1;background:#f9fafb;border-radius:8px;padding:10px">
+            <div style="font-size:20px;font-weight:600;color:#1a1a2e">2</div>
+            <div style="font-size:11px;color:#9ca3af">Absences</div>
+          </div>
+          <div style="text-align:center;flex:1;background:#f9fafb;border-radius:8px;padding:10px">
+            <div style="font-size:20px;font-weight:600;color:#1a1a2e">1</div>
+            <div style="font-size:11px;color:#9ca3af">Retard</div>
+          </div>
+          <div style="text-align:center;flex:1;background:#EAF3DE;border-radius:8px;padding:10px">
+            <div style="font-size:20px;font-weight:600;color:#3B6D11">2/2</div>
+            <div style="font-size:11px;color:#3B6D11">Justifiées</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progression par matière -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="ti ti-chart-bar" style="font-size:15px;vertical-align:-2px;margin-right:6px;color:#6b7280"></i>Progression par matière</h3>
+      </div>
+      <div class="card-body">
+        <div id="progression-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- Fichier JS Externe -->
+<script src="script.js"></script>
+</body>
+</html>
