@@ -35,10 +35,7 @@ function renderLogin() {
           </div>
 
           <div class="role-tabs">
-            <button class="tab active" onclick="setLoginRole(this,'admin')">
-              <i class="ti ti-shield"></i> Admin
-            </button>
-            <button class="tab" onclick="setLoginRole(this,'prof')">
+            <button class="tab active" onclick="setLoginRole(this,'prof')">
               <i class="ti ti-chalkboard"></i> Professeur
             </button>
             <button class="tab" onclick="setLoginRole(this,'eleve')">
@@ -52,7 +49,7 @@ function renderLogin() {
 
           <div class="field">
             <label>Identifiant</label>
-            <input type="text" id="login-id" placeholder="votre.nom@ecole.sn" autocomplete="username"/>
+            <input type="text" id="login-id" placeholder="prof.nom@ecole.sn" autocomplete="username"/>
           </div>
 
           <div class="field">
@@ -65,7 +62,7 @@ function renderLogin() {
 
           <button class="btn btn-primary btn-full" onclick="handleLogin()">
             <i class="ti ti-login"></i>
-            <span id="btn-login-text">Se connecter en tant qu'Admin</span>
+            <span id="btn-login-text">Se connecter en tant que Professeur</span>
           </button>
 
           <div class="divider"><hr/><span>ou</span><hr/></div>
@@ -88,8 +85,81 @@ function renderLogin() {
 }
 
 /* ══════════════════════════════════════
-   DASHBOARD
+   ADMIN LOGIN (Page sécurisée)
 ══════════════════════════════════════ */
+function renderAdminLogin() {
+  const app = document.getElementById('app');
+
+  app.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1a1a2e;padding:2rem;">
+      <div class="login-page" style="box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+
+        <!-- Panneau gauche -->
+        <div class="login-left" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <div class="login-brand" style="color:white;">
+            <div class="login-brand-icon" style="font-size:3rem;color:#ffd700;"><i class="ti ti-shield-lock"></i></div>
+            <h1>Portail Administrateur</h1>
+            <p>Accès réservé aux administrateurs système</p>
+          </div>
+          <div class="login-features" style="color:rgba(255,255,255,0.9);">
+            <div class="feat"><div class="feat-dot"><i class="ti ti-lock"></i></div><span>Authentification à deux niveaux</span></div>
+            <div class="feat"><div class="feat-dot"><i class="ti ti-shield"></i></div><span>Accès complètement sécurisé</span></div>
+            <div class="feat"><div class="feat-dot"><i class="ti ti-key"></i></div><span>Connexion dédiée et isolée</span></div>
+            <div class="feat"><div class="feat-dot"><i class="ti ti-alert-triangle"></i></div><span>Tentatives non autorisées enregistrées</span></div>
+          </div>
+          <div class="login-year" style="color:rgba(255,255,255,0.8);">Zone Sécurisée — Admin Only</div>
+        </div>
+
+        <!-- Panneau droit -->
+        <div class="login-right">
+          <div class="login-header">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+              <i class="ti ti-shield-lock" style="color:#667eea;font-size:1.5rem;"></i>
+              <h2 style="margin:0;color:#667eea;">Connexion Admin</h2>
+            </div>
+            <p>Authentification requise pour accéder à l'interface d'administration</p>
+          </div>
+
+          <div class="error-msg" id="error-msg-admin">
+            <i class="ti ti-alert-circle"></i> Identifiant ou mot de passe incorrect.
+          </div>
+
+          <div class="field">
+            <label>Identifiant Admin</label>
+            <input type="text" id="login-id-admin" placeholder="admin@ecole.sn" autocomplete="username" style="border-left:3px solid #667eea;"/>
+          </div>
+
+          <div class="field">
+            <div class="field-row">
+              <label>Mot de passe</label>
+              <a class="forgot" href="#">Codes de secours</a>
+            </div>
+            <input type="password" id="login-mdp-admin" placeholder="••••••••" autocomplete="current-password" style="border-left:3px solid #667eea;"/>
+          </div>
+
+          <button class="btn btn-primary btn-full" onclick="handleAdminLogin()" style="background:#667eea;border:none;">
+            <i class="ti ti-login"></i>
+            <span>Se connecter en tant qu'Admin</span>
+          </button>
+
+          <div class="divider"><hr/><span>ou</span><hr/></div>
+          <div class="text-center text-muted">
+            <a href="#/login" data-link style="color:#667eea;text-decoration:none;">← Retour au login principal</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  // Connexion au clavier
+  document.addEventListener('keydown', function onEnter(e) {
+    if (e.key === 'Enter') {
+      handleAdminLogin();
+      document.removeEventListener('keydown', onEnter);
+    }
+  });
+}
 function renderDashboard() {
   const role = auth.getRole();
   if (role === 'admin')     renderDashboardAdmin();
@@ -365,9 +435,20 @@ function renderDashboardEleve() {
 }
 
 /* ══════════════════════════════════════
-   NOTES (espace prof)
+   NOTES
 ══════════════════════════════════════ */
 function renderNotes() {
+  const role = auth.getRole();
+  
+  if (role === 'prof') {
+    renderNotesProf();
+  } else {
+    renderNotesEleve();
+  }
+}
+
+// ─ Vue PROF : Saisie des notes ─
+function renderNotesProf() {
   const eleves = [
     'Fatou Diallo','Ibrahima Sow','Aminata Ndiaye','Oumar Mbaye',
     'Rokhaya Faye','Cheikh Diop','Mariama Ba','Moussa Fall',
@@ -434,6 +515,104 @@ function renderNotes() {
 
   // Reset les notes à chaque rendu
   window._notes = {};
+}
+
+// ─ Vue ÉLÈVE : Consultation SEULEMENT ─
+function renderNotesEleve() {
+  document.getElementById('app').innerHTML = `
+    <div class="topbar">
+      <div>
+        <h1>Mes notes</h1>
+        <p>Consultation de vos résultats académiques</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Mes notes par matière</h3>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="notes-table">
+          <thead>
+            <tr>
+              <th>Matière</th>
+              <th>Devoir 1</th>
+              <th>Devoir 2</th>
+              <th>Examen</th>
+              <th>Moyenne</th>
+              <th>Appréciation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Français</strong></td>
+              <td><strong>16</strong></td>
+              <td><strong>15</strong></td>
+              <td><strong>14</strong></td>
+              <td><strong style="color:#1D9E75;font-size:1.1rem;">15</strong></td>
+              <td><span class="badge badge-success">Bien</span></td>
+            </tr>
+            <tr>
+              <td><strong>Mathématiques</strong></td>
+              <td><strong>12</strong></td>
+              <td><strong>13</strong></td>
+              <td><strong>11</strong></td>
+              <td><strong style="color:#EF9F27;font-size:1.1rem;">12</strong></td>
+              <td><span class="badge badge-warning">Passable</span></td>
+            </tr>
+            <tr>
+              <td><strong>Anglais</strong></td>
+              <td><strong>14</strong></td>
+              <td><strong>15</strong></td>
+              <td><strong>16</strong></td>
+              <td><strong style="color:#1D9E75;font-size:1.1rem;">15</strong></td>
+              <td><span class="badge badge-success">Bien</span></td>
+            </tr>
+            <tr>
+              <td><strong>SVT</strong></td>
+              <td><strong>18</strong></td>
+              <td><strong>17</strong></td>
+              <td><strong>19</strong></td>
+              <td><strong style="color:#1D9E75;font-size:1.1rem;">18</strong></td>
+              <td><span class="badge badge-success">Très bien</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>Résumé de votre progression</h3></div>
+      <div class="stats-box">
+        <div class="stat-item">
+          <span class="label">Moyenne générale</span>
+          <span class="value" style="color:#1D9E75;">15</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Meilleure note</span>
+          <span class="value" style="color:#1D9E75;">19</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Plus faible note</span>
+          <span class="value" style="color:#EF9F27;">11</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Notes reçues</span>
+          <span class="value">12</span>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <h4>Évolution de votre moyenne</h4>
+        <div class="mini-chart">
+          <div class="bar" style="height:60%;background:#EAF3DE"></div>
+          <div class="bar" style="height:65%;background:#e6f1fb"></div>
+          <div class="bar" style="height:75%;background:#1D9E75"></div>
+          <div class="bar" style="height:70%;background:#1D9E75"></div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 /* ══════════════════════════════════════

@@ -1,0 +1,335 @@
+/* ══════════════════════════════════════
+   ÉLÈVES - Gestion des élèves
+══════════════════════════════════════ */
+
+function renderEleves() {
+  const role = auth.getRole();
+  
+  if (role === 'admin') {
+    renderElevesAdmin();
+  } else if (role === 'prof') {
+    renderElevesProf();
+  } else {
+    renderElevesEleve();
+  }
+}
+
+function renderElevesAdmin() {
+  document.getElementById('app').innerHTML = `
+    <div class="topbar">
+      <div>
+        <h1>Gestion des élèves</h1>
+        <p>Liste complète de tous les élèves du système</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" onclick="showAddEleveModal()">
+          <i class="ti ti-plus"></i> Nouvel élève
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Tous les élèves</h3>
+        <div class="search-box">
+          <i class="ti ti-search"></i>
+          <input type="text" id="search-eleves" placeholder="Rechercher un élève..." 
+                 onkeyup="filterTable('search-eleves', 'eleves-table')"/>
+        </div>
+      </div>
+
+      <table class="notes-table" id="eleves-table">
+        <thead>
+          <tr>
+            <th>Prénom et Nom</th>
+            <th>Matricule</th>
+            <th>Classe</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="eleves-tbody">
+          <tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal Ajouter Élève -->
+    <div id="add-eleve-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Ajouter un nouvel élève</h2>
+          <button class="close-btn" onclick="closeModal('add-eleve-modal')">×</button>
+        </div>
+        <form class="form-grid" onsubmit="handleAddEleve(event)">
+          <div class="field">
+            <label>Prénom</label>
+            <input type="text" id="eleve-prenom" required/>
+          </div>
+          <div class="field">
+            <label>Nom</label>
+            <input type="text" id="eleve-nom" required/>
+          </div>
+          <div class="field">
+            <label>Matricule</label>
+            <input type="text" id="eleve-matricule" required/>
+          </div>
+          <div class="field">
+            <label>Classe</label>
+            <select id="eleve-classe" required>
+              <option>Sélectionner une classe...</option>
+              <option>6e A</option>
+              <option>6e B</option>
+              <option>5e A</option>
+              <option>4e A</option>
+              <option>3e A</option>
+              <option>2nde A</option>
+              <option>1ère S</option>
+              <option>Terminale S</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="eleve-email" required/>
+          </div>
+          <div class="field">
+            <label>Téléphone</label>
+            <input type="tel" id="eleve-tel"/>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" onclick="closeModal('add-eleve-modal')">Annuler</button>
+            <button type="submit" class="btn btn-primary">Ajouter élève</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  // Charge les données des élèves
+  loadElevesData();
+}
+
+async function loadElevesData() {
+  // Données de démonstration
+  const eleves = [
+    { id: 1, prenom: 'Abdoulaye', nom: 'Diallo', matricule: 'E001', classe: '6e A', email: 'abdoulaye.d@ecole.sn', tel: '+221770000001' },
+    { id: 2, prenom: 'Fatou', nom: 'Sow', matricule: 'E002', classe: '6e A', email: 'fatou.sow@ecole.sn', tel: '+221770000002' },
+    { id: 3, prenom: 'Moussa', nom: 'Ba', matricule: 'E003', classe: '6e B', email: 'moussa.ba@ecole.sn', tel: '+221770000003' },
+    { id: 4, prenom: 'Aïssatou', nom: 'Diop', matricule: 'E004', classe: '5e A', email: 'aissatou.diop@ecole.sn', tel: '+221770000004' },
+    { id: 5, prenom: 'Saliou', nom: 'Gueye', matricule: 'E005', classe: '4e A', email: 'saliou.gueye@ecole.sn', tel: '+221770000005' },
+  ];
+
+  const tbody = document.getElementById('eleves-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = eleves.map(e => `
+    <tr>
+      <td>${e.prenom} ${e.nom}</td>
+      <td>${e.matricule}</td>
+      <td>${e.classe}</td>
+      <td>${e.email}</td>
+      <td>${e.tel}</td>
+      <td>
+        <div class="action-buttons">
+          <button class="btn-icon" title="Éditer" onclick="editEleve(${e.id})">
+            <i class="ti ti-edit"></i>
+          </button>
+          <button class="btn-icon" title="Supprimer" onclick="deleteEleve(${e.id})">
+            <i class="ti ti-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderElevesProf() {
+  document.getElementById('app').innerHTML = `
+    <div class="topbar">
+      <div>
+        <h1>Mes élèves</h1>
+        <p>Liste des élèves dans mes classes</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Mes classes et leurs élèves</h3>
+      </div>
+
+      <div class="classes-list">
+        <div class="class-section">
+          <h4>6e A - Français (25 élèves)</h4>
+          <table class="notes-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Matricule</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Abdoulaye Diallo</td>
+                <td>E001</td>
+                <td>abdoulaye.d@ecole.sn</td>
+              </tr>
+              <tr>
+                <td>Fatou Sow</td>
+                <td>E002</td>
+                <td>fatou.sow@ecole.sn</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="class-section">
+          <h4>5e B - Français (28 élèves)</h4>
+          <table class="notes-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Matricule</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Moussa Ba</td>
+                <td>E003</td>
+                <td>moussa.ba@ecole.sn</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderElevesEleve() {
+  const user = auth.getUser();
+  document.getElementById('app').innerHTML = `
+    <div class="topbar">
+      <div>
+        <h1>Mon profil</h1>
+        <p>Mes informations personnelles</p>
+      </div>
+    </div>
+
+    <div class="grid-2-1">
+      <div class="card">
+        <div class="card-header"><h3>Mes informations</h3></div>
+        <div class="profile-info">
+          <div class="profile-field">
+            <label>Prénom et Nom</label>
+            <p>Fatou Diallo</p>
+          </div>
+          <div class="profile-field">
+            <label>Matricule</label>
+            <p>E2024001</p>
+          </div>
+          <div class="profile-field">
+            <label>Classe</label>
+            <p>3e A</p>
+          </div>
+          <div class="profile-field">
+            <label>Email</label>
+            <p>fatou.diallo@ecole.sn</p>
+          </div>
+          <div class="profile-field">
+            <label>Téléphone</label>
+            <p>+221 77 000 0000</p>
+          </div>
+          <div class="profile-field">
+            <label>Date d'inscription</label>
+            <p>15 septembre 2024</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Tuteur / Parent</h3></div>
+        <div class="profile-info">
+          <div class="profile-field">
+            <label>Nom</label>
+            <p>Mamadou Diallo</p>
+          </div>
+          <div class="profile-field">
+            <label>Relation</label>
+            <p>Père</p>
+          </div>
+          <div class="profile-field">
+            <label>Téléphone</label>
+            <p>+221 77 111 1111</p>
+          </div>
+          <div class="profile-field">
+            <label>Email</label>
+            <p>mamadou.diallo@email.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* Fonctions utilitaires */
+
+function showAddEleveModal() {
+  document.getElementById('add-eleve-modal').classList.remove('hidden');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.add('hidden');
+}
+
+function handleAddEleve(event) {
+  event.preventDefault();
+  
+  const data = {
+    prenom: document.getElementById('eleve-prenom').value,
+    nom: document.getElementById('eleve-nom').value,
+    matricule: document.getElementById('eleve-matricule').value,
+    classe: document.getElementById('eleve-classe').value,
+    email: document.getElementById('eleve-email').value,
+    tel: document.getElementById('eleve-tel').value,
+  };
+
+  console.log('Nouvel élève:', data);
+  closeModal('add-eleve-modal');
+  showToast('Élève ajouté avec succès');
+  loadElevesData();
+}
+
+function editEleve(id) {
+  console.log('Éditer élève:', id);
+  showToast('Édition en cours...');
+}
+
+function deleteEleve(id) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')) {
+    console.log('Supprimer élève:', id);
+    showToast('Élève supprimé');
+    loadElevesData();
+  }
+}
+
+function filterTable(inputId, tableId) {
+  const input = document.getElementById(inputId);
+  const table = document.getElementById(tableId);
+  const filter = input.value.toLowerCase();
+  const rows = table.getElementsByTagName('tr');
+
+  for (let i = 1; i < rows.length; i++) {
+    const text = rows[i].textContent.toLowerCase();
+    rows[i].style.display = text.includes(filter) ? '' : 'none';
+  }
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
