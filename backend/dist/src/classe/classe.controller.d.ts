@@ -6,11 +6,11 @@ export declare class ClasseController {
     constructor(classeService: ClasseService);
     create(dto: CreateClasseDto): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         nom: string;
         niveau: string;
         annee: string;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<({
         _count: {
@@ -19,23 +19,27 @@ export declare class ClasseController {
         };
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         nom: string;
         niveau: string;
         annee: string;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     findOne(id: string): Promise<{
+        _count: {
+            eleves: number;
+            matieres: number;
+        };
         eleves: ({
             user: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                name: string;
                 email: string;
+                role: import("../generated/prisma/enums").Role;
+                id: string;
+                name: string;
                 emailVerified: boolean;
                 image: string | null;
-                role: import("../generated/prisma/enums").Role;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: string;
@@ -48,38 +52,34 @@ export declare class ClasseController {
         })[];
         matieres: {
             id: string;
-            nom: string;
             createdAt: Date;
             updatedAt: Date;
+            nom: string;
             classeId: string;
             coefficient: number;
         }[];
-        _count: {
-            eleves: number;
-            matieres: number;
-        };
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         nom: string;
         niveau: string;
         annee: string;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: string, dto: UpdateClassDto): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         nom: string;
         niveau: string;
         annee: string;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         nom: string;
         niveau: string;
         annee: string;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

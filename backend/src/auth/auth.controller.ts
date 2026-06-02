@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Res, Req, Logger } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
 import { AuthService, AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import type { Response, Request as ExpressRequest } from 'express';
@@ -6,6 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthService as LocalAuthService } from './auth.service';
 
 @Controller('auth')
+@ApiTags('Authentification')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -20,6 +22,9 @@ export class AuthController {
     // //*
     @AllowAnonymous()
     @Post("sign-up/school")
+    @ApiOperation({ summary: 'Inscription pour l\'administration de l\'école' })
+    @ApiResponse({ status: 201, description: 'Compte admin créé avec succès' })
+    @ApiResponse({ status: 401, description: 'Erreur lors de l\'inscription' })
   async SignUp(@Body() body: any, @Req() req: ExpressRequest, @Res() res: Response) {
     console.log(body);
 
@@ -51,6 +56,8 @@ export class AuthController {
 
   @AllowAnonymous()
   @Post("sign-in/school")
+  @ApiOperation({ summary: 'Connexion pour l\'administration de l\'école' })
+  @ApiResponse({ status: 200, description: 'Connexion réussie' })
   async SignIn(@Body() body: any, @Res() res: Response) {
     const { email, password } = body
 
@@ -76,6 +83,9 @@ export class AuthController {
   */
   @AllowAnonymous()
   @Post("sign-up/student")
+  @ApiOperation({ summary: 'Inscription pour les élèves' })
+  @ApiResponse({ status: 201, description: 'Compte élève créé avec succès' })
+  @ApiResponse({ status: 401, description: 'Erreur lors de l\'inscription' })
   async SignUpStudent(@Body() body: any, @Req() req: ExpressRequest, @Res() res: Response) {
     console.log(body);
 
@@ -107,6 +117,8 @@ export class AuthController {
 
   @AllowAnonymous()
   @Post("sign-in/student")
+  @ApiOperation({ summary: 'Connexion pour les élèves' })
+  @ApiResponse({ status: 200, description: 'Connexion réussie' })
   async SignInStudent(@Body() body: any, @Res() res: Response) {
     const { email, password } = body
 
@@ -133,6 +145,9 @@ export class AuthController {
   */
   @AllowAnonymous()
   @Post("sign-up/parent")
+  @ApiOperation({ summary: 'Inscription pour les parents' })
+  @ApiResponse({ status: 201, description: 'Compte parent créé avec succès' })
+  @ApiResponse({ status: 401, description: 'Erreur lors de l\'inscription' })
   async SignUpParent(@Body() body: any, @Req() req: ExpressRequest, @Res() res: Response) {
     console.log(body);
 
@@ -164,6 +179,8 @@ export class AuthController {
 
   @AllowAnonymous()
   @Post("sign-in/parent")
+  @ApiOperation({ summary: 'Connexion pour les parents' })
+  @ApiResponse({ status: 200, description: 'Connexion réussie' })
   async SignInParent(@Body() body: any, @Res() res: Response) {
     const { email, password } = body
 
@@ -188,6 +205,9 @@ export class AuthController {
   */
   @AllowAnonymous()
   @Post("sign-up/teacher")
+  @ApiOperation({ summary: 'Inscription pour les professeurs' })
+  @ApiResponse({ status: 201, description: 'Compte professeur créé avec succès' })
+  @ApiResponse({ status: 401, description: 'Erreur lors de l\'inscription' })
   async SignUpTeacher(@Body() body: any, @Req() req: ExpressRequest, @Res() res: Response) {
     console.log(body);
 
@@ -219,6 +239,8 @@ export class AuthController {
 
   @AllowAnonymous()
   @Post("sign-in/teacher")
+  @ApiOperation({ summary: 'Connexion pour les professeurs' })
+  @ApiResponse({ status: 200, description: 'Connexion réussie' })
   async SignInTeacher(@Body() body: any, @Res() res: Response) {
     const { email, password } = body
 
@@ -240,6 +262,9 @@ export class AuthController {
 
   @AllowAnonymous()
   @Get("me")
+  @ApiOperation({ summary: 'Récupérer le profil de l\'utilisateur connecté' })
+  @ApiResponse({ status: 200, description: 'Profil récupéré avec succès' })
+  @ApiResponse({ status: 404, description: 'Session non trouvée' })
   async getProfile(@Req() req: ExpressRequest, @Res() res: Response) {
 
     const sessionToken = req.cookies['better-auth.session_token'];
