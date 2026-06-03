@@ -1,4 +1,6 @@
 const auth = {
+  ADMIN_SECRET_TOKEN: 'sk_admin_2025_plateforme_ecole_secret_key', // À changer en production !
+  
   login: async (identifiant, password, role) => {
     // TODO : remplace par ton vrai fetch quand le backend est prêt
     // Simulation : accepte n'importe quel identifiant/mot de passe
@@ -14,6 +16,9 @@ const auth = {
     localStorage.setItem('token', fakeUser.token);
     localStorage.setItem('role', fakeUser.role);
     localStorage.setItem('user', JSON.stringify(fakeUser.user));
+    if (role === 'admin') {
+      localStorage.setItem('admin_auth', 'true');
+    }
     return fakeUser;
   },
 
@@ -26,10 +31,13 @@ const auth = {
   getRole:    () => localStorage.getItem('role'),
   getUser:    () => JSON.parse(localStorage.getItem('user') || '{}'),
   getToken:   () => localStorage.getItem('token'),
+  isAdminAuthenticated: () => !!localStorage.getItem('admin_auth'),
+  
+  validateAdminToken: (token) => token === auth.ADMIN_SECRET_TOKEN,
 };
 
 // ── Fonctions login (appelées depuis views.js) ──
-let _currentRole = 'admin';
+let _currentRole = 'prof';
 
 function setLoginRole(el, role) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -54,6 +62,28 @@ async function handleLogin() {
 
   err.style.display = 'none';
   const data = await auth.login(id, mdp, _currentRole);
+
+  if (data.token) {
+    navigate('#/dashboard');
+  } else {
+    err.style.display = 'block';
+  }
+}
+
+// Admin login - page dédiée et sécurisée
+async function handleAdminLogin() {
+  const id  = document.getElementById('login-id-admin').value.trim();
+  const mdp = document.getElementById('login-mdp-admin').value.trim();
+  const err = document.getElementById('error-msg-admin');
+
+  if (!id || !mdp) {
+    err.style.display = 'block';
+    err.textContent = '⚠ Veuillez remplir tous les champs.';
+    return;
+  }
+
+  err.style.display = 'none';
+  const data = await auth.login(id, mdp, 'admin');
 
   if (data.token) {
     navigate('#/dashboard');

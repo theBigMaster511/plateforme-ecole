@@ -1,11 +1,12 @@
 // Les routes avec # — fonctionnent sans serveur
 const routes = {
-  '#/login'     : () => renderLogin(),
-  '#/dashboard' : () => renderDashboard(),
-  '#/eleves'    : () => renderEleves(),
-  '#/notes'     : () => renderNotes(),
-  '#/bulletins' : () => renderBulletins(),
-  '#/classes'   : () => renderClasses(),
+  '#/login'        : () => renderLogin(),
+  '#/admin-login'  : () => renderAdminLogin(),
+  '#/dashboard'    : () => renderDashboard(),
+  '#/eleves'       : () => renderEleves(),
+  '#/notes'        : () => renderNotes(),
+  '#/bulletins'    : () => renderBulletins(),
+  '#/classes'      : () => renderClasses(),
 };
 
 function navigate(path) {
@@ -13,7 +14,11 @@ function navigate(path) {
 }
 
 function render() {
-  const hash = window.location.hash || '#/login';
+  const fullHash = window.location.hash || '#/login';
+  const hashParts = fullHash.split('?');
+  const hash = hashParts[0];
+  const queryString = hashParts[1] || '';
+  
   const route = routes[hash];
 
   if (!route) {
@@ -22,14 +27,31 @@ function render() {
   }
 
   // Pages protégées
-  if (hash !== '#/login' && !auth.isLoggedIn()) {
+  if (hash !== '#/login' && hash !== '#/admin-login' && !auth.isLoggedIn()) {
     navigate('#/login');
+    return;
+  }
+
+  // Vérification du token secret pour /admin-login
+  if (hash === '#/admin-login') {
+    const params = new URLSearchParams(queryString);
+    const token = params.get('token');
+    
+    if (!auth.validateAdminToken(token)) {
+      navigate('#/login');
+      return;
+    }
+  }
+
+  // Protection spéciale dashboard admin
+  if (hash === '#/dashboard' && auth.getRole() === 'admin' && !auth.isAdminAuthenticated()) {
+    navigate('#/admin-login');
     return;
   }
 
   // Sidebar
   const sidebar = document.getElementById('sidebar');
-  if (hash === '#/login') {
+  if (hash === '#/login' || hash === '#/admin-login') {
     sidebar.classList.add('hidden');
     document.getElementById('app').classList.remove('with-sidebar');
   } else {
