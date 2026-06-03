@@ -6,6 +6,7 @@ export type User = Prisma.UserModel;
 export type Session = Prisma.SessionModel;
 export type Account = Prisma.AccountModel;
 export type Verification = Prisma.VerificationModel;
+export type Ecole = Prisma.EcoleModel;
 export type Eleve = Prisma.EleveModel;
 export type Parent = Prisma.ParentModel;
 export type ParentEleve = Prisma.ParentEleveModel;

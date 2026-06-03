@@ -16,35 +16,35 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const nestjs_better_auth_1 = require("@thallesp/nestjs-better-auth");
-const prisma_service_1 = require("../prisma/prisma.service");
 const auth_service_1 = require("./auth.service");
+const prisma_service_1 = require("../prisma/prisma.service");
 let AuthController = class AuthController {
     authService;
-    prisma;
     localAuthService;
-    constructor(authService, prisma, localAuthService) {
+    prisma;
+    constructor(authService, localAuthService, prisma) {
         this.authService = authService;
-        this.prisma = prisma;
         this.localAuthService = localAuthService;
+        this.prisma = prisma;
     }
     async SignUp(body, req, res) {
         console.log(body);
         const account = await this.authService.api.signUpEmail({
             body: {
-                email: body.email || "",
-                password: body.password || "",
-                name: body.name || ""
-            }
+                email: body.email || '',
+                password: body.password || '',
+                name: body.name || '',
+            },
         });
         if (!account) {
             return res.status(401).json({
-                error: "Une erreur est survenue a l'inscription"
+                error: "Une erreur est survenue a l'inscription",
             });
         }
         await this.localAuthService.ToogleAdminRole(account.user.id);
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -53,12 +53,12 @@ let AuthController = class AuthController {
         const account = await this.authService.api.signInEmail({
             body: {
                 email,
-                password
-            }
+                password,
+            },
         });
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -66,20 +66,20 @@ let AuthController = class AuthController {
         console.log(body);
         const account = await this.authService.api.signUpEmail({
             body: {
-                email: body.email || "",
-                password: body.password || "",
-                name: body.name || ""
-            }
+                email: body.email || '',
+                password: body.password || '',
+                name: body.name || '',
+            },
         });
         if (!account) {
             return res.status(401).json({
-                error: "Une erreur est survenue a l'inscription"
+                error: "Une erreur est survenue a l'inscription",
             });
         }
         await this.localAuthService.ToggleStudentRole(account.user.id);
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -88,12 +88,12 @@ let AuthController = class AuthController {
         const account = await this.authService.api.signInEmail({
             body: {
                 email,
-                password
-            }
+                password,
+            },
         });
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -101,20 +101,20 @@ let AuthController = class AuthController {
         console.log(body);
         const account = await this.authService.api.signUpEmail({
             body: {
-                email: body.email || "",
-                password: body.password || "",
-                name: body.name || ""
-            }
+                email: body.email || '',
+                password: body.password || '',
+                name: body.name || '',
+            },
         });
         if (!account) {
             return res.status(401).json({
-                error: "Une erreur est survenue a l'inscription"
+                error: "Une erreur est survenue a l'inscription",
             });
         }
         await this.localAuthService.ToggleParentRole(account.user.id);
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -123,12 +123,12 @@ let AuthController = class AuthController {
         const account = await this.authService.api.signInEmail({
             body: {
                 email,
-                password
-            }
+                password,
+            },
         });
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -136,20 +136,20 @@ let AuthController = class AuthController {
         console.log(body);
         const account = await this.authService.api.signUpEmail({
             body: {
-                email: body.email || "",
-                password: body.password || "",
-                name: body.name || ""
-            }
+                email: body.email || '',
+                password: body.password || '',
+                name: body.name || '',
+            },
         });
         if (!account) {
             return res.status(401).json({
-                error: "Une erreur est survenue a l'inscription"
+                error: "Une erreur est survenue a l'inscription",
             });
         }
         await this.localAuthService.ToggleTeacherRole(account.user.id);
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
@@ -158,31 +158,31 @@ let AuthController = class AuthController {
         const account = await this.authService.api.signInEmail({
             body: {
                 email,
-                password
-            }
+                password,
+            },
         });
-        res.cookie("better-auth.session_token", account.token, {
+        res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
-            sameSite: "lax"
+            sameSite: 'lax',
         });
         return res.json(account);
     }
     async getProfile(req, res) {
         const sessionToken = req.cookies['better-auth.session_token'];
         if (!sessionToken) {
-            return res.json({ error: "No session token found in cookies" });
+            return res.json({ error: 'No session token found in cookies' });
         }
         const session = await this.prisma.session.findUnique({
             where: { token: sessionToken },
-            include: { user: true }
+            include: { user: true },
         });
         if (!session) {
-            return res.json({ error: "Session not found in database" });
+            return res.json({ error: 'Session not found in database' });
         }
         await this.localAuthService.AddUserAgent({
-            userAgent: req.headers['user-agent'] || "",
+            userAgent: req.headers['user-agent'] || '',
             userToken: session.token,
-            userIpAddress: req.ip || ""
+            userIpAddress: req.ip || '',
         });
         return res.json(session);
     }
@@ -190,10 +190,10 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-up/school"),
-    (0, swagger_1.ApiOperation)({ summary: 'Inscription pour l\'administration de l\'école' }),
+    (0, common_1.Post)('sign-up/school'),
+    (0, swagger_1.ApiOperation)({ summary: "Inscription pour l'administration de l'école" }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Compte admin créé avec succès' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'Erreur lors de l\'inscription' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Erreur lors de l'inscription" }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),
@@ -203,8 +203,8 @@ __decorate([
 ], AuthController.prototype, "SignUp", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-in/school"),
-    (0, swagger_1.ApiOperation)({ summary: 'Connexion pour l\'administration de l\'école' }),
+    (0, common_1.Post)('sign-in/school'),
+    (0, swagger_1.ApiOperation)({ summary: "Connexion pour l'administration de l'école" }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Connexion réussie' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -214,10 +214,10 @@ __decorate([
 ], AuthController.prototype, "SignIn", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-up/student"),
+    (0, common_1.Post)('sign-up/student'),
     (0, swagger_1.ApiOperation)({ summary: 'Inscription pour les élèves' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Compte élève créé avec succès' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'Erreur lors de l\'inscription' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Erreur lors de l'inscription" }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),
@@ -227,7 +227,7 @@ __decorate([
 ], AuthController.prototype, "SignUpStudent", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-in/student"),
+    (0, common_1.Post)('sign-in/student'),
     (0, swagger_1.ApiOperation)({ summary: 'Connexion pour les élèves' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Connexion réussie' }),
     __param(0, (0, common_1.Body)()),
@@ -238,10 +238,10 @@ __decorate([
 ], AuthController.prototype, "SignInStudent", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-up/parent"),
+    (0, common_1.Post)('sign-up/parent'),
     (0, swagger_1.ApiOperation)({ summary: 'Inscription pour les parents' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Compte parent créé avec succès' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'Erreur lors de l\'inscription' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Erreur lors de l'inscription" }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),
@@ -251,7 +251,7 @@ __decorate([
 ], AuthController.prototype, "SignUpParent", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-in/parent"),
+    (0, common_1.Post)('sign-in/parent'),
     (0, swagger_1.ApiOperation)({ summary: 'Connexion pour les parents' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Connexion réussie' }),
     __param(0, (0, common_1.Body)()),
@@ -262,10 +262,13 @@ __decorate([
 ], AuthController.prototype, "SignInParent", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-up/teacher"),
+    (0, common_1.Post)('sign-up/teacher'),
     (0, swagger_1.ApiOperation)({ summary: 'Inscription pour les professeurs' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Compte professeur créé avec succès' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'Erreur lors de l\'inscription' }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Compte professeur créé avec succès',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Erreur lors de l'inscription" }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),
@@ -275,7 +278,7 @@ __decorate([
 ], AuthController.prototype, "SignUpTeacher", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Post)("sign-in/teacher"),
+    (0, common_1.Post)('sign-in/teacher'),
     (0, swagger_1.ApiOperation)({ summary: 'Connexion pour les professeurs' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Connexion réussie' }),
     __param(0, (0, common_1.Body)()),
@@ -286,8 +289,8 @@ __decorate([
 ], AuthController.prototype, "SignInTeacher", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
-    (0, common_1.Get)("me"),
-    (0, swagger_1.ApiOperation)({ summary: 'Récupérer le profil de l\'utilisateur connecté' }),
+    (0, common_1.Get)('me'),
+    (0, swagger_1.ApiOperation)({ summary: "Récupérer le profil de l'utilisateur connecté" }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Profil récupéré avec succès' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Session non trouvée' }),
     __param(0, (0, common_1.Req)()),
@@ -300,7 +303,7 @@ exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     (0, swagger_1.ApiTags)('Authentification'),
     __metadata("design:paramtypes", [nestjs_better_auth_1.AuthService,
-        prisma_service_1.PrismaService,
-        auth_service_1.AuthService])
+        auth_service_1.AuthService,
+        prisma_service_1.PrismaService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

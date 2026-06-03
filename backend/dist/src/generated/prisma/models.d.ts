@@ -2,6 +2,7 @@ export type * from './models/User.js';
 export type * from './models/Session.js';
 export type * from './models/Account.js';
 export type * from './models/Verification.js';
+export type * from './models/Ecole.js';
 export type * from './models/Eleve.js';
 export type * from './models/Parent.js';
 export type * from './models/ParentEleve.js';

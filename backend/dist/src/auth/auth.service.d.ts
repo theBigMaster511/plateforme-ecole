@@ -8,44 +8,44 @@ export declare class AuthService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     ToogleAdminRole(userId: string): Promise<{
-        email: string;
-        role: import("../generated/prisma/enums").Role;
         id: string;
         name: string;
+        email: string;
         emailVerified: boolean;
         image: string | null;
         createdAt: Date;
         updatedAt: Date;
+        role: import("../generated/prisma/enums").Role;
     }>;
     ToggleStudentRole(userId: string): Promise<{
-        email: string;
-        role: import("../generated/prisma/enums").Role;
         id: string;
         name: string;
+        email: string;
         emailVerified: boolean;
         image: string | null;
         createdAt: Date;
         updatedAt: Date;
+        role: import("../generated/prisma/enums").Role;
     }>;
     ToggleTeacherRole(userId: string): Promise<{
-        email: string;
-        role: import("../generated/prisma/enums").Role;
         id: string;
         name: string;
+        email: string;
         emailVerified: boolean;
         image: string | null;
         createdAt: Date;
         updatedAt: Date;
+        role: import("../generated/prisma/enums").Role;
     }>;
     ToggleParentRole(userId: string): Promise<{
-        email: string;
-        role: import("../generated/prisma/enums").Role;
         id: string;
         name: string;
+        email: string;
         emailVerified: boolean;
         image: string | null;
         createdAt: Date;
         updatedAt: Date;
+        role: import("../generated/prisma/enums").Role;
     }>;
     AddUserAgent(userMetaDate: UserMetaDataType): Promise<void>;
 }

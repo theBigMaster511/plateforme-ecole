@@ -83,7 +83,10 @@ describe('ClasseService', () => {
     const dto = { name: '6ème B', years: '2024-2025', level: '6ème' };
 
     it('should update a class successfully', async () => {
-      mockPrisma.classe.findUnique.mockResolvedValue({ id: '1', nom: '6ème A' });
+      mockPrisma.classe.findUnique.mockResolvedValue({
+        id: '1',
+        nom: '6ème A',
+      });
       mockPrisma.classe.update.mockResolvedValue({ id: '1', ...dto });
 
       const result = await service.update('1', dto);
@@ -93,13 +96,18 @@ describe('ClasseService', () => {
     it('should throw NotFoundException if class to update is not found', async () => {
       mockPrisma.classe.findUnique.mockResolvedValue(null);
 
-      await expect(service.update('999', dto)).rejects.toThrow(NotFoundException);
+      await expect(service.update('999', dto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
   describe('remove', () => {
     it('should remove a class successfully', async () => {
-      mockPrisma.classe.findUnique.mockResolvedValue({ id: '1', nom: '6ème A' });
+      mockPrisma.classe.findUnique.mockResolvedValue({
+        id: '1',
+        nom: '6ème A',
+      });
       mockPrisma.classe.delete.mockResolvedValue({ id: '1' });
 
       const result = await service.remove('1');

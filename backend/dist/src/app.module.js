@@ -16,6 +16,13 @@ const auth_module_1 = require("./auth/auth.module");
 const core_1 = require("@nestjs/core");
 const roles_guard_1 = require("./role/roles.guard");
 const classe_module_1 = require("./classe/classe.module");
+const ecole_module_1 = require("./ecole/ecole.module");
+const matieres_module_1 = require("./matieres/matieres.module");
+const professeurs_module_1 = require("./professeurs/professeurs.module");
+const eleves_module_1 = require("./eleves/eleves.module");
+const parents_module_1 = require("./parents/parents.module");
+const evaluations_module_1 = require("./evaluations/evaluations.module");
+const notes_module_1 = require("./notes/notes.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -33,16 +40,23 @@ exports.AppModule = AppModule = __decorate([
                 }),
             }),
             auth_module_1.AuthModule,
-            classe_module_1.ClasseModule
+            classe_module_1.ClasseModule,
+            ecole_module_1.EcoleModule,
+            matieres_module_1.MatieresModule,
+            professeurs_module_1.ProfesseursModule,
+            eleves_module_1.ElevesModule,
+            parents_module_1.ParentsModule,
+            evaluations_module_1.EvaluationsModule,
+            notes_module_1.NotesModule,
         ],
         controllers: [],
         providers: [
             {
                 provide: core_1.APP_GUARD,
-                useClass: roles_guard_1.RolesGuard
+                useClass: roles_guard_1.RolesGuard,
             },
-            prisma_service_1.PrismaService
-        ]
+            prisma_service_1.PrismaService,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

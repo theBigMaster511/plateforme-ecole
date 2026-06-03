@@ -24,28 +24,28 @@ let RolesGuard = class RolesGuard {
     async canActivate(context) {
         const requiredRoles = this.reflector.getAllAndOverride(roles_decorator_1.ROLES_KEY, [
             context.getHandler(),
-            context.getClass()
+            context.getClass(),
         ]);
         if (!requiredRoles)
             return true;
         const req = context.switchToHttp().getRequest();
-        const cookieHeader = req.headers.cookie || "";
+        const cookieHeader = req.headers.cookie || '';
         const tokenMatch = cookieHeader.match(/better-auth\.session_token=([^;]+)/);
         if (!tokenMatch) {
-            throw new common_1.ForbiddenException("Utilisateur non authentifie");
+            throw new common_1.ForbiddenException('Utilisateur non authentifie');
         }
         const token = tokenMatch[1];
         const session = await this.prisma.session.findUnique({
             where: { token },
-            include: { user: true }
+            include: { user: true },
         });
         if (!session || !session.user) {
-            throw new common_1.ForbiddenException("Session invalide");
+            throw new common_1.ForbiddenException('Session invalide');
         }
         req.user = session.user;
         const hasRole = requiredRoles.some((role) => session.user.role === role);
         if (!hasRole) {
-            throw new common_1.ForbiddenException(`Acces refuse - Role requis: ${requiredRoles.join(", ")}`);
+            throw new common_1.ForbiddenException(`Acces refuse - Role requis: ${requiredRoles.join(', ')}`);
         }
         return true;
     }

@@ -161,6 +161,7 @@ export declare const ModelName: {
     readonly Session: "Session";
     readonly Account: "Account";
     readonly Verification: "Verification";
+    readonly Ecole: "Ecole";
     readonly Eleve: "Eleve";
     readonly Parent: "Parent";
     readonly ParentEleve: "ParentEleve";
@@ -182,7 +183,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "session" | "account" | "verification" | "eleve" | "parent" | "parentEleve" | "professeur" | "classe" | "matiere" | "professeurMatiere" | "evaluation" | "note";
+        modelProps: "user" | "session" | "account" | "verification" | "ecole" | "eleve" | "parent" | "parentEleve" | "professeur" | "classe" | "matiere" | "professeurMatiere" | "evaluation" | "note";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -479,6 +480,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.VerificationCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.VerificationCountAggregateOutputType> | number;
+                };
+            };
+        };
+        Ecole: {
+            payload: Prisma.$EcolePayload<ExtArgs>;
+            fields: Prisma.EcoleFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.EcoleFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.EcoleFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>;
+                };
+                findFirst: {
+                    args: Prisma.EcoleFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.EcoleFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>;
+                };
+                findMany: {
+                    args: Prisma.EcoleFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>[];
+                };
+                create: {
+                    args: Prisma.EcoleCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>;
+                };
+                createMany: {
+                    args: Prisma.EcoleCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.EcoleCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>[];
+                };
+                delete: {
+                    args: Prisma.EcoleDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>;
+                };
+                update: {
+                    args: Prisma.EcoleUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.EcoleDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.EcoleUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.EcoleUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>[];
+                };
+                upsert: {
+                    args: Prisma.EcoleUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EcolePayload>;
+                };
+                aggregate: {
+                    args: Prisma.EcoleAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateEcole>;
+                };
+                groupBy: {
+                    args: Prisma.EcoleGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EcoleGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.EcoleCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EcoleCountAggregateOutputType> | number;
                 };
             };
         };
@@ -1224,6 +1299,23 @@ export declare const VerificationScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum];
+export declare const EcoleScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly adresse: "adresse";
+    readonly telephone: "telephone";
+    readonly email: "email";
+    readonly siteWeb: "siteWeb";
+    readonly logo: "logo";
+    readonly directeur: "directeur";
+    readonly ville: "ville";
+    readonly pays: "pays";
+    readonly codePostal: "codePostal";
+    readonly description: "description";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EcoleScalarFieldEnum = (typeof EcoleScalarFieldEnum)[keyof typeof EcoleScalarFieldEnum];
 export declare const EleveScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -1345,6 +1437,7 @@ export type GlobalOmitConfig = {
     session?: Prisma.SessionOmit;
     account?: Prisma.AccountOmit;
     verification?: Prisma.VerificationOmit;
+    ecole?: Prisma.EcoleOmit;
     eleve?: Prisma.EleveOmit;
     parent?: Prisma.ParentOmit;
     parentEleve?: Prisma.ParentEleveOmit;

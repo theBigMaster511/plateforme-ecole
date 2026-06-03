@@ -18,16 +18,18 @@ async function bootstrap() {
   });
   app.enableCors({
     origin: 'http://localhost:3000',
-    credentials: true
+    credentials: true,
   });
 
   app.use(cookieParser());
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true
-  }))
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
 
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+void bootstrap();

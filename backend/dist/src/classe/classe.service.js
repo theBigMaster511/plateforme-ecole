@@ -21,8 +21,8 @@ let ClasseService = class ClasseService {
         const exists = await this.prisma.classe.findFirst({
             where: {
                 nom: dto.name,
-                annee: dto.years
-            }
+                annee: dto.years,
+            },
         });
         if (exists) {
             throw new common_1.ConflictException(`La classe ${dto.name} existe deja pour l'annee ${dto.years}`);
@@ -31,8 +31,8 @@ let ClasseService = class ClasseService {
             data: {
                 nom: dto.name,
                 annee: dto.years,
-                niveau: dto.level
-            }
+                niveau: dto.level,
+            },
         });
     }
     async finAll() {
@@ -41,34 +41,34 @@ let ClasseService = class ClasseService {
                 _count: {
                     select: {
                         eleves: true,
-                        matieres: true
-                    }
-                }
+                        matieres: true,
+                    },
+                },
             },
             orderBy: {
-                createdAt: "desc"
-            }
+                createdAt: 'desc',
+            },
         });
     }
     async findOne(id) {
         const classe = await this.prisma.classe.findUnique({
             where: {
-                id
+                id,
             },
             include: {
                 eleves: {
                     include: {
-                        user: true
-                    }
+                        user: true,
+                    },
                 },
                 matieres: true,
                 _count: {
                     select: {
                         eleves: true,
-                        matieres: true
-                    }
-                }
-            }
+                        matieres: true,
+                    },
+                },
+            },
         });
         if (!classe) {
             throw new common_1.NotFoundException(`Classe ${id} introuvable`);
@@ -79,19 +79,19 @@ let ClasseService = class ClasseService {
         await this.findOne(id);
         return this.prisma.classe.update({
             where: {
-                id
+                id,
             },
             data: {
                 nom: dto.name,
                 niveau: dto.level,
-                annee: dto.years
-            }
+                annee: dto.years,
+            },
         });
     }
     async remove(id) {
         await this.findOne(id);
         return this.prisma.classe.delete({
-            where: { id }
+            where: { id },
         });
     }
 };

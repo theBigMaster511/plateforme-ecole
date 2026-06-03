@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
-import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { createAuth } from './lib/auth';
-import { AuthModule as LocalAuthModule } from "./auth/auth.module";
+import { AuthModule as LocalAuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './role/roles.guard';
 import { ClasseModule } from './classe/classe.module';
+import { EcoleModule } from './ecole/ecole.module';
+import { MatieresModule } from './matieres/matieres.module';
+import { ProfesseursModule } from './professeurs/professeurs.module';
+import { ElevesModule } from './eleves/eleves.module';
+import { ParentsModule } from './parents/parents.module';
+import { EvaluationsModule } from './evaluations/evaluations.module';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -21,15 +28,22 @@ import { ClasseModule } from './classe/classe.module';
       }),
     }),
     LocalAuthModule,
-    ClasseModule
+    ClasseModule,
+    EcoleModule,
+    MatieresModule,
+    ProfesseursModule,
+    ElevesModule,
+    ParentsModule,
+    EvaluationsModule,
+    NotesModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: RolesGuard // seulement lui
+      useClass: RolesGuard, // seulement lui
     },
-    PrismaService
-  ]
+    PrismaService,
+  ],
 })
 export class AppModule {}

@@ -1,0 +1,87 @@
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateEcoleDto } from './dto/create-ecole.dto';
+import { UpdateEcoleDto } from './dto/update-ecole.dto';
+export declare class EcoleService {
+    private prisma;
+    constructor(prisma: PrismaService);
+    create(dto: CreateEcoleDto): Promise<{
+        id: string;
+        email: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        nom: string;
+        adresse: string | null;
+        telephone: string | null;
+        siteWeb: string | null;
+        logo: string | null;
+        directeur: string | null;
+        ville: string | null;
+        pays: string;
+        codePostal: string | null;
+    }>;
+    findAll(): Promise<{
+        id: string;
+        email: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        nom: string;
+        adresse: string | null;
+        telephone: string | null;
+        siteWeb: string | null;
+        logo: string | null;
+        directeur: string | null;
+        ville: string | null;
+        pays: string;
+        codePostal: string | null;
+    }[]>;
+    findOne(): Promise<{
+        id: string;
+        email: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        nom: string;
+        adresse: string | null;
+        telephone: string | null;
+        siteWeb: string | null;
+        logo: string | null;
+        directeur: string | null;
+        ville: string | null;
+        pays: string;
+        codePostal: string | null;
+    }>;
+    update(id: string, dto: UpdateEcoleDto): Promise<{
+        id: string;
+        email: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        nom: string;
+        adresse: string | null;
+        telephone: string | null;
+        siteWeb: string | null;
+        logo: string | null;
+        directeur: string | null;
+        ville: string | null;
+        pays: string;
+        codePostal: string | null;
+    }>;
+    remove(id: string): Promise<{
+        id: string;
+        email: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        nom: string;
+        adresse: string | null;
+        telephone: string | null;
+        siteWeb: string | null;
+        logo: string | null;
+        directeur: string | null;
+        ville: string | null;
+        pays: string;
+        codePostal: string | null;
+    }>;
+}

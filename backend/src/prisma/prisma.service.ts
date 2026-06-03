@@ -1,4 +1,4 @@
-import "dotenv/config"
+import 'dotenv/config';
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '../generated/prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';

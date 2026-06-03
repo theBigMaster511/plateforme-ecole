@@ -21,19 +21,19 @@ let AuthService = class AuthService {
         try {
             const toggleAdmin = await this.prisma.user.findFirst({
                 where: {
-                    id: userId
-                }
+                    id: userId,
+                },
             });
             if (!toggleAdmin) {
-                throw new Error("UnAuthorize");
+                throw new Error('UnAuthorize');
             }
             const admin = await this.prisma.user.update({
                 where: {
-                    id: userId
+                    id: userId,
                 },
                 data: {
-                    role: "ADMIN"
-                }
+                    role: 'ADMIN',
+                },
             });
             return admin;
         }
@@ -45,19 +45,19 @@ let AuthService = class AuthService {
         try {
             const toggleAdmin = await this.prisma.user.findFirst({
                 where: {
-                    id: userId
-                }
+                    id: userId,
+                },
             });
             if (!toggleAdmin) {
-                throw new Error("UnAuthorize");
+                throw new Error('UnAuthorize');
             }
             const admin = await this.prisma.user.update({
                 where: {
-                    id: userId
+                    id: userId,
                 },
                 data: {
-                    role: "ELEVE"
-                }
+                    role: 'ELEVE',
+                },
             });
             return admin;
         }
@@ -69,19 +69,19 @@ let AuthService = class AuthService {
         try {
             const toggleAdmin = await this.prisma.user.findFirst({
                 where: {
-                    id: userId
-                }
+                    id: userId,
+                },
             });
             if (!toggleAdmin) {
-                throw new Error("UnAuthorize");
+                throw new Error('UnAuthorize');
             }
             const admin = await this.prisma.user.update({
                 where: {
-                    id: userId
+                    id: userId,
                 },
                 data: {
-                    role: "PROFESSEUR"
-                }
+                    role: 'PROFESSEUR',
+                },
             });
             return admin;
         }
@@ -93,19 +93,19 @@ let AuthService = class AuthService {
         try {
             const toggleAdmin = await this.prisma.user.findFirst({
                 where: {
-                    id: userId
-                }
+                    id: userId,
+                },
             });
             if (!toggleAdmin) {
-                throw new Error("UnAuthorize");
+                throw new Error('UnAuthorize');
             }
             const admin = await this.prisma.user.update({
                 where: {
-                    id: userId
+                    id: userId,
                 },
                 data: {
-                    role: "PARENT"
-                }
+                    role: 'PARENT',
+                },
             });
             return admin;
         }
@@ -117,17 +117,17 @@ let AuthService = class AuthService {
         try {
             await this.prisma.session.update({
                 where: {
-                    token: userMetaDate.userToken
+                    token: userMetaDate.userToken,
                 },
                 data: {
                     userAgent: userMetaDate.userAgent,
-                    ipAddress: userMetaDate.userIpAddress
+                    ipAddress: userMetaDate.userIpAddress,
                 },
             });
         }
         catch (error) {
             common_1.Logger.error(error);
-            throw new Error("Une erreur est survenue lors de la mise a jour des metadata");
+            throw new Error('Une erreur est survenue lors de la mise a jour des metadata');
         }
     }
 };

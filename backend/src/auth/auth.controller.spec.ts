@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import type { Request, Response } from 'express';
 import { AuthController } from './auth.controller';
 import { AuthService as LocalAuthService } from './auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -7,8 +8,6 @@ import { AuthService } from '@thallesp/nestjs-better-auth';
 describe('AuthController', () => {
   let controller: AuthController;
   let localAuthService: LocalAuthService;
-  let prisma: PrismaService;
-  let betterAuthService: AuthService;
 
   const mockPrisma = {
     session: {
@@ -35,13 +34,13 @@ describe('AuthController', () => {
     status: jest.fn().mockReturnThis(),
     json: jest.fn().mockReturnThis(),
     cookie: jest.fn().mockReturnThis(),
-  };
+  } as unknown as Response;
 
   const mockRequest = {
     cookies: {},
     headers: {},
     ip: '127.0.0.1',
-  };
+  } as unknown as Request;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -55,19 +54,21 @@ describe('AuthController', () => {
 
     controller = module.get<AuthController>(AuthController);
     localAuthService = module.get<LocalAuthService>(LocalAuthService);
-    prisma = module.get<PrismaService>(PrismaService);
-    betterAuthService = module.get<AuthService>(AuthService);
     jest.clearAllMocks();
   });
 
   describe('SignUp', () => {
     it('should handle school sign-up successfully', async () => {
-      const body = { email: 'admin@school.com', password: 'password', name: 'Admin' };
+      const body = {
+        email: 'admin@school.com',
+        password: 'password',
+        name: 'Admin',
+      };
       const account = { user: { id: 'u1' }, token: 't1' };
       mockBetterAuthService.api.signUpEmail.mockResolvedValue(account);
       mockLocalAuthService.ToogleAdminRole.mockResolvedValue({});
 
-      await controller.SignUp(body, mockRequest as any, mockResponse as any);
+      await controller.SignUp(body, mockRequest, mockResponse);
 
       expect(mockResponse.json).toHaveBeenCalledWith(account);
       expect(mockResponse.cookie).toHaveBeenCalled();
@@ -77,7 +78,7 @@ describe('AuthController', () => {
     it('should return 401 if sign-up fails', async () => {
       mockBetterAuthService.api.signUpEmail.mockResolvedValue(null);
 
-      await controller.SignUp({}, mockRequest as any, mockResponse as any);
+      await controller.SignUp({}, mockRequest, mockResponse);
       expect(mockResponse.status).toHaveBeenCalledWith(401);
     });
   });
@@ -88,7 +89,7 @@ describe('AuthController', () => {
       const account = { token: 't1' };
       mockBetterAuthService.api.signInEmail.mockResolvedValue(account);
 
-      await controller.SignIn(body, mockResponse as any);
+      await controller.SignIn(body, mockResponse);
       expect(mockResponse.json).toHaveBeenCalledWith(account);
       expect(mockResponse.cookie).toHaveBeenCalled();
     });
@@ -101,15 +102,17 @@ describe('AuthController', () => {
       mockPrisma.session.findUnique.mockResolvedValue(session);
       mockLocalAuthService.AddUserAgent.mockResolvedValue({});
 
-      await controller.getProfile(mockRequest as any, mockResponse as any);
+      await controller.getProfile(mockRequest, mockResponse);
       expect(mockResponse.json).toHaveBeenCalledWith(session);
       expect(localAuthService.AddUserAgent).toHaveBeenCalled();
     });
 
     it('should return error if no token found', async () => {
       mockRequest.cookies = {};
-      await controller.getProfile(mockRequest as any, mockResponse as any);
-      expect(mockResponse.json).toHaveBeenCalledWith({ error: "No session token found in cookies" });
+      await controller.getProfile(mockRequest, mockResponse);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        error: 'No session token found in cookies',
+      });
     });
   });
 });

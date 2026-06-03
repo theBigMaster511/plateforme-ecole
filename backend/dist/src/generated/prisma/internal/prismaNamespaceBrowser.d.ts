@@ -15,6 +15,7 @@ export declare const ModelName: {
     readonly Session: "Session";
     readonly Account: "Account";
     readonly Verification: "Verification";
+    readonly Ecole: "Ecole";
     readonly Eleve: "Eleve";
     readonly Parent: "Parent";
     readonly ParentEleve: "ParentEleve";
@@ -78,6 +79,23 @@ export declare const VerificationScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum];
+export declare const EcoleScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly adresse: "adresse";
+    readonly telephone: "telephone";
+    readonly email: "email";
+    readonly siteWeb: "siteWeb";
+    readonly logo: "logo";
+    readonly directeur: "directeur";
+    readonly ville: "ville";
+    readonly pays: "pays";
+    readonly codePostal: "codePostal";
+    readonly description: "description";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EcoleScalarFieldEnum = (typeof EcoleScalarFieldEnum)[keyof typeof EcoleScalarFieldEnum];
 export declare const EleveScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";

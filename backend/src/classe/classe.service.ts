@@ -1,34 +1,38 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateClasseDto } from './dto/create-classe.dto';
 import { UpdateClassDto } from './dto/update-classe.dto';
 
 @Injectable()
 export class ClasseService {
-  constructor(private prisma: PrismaService) { }
-
+  constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateClasseDto) {
     // Verfie si la classe existe deja
     const exists = await this.prisma.classe.findFirst({
       where: {
         nom: dto.name,
-        annee: dto.years
-      }
-    })
-
+        annee: dto.years,
+      },
+    });
 
     if (exists) {
-      throw new ConflictException(`La classe ${dto.name} existe deja pour l'annee ${dto.years}`)
+      throw new ConflictException(
+        `La classe ${dto.name} existe deja pour l'annee ${dto.years}`,
+      );
     }
 
     return this.prisma.classe.create({
       data: {
         nom: dto.name,
         annee: dto.years,
-        niveau: dto.level
-      }
-    })
+        niveau: dto.level,
+      },
+    });
   }
 
   async finAll() {
@@ -37,67 +41,64 @@ export class ClasseService {
         _count: {
           select: {
             eleves: true,
-            matieres: true
-          }
-        }
+            matieres: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: "desc"
-      }
-    })
+        createdAt: 'desc',
+      },
+    });
   }
 
-
-  async findOne(id:string) {
+  async findOne(id: string) {
     const classe = await this.prisma.classe.findUnique({
       where: {
-        id
+        id,
       },
       include: {
         eleves: {
           include: {
-            user:true
-          }
+            user: true,
+          },
         },
         matieres: true,
         _count: {
           select: {
             eleves: true,
-            matieres:true
-          }
-        }
-      }
-    })
+            matieres: true,
+          },
+        },
+      },
+    });
 
     if (!classe) {
-      throw new NotFoundException(`Classe ${id} introuvable`)
+      throw new NotFoundException(`Classe ${id} introuvable`);
     }
 
-    return classe
+    return classe;
   }
 
-
   async update(id: string, dto: UpdateClassDto) {
-    await this.findOne(id)
+    await this.findOne(id);
 
     return this.prisma.classe.update({
       where: {
-        id
+        id,
       },
       data: {
         nom: dto.name,
         niveau: dto.level,
-        annee: dto.years
-      }
-    })
+        annee: dto.years,
+      },
+    });
   }
 
   async remove(id: string) {
-    await this.findOne(id)
+    await this.findOne(id);
 
     return this.prisma.classe.delete({
-      where:{id}
-    })
+      where: { id },
+    });
   }
-
 }

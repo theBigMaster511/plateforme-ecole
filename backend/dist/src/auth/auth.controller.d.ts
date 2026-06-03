@@ -1,12 +1,12 @@
 import { AuthService } from '@thallesp/nestjs-better-auth';
 import type { Response, Request as ExpressRequest } from 'express';
-import { PrismaService } from "../prisma/prisma.service";
 import { AuthService as LocalAuthService } from './auth.service';
+import { PrismaService } from "../prisma/prisma.service";
 export declare class AuthController {
     private readonly authService;
-    private readonly prisma;
     private readonly localAuthService;
-    constructor(authService: AuthService, prisma: PrismaService, localAuthService: LocalAuthService);
+    private readonly prisma;
+    constructor(authService: AuthService, localAuthService: LocalAuthService, prisma: PrismaService);
     SignUp(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
     SignIn(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
     SignUpStudent(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;

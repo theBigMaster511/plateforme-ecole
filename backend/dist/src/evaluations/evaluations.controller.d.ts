@@ -1,0 +1,168 @@
+import { EvaluationsService } from './evaluations.service';
+import { CreateEvaluationDto } from './dto/create-evaluation.dto';
+import { UpdateEvaluationDto } from './dto/update-evaluation.dto';
+export declare class EvaluationsController {
+    private readonly evaluationsService;
+    constructor(evaluationsService: EvaluationsService);
+    create(dto: CreateEvaluationDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
+        professeurId: string;
+        matiereId: string;
+        titre: string;
+    }>;
+    findAll(): Promise<({
+        professeur: {
+            user: {
+                id: string;
+                name: string;
+                email: string;
+                emailVerified: boolean;
+                image: string | null;
+                createdAt: Date;
+                updatedAt: Date;
+                role: import("../generated/prisma/enums").Role;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            specialite: string | null;
+        };
+        matiere: {
+            classe: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                nom: string;
+                niveau: string;
+                annee: string;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            nom: string;
+            coefficient: number;
+            classeId: string;
+        };
+        notes: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            eleveId: string;
+            valeur: number;
+            appreciation: string | null;
+            evaluationId: string;
+        }[];
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
+        professeurId: string;
+        matiereId: string;
+        titre: string;
+    })[]>;
+    findOne(id: string): Promise<{
+        professeur: {
+            user: {
+                id: string;
+                name: string;
+                email: string;
+                emailVerified: boolean;
+                image: string | null;
+                createdAt: Date;
+                updatedAt: Date;
+                role: import("../generated/prisma/enums").Role;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            specialite: string | null;
+        };
+        matiere: {
+            classe: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                nom: string;
+                niveau: string;
+                annee: string;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            nom: string;
+            coefficient: number;
+            classeId: string;
+        };
+        notes: ({
+            eleve: {
+                user: {
+                    id: string;
+                    name: string;
+                    email: string;
+                    emailVerified: boolean;
+                    image: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    role: import("../generated/prisma/enums").Role;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                userId: string;
+                classeId: string | null;
+                dateNaissance: Date | null;
+                matricule: string;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            eleveId: string;
+            valeur: number;
+            appreciation: string | null;
+            evaluationId: string;
+        })[];
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
+        professeurId: string;
+        matiereId: string;
+        titre: string;
+    }>;
+    update(id: string, dto: UpdateEvaluationDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
+        professeurId: string;
+        matiereId: string;
+        titre: string;
+    }>;
+    remove(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
+        professeurId: string;
+        matiereId: string;
+        titre: string;
+    }>;
+}

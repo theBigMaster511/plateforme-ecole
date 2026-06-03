@@ -32,31 +32,31 @@ export declare class ClasseService {
         };
         eleves: ({
             user: {
-                email: string;
-                role: import("../generated/prisma/enums").Role;
                 id: string;
                 name: string;
+                email: string;
                 emailVerified: boolean;
                 image: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                role: import("../generated/prisma/enums").Role;
             };
         } & {
             id: string;
             createdAt: Date;
             updatedAt: Date;
             userId: string;
-            matricule: string;
-            dateNaissance: Date | null;
             classeId: string | null;
+            dateNaissance: Date | null;
+            matricule: string;
         })[];
         matieres: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
             nom: string;
-            classeId: string;
             coefficient: number;
+            classeId: string;
         }[];
     } & {
         id: string;

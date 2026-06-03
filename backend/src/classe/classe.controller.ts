@@ -1,7 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import type { Request, Response } from 'express';
-import { Roles } from 'src/role/roles.decorator'; // ← ton propre Roles
+import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
 import { ClasseService } from './classe.service';
 import { CreateClasseDto } from './dto/create-classe.dto';
@@ -10,9 +17,7 @@ import { UpdateClassDto } from './dto/update-classe.dto';
 @Controller('classe')
 @ApiTags('Gestion des Classes')
 export class ClasseController {
-
   constructor(private readonly classeService: ClasseService) {}
-
 
   // Seul l'admin peut creer une classe
   @Post()
@@ -20,10 +25,9 @@ export class ClasseController {
   @ApiOperation({ summary: 'Créer une nouvelle classe' })
   @ApiResponse({ status: 201, description: 'Classe créée avec succès' })
   @ApiResponse({ status: 409, description: 'La classe existe déjà' })
-  create(@Body() dto:CreateClasseDto) {
-    return this.classeService.create(dto)
+  create(@Body() dto: CreateClasseDto) {
+    return this.classeService.create(dto);
   }
-
 
   // Admin et profs voient toutes les classe
   @Get()
@@ -31,7 +35,7 @@ export class ClasseController {
   @ApiOperation({ summary: 'Récupérer toutes les classes' })
   @ApiResponse({ status: 200, description: 'Liste des classes récupérée' })
   findAll() {
-    return this.classeService.finAll()
+    return this.classeService.finAll();
   }
 
   // Admin, prof et eleve voient une classe
@@ -41,7 +45,7 @@ export class ClasseController {
   @ApiResponse({ status: 200, description: 'Détails de la classe récupérés' })
   @ApiResponse({ status: 404, description: 'Classe introuvable' })
   findOne(@Param('id') id: string) {
-    return this.classeService.findOne(id)
+    return this.classeService.findOne(id);
   }
 
   // Seul l'admin peut modifier
@@ -51,7 +55,7 @@ export class ClasseController {
   @ApiResponse({ status: 200, description: 'Classe mise à jour avec succès' })
   @ApiResponse({ status: 404, description: 'Classe introuvable' })
   update(@Param('id') id: string, @Body() dto: UpdateClassDto) {
-    return this.classeService.update(id, dto)
+    return this.classeService.update(id, dto);
   }
 
   // Seul l'admin peut supprimer
@@ -61,6 +65,6 @@ export class ClasseController {
   @ApiResponse({ status: 200, description: 'Classe supprimée avec succès' })
   @ApiResponse({ status: 404, description: 'Classe introuvable' })
   remove(@Param('id') id: string) {
-    return this.classeService.remove(id)
+    return this.classeService.remove(id);
   }
 }

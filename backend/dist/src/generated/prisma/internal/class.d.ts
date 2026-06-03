@@ -42,6 +42,9 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get verification(): Prisma.VerificationDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get ecole(): Prisma.EcoleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get eleve(): Prisma.EleveDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;

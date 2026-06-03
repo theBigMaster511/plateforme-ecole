@@ -9,10 +9,10 @@ export function createAuth(prismaClient: PrismaClient) {
     hooks: {}, // minimum required to use hooks. read above for more details.
     emailAndPassword: {
       enabled: true,
-      minPasswordLength: 3
+      minPasswordLength: 3,
     },
     database: prismaAdapter(prismaClient, {
-      provider: "sqlite"
-    })
+      provider: 'sqlite',
+    }),
   });
 }

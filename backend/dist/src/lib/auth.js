@@ -8,11 +8,11 @@ function createAuth(prismaClient) {
         hooks: {},
         emailAndPassword: {
             enabled: true,
-            minPasswordLength: 3
+            minPasswordLength: 3,
         },
         database: (0, prisma_adapter_1.prismaAdapter)(prismaClient, {
-            provider: "sqlite"
-        })
+            provider: 'sqlite',
+        }),
     });
 }
 //# sourceMappingURL=auth.js.map

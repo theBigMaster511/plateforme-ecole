@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClasseController } from './classe.controller';
 import { ClasseService } from './classe.service';
-import { Role } from 'src/role/roles.enum';
 
 describe('ClasseController', () => {
   let controller: ClasseController;
@@ -18,9 +17,7 @@ describe('ClasseController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClasseController],
-      providers: [
-        { provide: ClasseService, useValue: mockClasseService },
-      ],
+      providers: [{ provide: ClasseService, useValue: mockClasseService }],
     }).compile();
 
     controller = module.get<ClasseController>(ClasseController);

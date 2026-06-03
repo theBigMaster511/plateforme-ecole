@@ -45,7 +45,9 @@ describe('AuthService', () => {
 
     it('should throw error if user not found', async () => {
       mockPrisma.user.findFirst.mockResolvedValue(null);
-      await expect(service.ToogleAdminRole('unknown')).rejects.toThrow('UnAuthorize');
+      await expect(service.ToogleAdminRole('unknown')).rejects.toThrow(
+        'UnAuthorize',
+      );
     });
   });
 
@@ -64,7 +66,10 @@ describe('AuthService', () => {
     it('should set role to PROFESSEUR for existing user', async () => {
       const userId = 'user-1';
       mockPrisma.user.findFirst.mockResolvedValue({ id: userId, role: 'USER' });
-      mockPrisma.user.update.mockResolvedValue({ id: userId, role: 'PROFESSEUR' });
+      mockPrisma.user.update.mockResolvedValue({
+        id: userId,
+        role: 'PROFESSEUR',
+      });
 
       const result = await service.ToggleTeacherRole(userId);
       expect(result.role).toBe('PROFESSEUR');
@@ -103,8 +108,15 @@ describe('AuthService', () => {
 
     it('should throw error when prisma update fails', async () => {
       mockPrisma.session.update.mockRejectedValue(new Error('DB Error'));
-      await expect(service.AddUserAgent({ userAgent: 'a', userToken: 'b', userIpAddress: 'c' }))
-        .rejects.toThrow('Une erreur est survenue lors de la mise a jour des metadata');
+      await expect(
+        service.AddUserAgent({
+          userAgent: 'a',
+          userToken: 'b',
+          userIpAddress: 'c',
+        }),
+      ).rejects.toThrow(
+        'Une erreur est survenue lors de la mise a jour des metadata',
+      );
     });
   });
 });
