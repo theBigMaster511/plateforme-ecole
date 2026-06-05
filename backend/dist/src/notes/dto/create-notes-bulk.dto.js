@@ -13,6 +13,7 @@ exports.CreateNotesBulkDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const create_note_dto_1 = require("./create-note.dto");
+const swagger_1 = require("@nestjs/swagger");
 class CreateNotesBulkDto {
     notes;
 }
@@ -22,6 +23,7 @@ __decorate([
     (0, class_validator_1.ValidateNested)({ each: true }),
     (0, class_transformer_1.Type)(() => create_note_dto_1.CreateNoteDto),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ type: [create_note_dto_1.CreateNoteDto], description: 'Liste de notes à saisir en masse' }),
     __metadata("design:type", Array)
 ], CreateNotesBulkDto.prototype, "notes", void 0);
 //# sourceMappingURL=create-notes-bulk.dto.js.map

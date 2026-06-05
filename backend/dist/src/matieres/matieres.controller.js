@@ -45,9 +45,11 @@ exports.MatieresController = MatieresController;
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Créer une matière' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Matière créée avec succès' }),
-    (0, swagger_1.ApiResponse)({ status: 409, description: 'La matière existe déjà' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Créer une matière', description: 'Créer une nouvelle matière liée à une classe (ADMIN uniquement)' }),
+    (0, swagger_1.ApiBody)({ type: create_matiere_dto_1.CreateMatiereDto, description: 'Données de la matière à créer' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Matière créée avec succès', type: create_matiere_dto_1.CreateMatiereDto }),
+    (0, swagger_1.ApiResponse)({ status: 409, description: 'La matière existe déjà pour cette classe' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_matiere_dto_1.CreateMatiereDto]),
@@ -56,8 +58,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN, roles_enum_1.Role.PROFESSEUR),
-    (0, swagger_1.ApiOperation)({ summary: 'Lister toutes les matières' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des matières récupérée' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Lister toutes les matières', description: 'Récupérer la liste de toutes les matières (ADMIN, PROFESSEUR)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des matières récupérée', isArray: true }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)

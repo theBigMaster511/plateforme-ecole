@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateClasseDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class CreateClasseDto {
     name;
     level;
@@ -20,16 +21,19 @@ exports.CreateClasseDto = CreateClasseDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: '6ème A', description: 'Nom de la classe' }),
     __metadata("design:type", String)
 ], CreateClasseDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: '6ème', description: 'Niveau scolaire' }),
     __metadata("design:type", String)
 ], CreateClasseDto.prototype, "level", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: '2024-2025', description: 'Année scolaire' }),
     __metadata("design:type", String)
 ], CreateClasseDto.prototype, "years", void 0);
 //# sourceMappingURL=create-classe.dto.js.map

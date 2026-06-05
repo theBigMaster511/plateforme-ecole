@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateEleveDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class UpdateEleveDto {
     dateNaissance;
 }
@@ -19,6 +20,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
+    (0, swagger_1.ApiProperty)({ example: '2010-05-15', description: 'Date de naissance de l\'élève (YYYY-MM-DD)', required: false }),
     __metadata("design:type", String)
 ], UpdateEleveDto.prototype, "dateNaissance", void 0);
 //# sourceMappingURL=update-eleve.dto.js.map

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateEvaluationDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 var EvalType;
 (function (EvalType) {
     EvalType["DEVOIR"] = "DEVOIR";
@@ -29,26 +30,31 @@ exports.CreateEvaluationDto = CreateEvaluationDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'Contrôle Trimestriel 1', description: 'Titre de l\'évaluation' }),
     __metadata("design:type", String)
 ], CreateEvaluationDto.prototype, "titre", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(EvalType),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ enum: EvalType, example: EvalType.DEVOIR, description: 'Type d\'évaluation' }),
     __metadata("design:type", String)
 ], CreateEvaluationDto.prototype, "type", void 0);
 __decorate([
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: '2024-10-15', description: 'Date de l\'évaluation (YYYY-MM-DD)' }),
     __metadata("design:type", String)
 ], CreateEvaluationDto.prototype, "date", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'mat123456789', description: 'ID de la matière associée' }),
     __metadata("design:type", String)
 ], CreateEvaluationDto.prototype, "matiereId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'prof123456789', description: 'ID du professeur créateur' }),
     __metadata("design:type", String)
 ], CreateEvaluationDto.prototype, "professeurId", void 0);
 //# sourceMappingURL=create-evaluation.dto.js.map

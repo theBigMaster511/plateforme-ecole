@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
 import { ProfesseursService } from './professeurs.service';
@@ -16,43 +16,52 @@ import { UpdateProfesseurDto } from './dto/update-professeur.dto';
 @Controller('professeurs')
 @ApiTags('Gestion des Professeurs')
 export class ProfesseursController {
-  constructor(private readonly professeursService: ProfesseursService) {}
+  constructor(private readonly professeursService: ProfesseursService) { }
 
   @Get()
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: 'Lister tous les professeurs' })
-  @ApiResponse({ status: 200, description: 'Liste des professeurs récupérée' })
+  @ApiOperation({ summary: 'Lister tous les professeurs', description: 'Récupérer la liste complète des professeurs (ADMIN uniquement)' })
+  @ApiResponse({ status: 200, description: 'Liste des professeurs récupérée', isArray: true })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   findAll() {
     return this.professeursService.findAll();
   }
 
   @Get(':id')
   @Roles(Role.ADMIN, Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Récupérer un professeur par ID' })
+  @ApiOperation({ summary: 'Récupérer un professeur par ID', description: 'Détails d\'un professeur spécifique (ADMIN, PROFESSEUR)' })
+  @ApiParam({ name: 'id', description: 'ID unique du professeur', example: 'prof123456789' })
   @ApiResponse({ status: 200, description: 'Professeur récupéré' })
   @ApiResponse({ status: 404, description: 'Professeur introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   findOne(@Param('id') id: string) {
     return this.professeursService.findOne(id);
   }
 
   @Patch(':id')
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: 'Modifier un professeur' })
+  @ApiOperation({ summary: 'Modifier un professeur', description: 'Mettre à jour les informations d\'un professeur (ADMIN uniquement)' })
+  @ApiParam({ name: 'id', description: 'ID unique du professeur', example: 'prof123456789' })
+  @ApiBody({ type: UpdateProfesseurDto, description: 'Données à mettre à jour' })
   @ApiResponse({ status: 200, description: 'Professeur mis à jour' })
   @ApiResponse({ status: 404, description: 'Professeur introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   update(@Param('id') id: string, @Body() dto: UpdateProfesseurDto) {
     return this.professeursService.update(id, dto);
   }
 
   @Post(':id/matieres/:matiereId')
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: 'Assigner une matière à un professeur' })
+  @ApiOperation({ summary: 'Assigner une matière à un professeur', description: 'Lier une matière spécifique à un professeur (ADMIN uniquement)' })
+  @ApiParam({ name: 'id', description: 'ID unique du professeur', example: 'prof123456789' })
+  @ApiParam({ name: 'matiereId', description: 'ID unique de la matière', example: 'mat123456789' })
   @ApiResponse({ status: 201, description: 'Matière assignée' })
   @ApiResponse({
     status: 404,
     description: 'Professeur ou matière introuvable',
   })
   @ApiResponse({ status: 409, description: 'Assignation déjà existante' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   assignMatiere(
     @Param('id') professeurId: string,
     @Param('matiereId') matiereId: string,
@@ -62,9 +71,12 @@ export class ProfesseursController {
 
   @Delete(':id/matieres/:matiereId')
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: "Retirer une matière d'un professeur" })
+  @ApiOperation({ summary: "Retirer une matière d'un professeur", description: "Supprimer le lien entre un professeur et une matière (ADMIN uniquement)" })
+  @ApiParam({ name: 'id', description: 'ID unique du professeur', example: 'prof123456789' })
+  @ApiParam({ name: 'matiereId', description: 'ID unique de la matière', example: 'mat123456789' })
   @ApiResponse({ status: 200, description: 'Matière retirée' })
   @ApiResponse({ status: 404, description: 'Assignation introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   removeMatiere(
     @Param('id') professeurId: string,
     @Param('matiereId') matiereId: string,

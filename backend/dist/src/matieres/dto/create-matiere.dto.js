@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateMatiereDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class CreateMatiereDto {
     nom;
     coefficient;
@@ -20,17 +21,20 @@ exports.CreateMatiereDto = CreateMatiereDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'Mathématiques', description: 'Nom de la matière' }),
     __metadata("design:type", String)
 ], CreateMatiereDto.prototype, "nom", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.Min)(1),
+    (0, swagger_1.ApiProperty)({ example: 3, description: 'Coefficient de la matière', required: false }),
     __metadata("design:type", Number)
 ], CreateMatiereDto.prototype, "coefficient", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'cl1234567890', description: 'ID de la classe' }),
     __metadata("design:type", String)
 ], CreateMatiereDto.prototype, "classeId", void 0);
 //# sourceMappingURL=create-matiere.dto.js.map

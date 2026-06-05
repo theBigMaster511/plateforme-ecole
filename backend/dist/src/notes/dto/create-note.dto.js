@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateNoteDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class CreateNoteDto {
     valeur;
     appreciation;
@@ -23,21 +24,25 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.Max)(20),
+    (0, swagger_1.ApiProperty)({ example: 15.5, description: 'Valeur de la note (entre 0 et 20)' }),
     __metadata("design:type", Number)
 ], CreateNoteDto.prototype, "valeur", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: 'Bon travail, continuez ainsi', description: 'Appréciation du professeur', required: false }),
     __metadata("design:type", String)
 ], CreateNoteDto.prototype, "appreciation", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'ele123456789', description: 'ID de l\'élève' }),
     __metadata("design:type", String)
 ], CreateNoteDto.prototype, "eleveId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'eval123456789', description: 'ID de l\'évaluation' }),
     __metadata("design:type", String)
 ], CreateNoteDto.prototype, "evaluationId", void 0);
 //# sourceMappingURL=create-note.dto.js.map

@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
 import { EvaluationsService } from './evaluations.service';
@@ -17,51 +17,61 @@ import { UpdateEvaluationDto } from './dto/update-evaluation.dto';
 @Controller('evaluations')
 @ApiTags('Gestion des Évaluations')
 export class EvaluationsController {
-  constructor(private readonly evaluationsService: EvaluationsService) {}
+  constructor(private readonly evaluationsService: EvaluationsService) { }
 
   @Post()
   @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Créer une évaluation' })
-  @ApiResponse({ status: 201, description: 'Évaluation créée avec succès' })
+  @ApiOperation({ summary: 'Créer une évaluation', description: 'Créer une nouvelle évaluation pour une matière (PROFESSEUR uniquement)' })
+  @ApiBody({ type: CreateEvaluationDto, description: 'Données de l\'évaluation' })
+  @ApiResponse({ status: 201, description: 'Évaluation créée avec succès', type: CreateEvaluationDto })
   @ApiResponse({
     status: 404,
     description: 'Matière ou professeur introuvable',
   })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   create(@Body() dto: CreateEvaluationDto) {
     return this.evaluationsService.create(dto);
   }
 
   @Get()
   @Roles(Role.ADMIN, Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Lister toutes les évaluations' })
-  @ApiResponse({ status: 200, description: 'Liste des évaluations récupérée' })
+  @ApiOperation({ summary: 'Lister toutes les évaluations', description: 'Récupérer la liste de toutes les évaluations (ADMIN, PROFESSEUR)' })
+  @ApiResponse({ status: 200, description: 'Liste des évaluations récupérée', isArray: true })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   findAll() {
     return this.evaluationsService.findAll();
   }
 
   @Get(':id')
   @Roles(Role.ADMIN, Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Récupérer une évaluation par ID' })
+  @ApiOperation({ summary: 'Récupérer une évaluation par ID', description: 'Détail d\'une évaluation spécifique (ADMIN, PROFESSEUR)' })
+  @ApiParam({ name: 'id', description: 'ID unique de l\'évaluation', example: 'eval123456789' })
   @ApiResponse({ status: 200, description: 'Évaluation récupérée' })
   @ApiResponse({ status: 404, description: 'Évaluation introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   findOne(@Param('id') id: string) {
     return this.evaluationsService.findOne(id);
   }
 
   @Patch(':id')
   @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Modifier une évaluation' })
+  @ApiOperation({ summary: 'Modifier une évaluation', description: 'Mettre à jour les informations d\'une évaluation (PROFESSEUR uniquement)' })
+  @ApiParam({ name: 'id', description: 'ID unique de l\'évaluation', example: 'eval123456789' })
+  @ApiBody({ type: UpdateEvaluationDto, description: 'Champs à mettre à jour' })
   @ApiResponse({ status: 200, description: 'Évaluation mise à jour' })
   @ApiResponse({ status: 404, description: 'Évaluation introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   update(@Param('id') id: string, @Body() dto: UpdateEvaluationDto) {
     return this.evaluationsService.update(id, dto);
   }
 
   @Delete(':id')
   @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Supprimer une évaluation' })
+  @ApiOperation({ summary: 'Supprimer une évaluation', description: 'Supprimer une évaluation (PROFESSEUR uniquement)' })
+  @ApiParam({ name: 'id', description: 'ID unique de l\'évaluation', example: 'eval123456789' })
   @ApiResponse({ status: 200, description: 'Évaluation supprimée' })
   @ApiResponse({ status: 404, description: 'Évaluation introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   remove(@Param('id') id: string) {
     return this.evaluationsService.remove(id);
   }

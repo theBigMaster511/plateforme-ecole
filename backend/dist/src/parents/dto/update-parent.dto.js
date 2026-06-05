@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateParentDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class UpdateParentDto {
     telephone;
 }
@@ -18,6 +19,7 @@ exports.UpdateParentDto = UpdateParentDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: '+221 77 123 45 67', description: 'Numéro de téléphone du parent', required: false }),
     __metadata("design:type", String)
 ], UpdateParentDto.prototype, "telephone", void 0);
 //# sourceMappingURL=update-parent.dto.js.map

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateProfesseurDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class UpdateProfesseurDto {
     specialite;
 }
@@ -18,6 +19,7 @@ exports.UpdateProfesseurDto = UpdateProfesseurDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: 'Mathématiques', description: 'Spécialité du professeur', required: false }),
     __metadata("design:type", String)
 ], UpdateProfesseurDto.prototype, "specialite", void 0);
 //# sourceMappingURL=update-professeur.dto.js.map

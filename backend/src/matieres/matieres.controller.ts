@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
 import { MatieresService } from './matieres.service';
@@ -17,21 +17,24 @@ import { UpdateMatiereDto } from './dto/update-matiere.dto';
 @Controller('matieres')
 @ApiTags('Gestion des Matières')
 export class MatieresController {
-  constructor(private readonly matieresService: MatieresService) {}
+  constructor(private readonly matieresService: MatieresService) { }
 
   @Post()
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: 'Créer une matière' })
-  @ApiResponse({ status: 201, description: 'Matière créée avec succès' })
-  @ApiResponse({ status: 409, description: 'La matière existe déjà' })
+  @ApiOperation({ summary: 'Créer une matière', description: 'Créer une nouvelle matière liée à une classe (ADMIN uniquement)' })
+  @ApiBody({ type: CreateMatiereDto, description: 'Données de la matière à créer' })
+  @ApiResponse({ status: 201, description: 'Matière créée avec succès', type: CreateMatiereDto })
+  @ApiResponse({ status: 409, description: 'La matière existe déjà pour cette classe' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   create(@Body() dto: CreateMatiereDto) {
     return this.matieresService.create(dto);
   }
 
   @Get()
   @Roles(Role.ADMIN, Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Lister toutes les matières' })
-  @ApiResponse({ status: 200, description: 'Liste des matières récupérée' })
+  @ApiOperation({ summary: 'Lister toutes les matières', description: 'Récupérer la liste de toutes les matières (ADMIN, PROFESSEUR)' })
+  @ApiResponse({ status: 200, description: 'Liste des matières récupérée', isArray: true })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
   findAll() {
     return this.matieresService.findAll();
   }
