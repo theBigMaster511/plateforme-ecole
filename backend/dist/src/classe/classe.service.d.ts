@@ -46,17 +46,17 @@ export declare class ClasseService {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
-            matricule: string;
-            dateNaissance: Date | null;
             classeId: string | null;
+            dateNaissance: Date | null;
+            matricule: string;
         })[];
         matieres: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
             nom: string;
-            classeId: string;
             coefficient: number;
+            classeId: string;
         }[];
     } & {
         id: string;

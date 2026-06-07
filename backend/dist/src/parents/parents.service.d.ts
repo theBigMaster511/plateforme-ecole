@@ -39,9 +39,9 @@ export declare class ParentsService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                matricule: string;
-                dateNaissance: Date | null;
                 classeId: string | null;
+                dateNaissance: Date | null;
+                matricule: string;
             };
         } & {
             parentId: string;
@@ -90,9 +90,9 @@ export declare class ParentsService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                matricule: string;
-                dateNaissance: Date | null;
                 classeId: string | null;
+                dateNaissance: Date | null;
+                matricule: string;
             };
         } & {
             parentId: string;

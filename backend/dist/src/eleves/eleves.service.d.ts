@@ -29,18 +29,18 @@ export declare class ElevesService {
                     createdAt: Date;
                     updatedAt: Date;
                     nom: string;
-                    classeId: string;
                     coefficient: number;
+                    classeId: string;
                 };
             } & {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                date: Date;
+                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
-                type: import("../generated/prisma/enums").EvalType;
-                date: Date;
             };
         } & {
             id: string;
@@ -79,9 +79,9 @@ export declare class ElevesService {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        matricule: string;
-        dateNaissance: Date | null;
         classeId: string | null;
+        dateNaissance: Date | null;
+        matricule: string;
     })[]>;
     findOne(id: string): Promise<{
         user: {
@@ -109,18 +109,18 @@ export declare class ElevesService {
                     createdAt: Date;
                     updatedAt: Date;
                     nom: string;
-                    classeId: string;
                     coefficient: number;
+                    classeId: string;
                 };
             } & {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                date: Date;
+                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
-                type: import("../generated/prisma/enums").EvalType;
-                date: Date;
             };
         } & {
             id: string;
@@ -159,26 +159,26 @@ export declare class ElevesService {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        matricule: string;
-        dateNaissance: Date | null;
         classeId: string | null;
+        dateNaissance: Date | null;
+        matricule: string;
     }>;
     update(id: string, dto: UpdateEleveDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        matricule: string;
-        dateNaissance: Date | null;
         classeId: string | null;
+        dateNaissance: Date | null;
+        matricule: string;
     }>;
     assignClasse(eleveId: string, classeId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        matricule: string;
-        dateNaissance: Date | null;
         classeId: string | null;
+        dateNaissance: Date | null;
+        matricule: string;
     }>;
 }

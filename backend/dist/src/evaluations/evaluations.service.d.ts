@@ -8,11 +8,11 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
     }>;
     findAll(): Promise<({
         professeur: {
@@ -47,8 +47,8 @@ export declare class EvaluationsService {
             createdAt: Date;
             updatedAt: Date;
             nom: string;
-            classeId: string;
             coefficient: number;
+            classeId: string;
         };
         notes: {
             id: string;
@@ -63,11 +63,11 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
     })[]>;
     findOne(id: string): Promise<{
         professeur: {
@@ -102,8 +102,8 @@ export declare class EvaluationsService {
             createdAt: Date;
             updatedAt: Date;
             nom: string;
-            classeId: string;
             coefficient: number;
+            classeId: string;
         };
         notes: ({
             eleve: {
@@ -122,9 +122,9 @@ export declare class EvaluationsService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                matricule: string;
-                dateNaissance: Date | null;
                 classeId: string | null;
+                dateNaissance: Date | null;
+                matricule: string;
             };
         } & {
             id: string;
@@ -139,30 +139,30 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
     }>;
     update(id: string, dto: UpdateEvaluationDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
     }>;
     remove(id: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
     }>;
 }
