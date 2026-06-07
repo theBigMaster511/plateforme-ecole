@@ -17,8 +17,10 @@ async function bootstrap() {
     jsonDocumentUrl: 'swagger/json',
   });
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   });
 
   app.use(cookieParser());

@@ -23,7 +23,7 @@ function renderSidebar() {
   };
 
   const items = navItems[role] || [];
-  const current = window.location.pathname;
+  const current = (window.location.hash || '#/login').replace(/^#/, '');
 
   document.getElementById('sidebar').innerHTML = `
     <div class="sidebar-brand">
@@ -36,7 +36,7 @@ function renderSidebar() {
 
     <nav>
       ${items.map(item => `
-        <a href="${item.href}" data-link
+        <a href="#${item.href}" data-link
            class="nav-item ${current === item.href ? 'active' : ''}">
           <i class="ti ${item.icon}"></i> ${item.label}
         </a>
@@ -59,7 +59,9 @@ function renderSidebar() {
 }
 
 // Démarre l'application
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await auth.restoreSession();
+
   // Si pas de hash, redirige selon l'état de connexion
   if (!window.location.hash || window.location.hash === '#') {
     navigate(auth.isLoggedIn() ? '#/dashboard' : '#/login');

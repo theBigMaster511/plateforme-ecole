@@ -167,6 +167,13 @@ let AuthController = class AuthController {
         });
         return res.json(account);
     }
+    async logout(res) {
+        res.clearCookie('better-auth.session_token', {
+            httpOnly: true,
+            sameSite: 'lax',
+        });
+        return res.json({ success: true });
+    }
     async getProfile(req, res) {
         const sessionToken = req.cookies['better-auth.session_token'];
         if (!sessionToken) {
@@ -287,6 +294,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "SignInTeacher", null);
+__decorate([
+    (0, nestjs_better_auth_1.AllowAnonymous)(),
+    (0, common_1.Post)('logout'),
+    (0, swagger_1.ApiOperation)({ summary: "Deconnecter l'utilisateur connecte" }),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "logout", null);
 __decorate([
     (0, nestjs_better_auth_1.AllowAnonymous)(),
     (0, common_1.Get)('me'),

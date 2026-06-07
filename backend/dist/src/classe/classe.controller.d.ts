@@ -46,17 +46,17 @@ export declare class ClasseController {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
-            classeId: string | null;
-            dateNaissance: Date | null;
             matricule: string;
+            dateNaissance: Date | null;
+            classeId: string | null;
         })[];
         matieres: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
             nom: string;
-            coefficient: number;
             classeId: string;
+            coefficient: number;
         }[];
     } & {
         id: string;

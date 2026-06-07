@@ -259,6 +259,18 @@ export class AuthController {
   }
 
   @AllowAnonymous()
+  @Post('logout')
+  @ApiOperation({ summary: "Deconnecter l'utilisateur connecte" })
+  async logout(@Res() res: Response) {
+    res.clearCookie('better-auth.session_token', {
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+
+    return res.json({ success: true });
+  }
+
+  @AllowAnonymous()
   @Get('me')
   @ApiOperation({ summary: "Récupérer le profil de l'utilisateur connecté" })
   @ApiResponse({ status: 200, description: 'Profil récupéré avec succès' })

@@ -594,6 +594,10 @@ select {
   align-self: center;
 }
 
+.admin-signup-page {
+  max-width: 980px;
+}
+
 .login-left {
   flex: 1;
   background: var(--color-admin);

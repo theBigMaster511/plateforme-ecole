@@ -2,6 +2,7 @@
 const routes = {
   '#/login'        : () => renderLogin(),
   '#/admin-login'  : () => renderAdminLogin(),
+  '#/admin-signup' : () => renderAdminSignup(),
   '#/dashboard'    : () => renderDashboard(),
   '#/eleves'       : () => renderEleves(),
   '#/notes'        : () => renderNotes(),
@@ -27,7 +28,7 @@ function render() {
   }
 
   // Pages protégées
-  if (hash !== '#/login' && hash !== '#/admin-login' && !auth.isLoggedIn()) {
+  if (hash !== '#/login' && hash !== '#/admin-login' && hash !== '#/admin-signup' && !auth.isLoggedIn()) {
     navigate('#/login');
     return;
   }
@@ -51,7 +52,7 @@ function render() {
 
   // Sidebar
   const sidebar = document.getElementById('sidebar');
-  if (hash === '#/login' || hash === '#/admin-login') {
+  if (hash === '#/login' || hash === '#/admin-login' || hash === '#/admin-signup') {
     sidebar.classList.add('hidden');
     document.getElementById('app').classList.remove('with-sidebar');
   } else {

@@ -67,6 +67,7 @@ function renderLogin() {
 
           <div class="divider"><hr/><span>ou</span><hr/></div>
           <div class="text-center text-muted">
+            <div style="margin-bottom:8px;">Admin ? <a href="#/admin-login" data-link style="color:var(--color-info)">Accès administrateur</a></div>
             Problème ? <a href="#" style="color:var(--color-info)">Contacter l'administration</a>
           </div>
         </div>
@@ -143,7 +144,8 @@ function renderAdminLogin() {
           </button>
 
           <div class="divider"><hr/><span>ou</span><hr/></div>
-          <div class="text-center text-muted">
+          <div class="text-center text-muted" style="display:flex;flex-direction:column;gap:8px;">
+            <a href="#/admin-signup" data-link style="color:#667eea;text-decoration:none;font-weight:500;">Créer un nouveau compte admin</a>
             <a href="#/login" data-link style="color:#667eea;text-decoration:none;">← Retour au login principal</a>
           </div>
         </div>
@@ -156,6 +158,85 @@ function renderAdminLogin() {
   document.addEventListener('keydown', function onEnter(e) {
     if (e.key === 'Enter') {
       handleAdminLogin();
+      document.removeEventListener('keydown', onEnter);
+    }
+  });
+}
+
+function renderAdminSignup() {
+  const app = document.getElementById('app');
+
+  app.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eef3f8 0%,#e8eef5 100%);padding:2rem;">
+      <div class="login-page admin-signup-page">
+
+        <div class="login-left" style="background:linear-gradient(160deg,#0f2d4a 0%,#163f67 100%);">
+          <div class="login-brand" style="color:white;">
+            <div class="login-brand-icon" style="font-size:3rem;color:#9bd3ff;"><i class="ti ti-user-plus"></i></div>
+            <h1>Créer un compte administrateur</h1>
+            <p>Ajoutez plusieurs administrateurs sans modifier le flux de connexion existant.</p>
+          </div>
+          <div class="login-features" style="color:rgba(255,255,255,0.9);">
+            <div class="feat"><div class="feat-dot"><i class="ti ti-shield-check"></i></div><span>Compte admin rattaché au même système d’authentification</span></div>
+            <div class="feat"><div class="feat-dot"><i class="ti ti-users"></i></div><span>Vous pouvez créer plusieurs administrateurs</span></div>
+            <div class="feat"><div class="feat-dot"><i class="ti ti-lock"></i></div><span>Aucune modification des autres rôles</span></div>
+            <div class="feat"><div class="feat-dot"><i class="ti ti-sparkles"></i></div><span>Une inscription simple, rapide et réutilisable</span></div>
+          </div>
+          <div class="login-year" style="color:rgba(255,255,255,0.75);">Zone Sécurisée · Administration</div>
+        </div>
+
+        <div class="login-right">
+          <div class="login-header">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+              <i class="ti ti-user-plus" style="color:#0f2d4a;font-size:1.5rem;"></i>
+              <h2 style="margin:0;color:#0f2d4a;">Inscription Admin</h2>
+            </div>
+            <p>Créez un nouveau compte administrateur avec un accès complet au tableau de bord.</p>
+          </div>
+
+          <div class="error-msg" id="error-msg-signup">
+            <i class="ti ti-alert-circle"></i> Une erreur est survenue lors de l'inscription.
+          </div>
+
+          <div class="field">
+            <label>Nom complet</label>
+            <input type="text" id="signup-name" placeholder="Nom et prénom" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label>Email admin</label>
+            <input type="email" id="signup-email" placeholder="admin@ecole.sn" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label>Mot de passe</label>
+            <input type="password" id="signup-password" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+
+          <div class="field">
+            <label>Confirmer le mot de passe</label>
+            <input type="password" id="signup-confirm-password" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+
+          <button class="btn btn-primary btn-full" onclick="handleAdminSignup()" style="background:#0f2d4a;border:none;">
+            <i class="ti ti-user-plus"></i>
+            <span>Créer le compte administrateur</span>
+          </button>
+
+          <div class="divider"><hr/><span>ou</span><hr/></div>
+          <div class="text-center text-muted" style="display:flex;flex-direction:column;gap:8px;">
+            <a href="#/admin-login" data-link style="color:#0f2d4a;text-decoration:none;font-weight:500;">← Retour à la connexion admin</a>
+            <a href="#/login" data-link style="color:var(--color-info);text-decoration:none;">← Retour au login principal</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  document.addEventListener('keydown', function onEnter(e) {
+    if (e.key === 'Enter') {
+      handleAdminSignup();
       document.removeEventListener('keydown', onEnter);
     }
   });

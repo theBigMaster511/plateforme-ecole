@@ -99,6 +99,7 @@ let NotesService = class NotesService {
                 eleve: {
                     include: {
                         user: true,
+                        classe: true,
                     },
                 },
                 evaluation: {
@@ -124,6 +125,7 @@ let NotesService = class NotesService {
                 eleve: {
                     include: {
                         user: true,
+                        classe: true,
                     },
                 },
                 evaluation: {

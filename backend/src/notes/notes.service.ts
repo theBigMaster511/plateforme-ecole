@@ -111,6 +111,7 @@ export class NotesService {
         eleve: {
           include: {
             user: true,
+            classe: true,
           },
         },
         evaluation: {
@@ -137,6 +138,7 @@ export class NotesService {
         eleve: {
           include: {
             user: true,
+            classe: true,
           },
         },
         evaluation: {

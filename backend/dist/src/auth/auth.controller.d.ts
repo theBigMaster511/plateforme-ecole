@@ -15,5 +15,6 @@ export declare class AuthController {
     SignInParent(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
     SignUpTeacher(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
     SignInTeacher(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
+    logout(res: Response): Promise<Response<any, Record<string, any>>>;
     getProfile(req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 }

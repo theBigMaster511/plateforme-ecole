@@ -9,8 +9,8 @@ export declare class MatieresService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
     findAll(): Promise<({
         classe: {
@@ -49,8 +49,8 @@ export declare class MatieresService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     })[]>;
     findOne(id: string): Promise<{
         classe: {
@@ -88,34 +88,34 @@ export declare class MatieresService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         }[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
     update(id: string, dto: UpdateMatiereDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
     remove(id: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
 }

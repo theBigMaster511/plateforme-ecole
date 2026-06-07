@@ -111,37 +111,82 @@ function renderElevesAdmin() {
 }
 
 async function loadElevesData() {
-  // Données de démonstration
-  const eleves = [
-    { id: 1, prenom: 'Abdoulaye', nom: 'Diallo', matricule: 'E001', classe: '6e A', email: 'abdoulaye.d@ecole.sn', tel: '+221770000001' },
-    { id: 2, prenom: 'Fatou', nom: 'Sow', matricule: 'E002', classe: '6e A', email: 'fatou.sow@ecole.sn', tel: '+221770000002' },
-    { id: 3, prenom: 'Moussa', nom: 'Ba', matricule: 'E003', classe: '6e B', email: 'moussa.ba@ecole.sn', tel: '+221770000003' },
-    { id: 4, prenom: 'Aïssatou', nom: 'Diop', matricule: 'E004', classe: '5e A', email: 'aissatou.diop@ecole.sn', tel: '+221770000004' },
-    { id: 5, prenom: 'Saliou', nom: 'Gueye', matricule: 'E005', classe: '4e A', email: 'saliou.gueye@ecole.sn', tel: '+221770000005' },
-  ];
-
   const tbody = document.getElementById('eleves-tbody');
   if (!tbody) return;
 
-  tbody.innerHTML = eleves.map(e => `
-    <tr>
-      <td>${e.prenom} ${e.nom}</td>
-      <td>${e.matricule}</td>
-      <td>${e.classe}</td>
-      <td>${e.email}</td>
-      <td>${e.tel}</td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn-icon" title="Éditer" onclick="editEleve(${e.id})">
-            <i class="ti ti-edit"></i>
-          </button>
-          <button class="btn-icon" title="Supprimer" onclick="deleteEleve(${e.id})">
-            <i class="ti ti-trash"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = `
+    <tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>
+  `;
+
+  const fallbackEleves = [
+    { id: 'demo-1', prenom: 'Abdoulaye', nom: 'Diallo', matricule: 'E001', classe: '6e A', email: 'abdoulaye.d@ecole.sn', tel: '+221770000001' },
+    { id: 'demo-2', prenom: 'Fatou', nom: 'Sow', matricule: 'E002', classe: '6e A', email: 'fatou.sow@ecole.sn', tel: '+221770000002' },
+    { id: 'demo-3', prenom: 'Moussa', nom: 'Ba', matricule: 'E003', classe: '6e B', email: 'moussa.ba@ecole.sn', tel: '+221770000003' },
+    { id: 'demo-4', prenom: 'Aïssatou', nom: 'Diop', matricule: 'E004', classe: '5e A', email: 'aissatou.diop@ecole.sn', tel: '+221770000004' },
+    { id: 'demo-5', prenom: 'Saliou', nom: 'Gueye', matricule: 'E005', classe: '4e A', email: 'saliou.gueye@ecole.sn', tel: '+221770000005' },
+  ];
+
+  try {
+    const eleves = await api.getEleves();
+    const rows = Array.isArray(eleves) ? eleves : [];
+
+    if (!rows.length) {
+      tbody.innerHTML = `
+        <tr><td colspan="6" class="text-center">Aucun élève trouvé</td></tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = rows.map((e) => {
+      const displayName = e?.user?.name || [e?.prenom, e?.nom].filter(Boolean).join(' ') || 'Élève';
+      const classeLabel = e?.classe?.nom || e?.classe?.niveau || e?.classe?.name || '—';
+      const email = e?.user?.email || '—';
+      const telephone = e?.telephone || e?.tel || '—';
+      const id = e?.id || e?.matricule || '0';
+
+      return `
+        <tr>
+          <td>${displayName}</td>
+          <td>${e?.matricule || '—'}</td>
+          <td>${classeLabel}</td>
+          <td>${email}</td>
+          <td>${telephone}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-icon" title="Éditer" onclick="editEleve('${id}')">
+                <i class="ti ti-edit"></i>
+              </button>
+              <button class="btn-icon" title="Supprimer" onclick="deleteEleve('${id}')">
+                <i class="ti ti-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Erreur chargement élèves:', error);
+    tbody.innerHTML = fallbackEleves.map(e => `
+      <tr>
+        <td>${e.prenom} ${e.nom}</td>
+        <td>${e.matricule}</td>
+        <td>${e.classe}</td>
+        <td>${e.email}</td>
+        <td>${e.tel}</td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-icon" title="Éditer" onclick="editEleve('${e.id}')">
+              <i class="ti ti-edit"></i>
+            </button>
+            <button class="btn-icon" title="Supprimer" onclick="deleteEleve('${e.id}')">
+              <i class="ti ti-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+    showToast('Les élèves backend sont indisponibles, affichage de données de démonstration.');
+  }
 }
 
 function renderElevesProf() {

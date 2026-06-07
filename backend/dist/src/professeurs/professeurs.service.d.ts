@@ -29,8 +29,8 @@ export declare class ProfesseursService {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
-                coefficient: number;
                 classeId: string;
+                coefficient: number;
             };
         } & {
             professeurId: string;
@@ -40,11 +40,11 @@ export declare class ProfesseursService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         }[];
     } & {
         id: string;
@@ -79,8 +79,8 @@ export declare class ProfesseursService {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
-                coefficient: number;
                 classeId: string;
+                coefficient: number;
             };
         } & {
             professeurId: string;
@@ -90,11 +90,11 @@ export declare class ProfesseursService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         }[];
     } & {
         id: string;

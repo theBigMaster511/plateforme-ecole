@@ -4,7 +4,7 @@
 
 function renderBulletins() {
   const role = auth.getRole();
-  
+
   if (role === 'admin') {
     renderBulletinsAdmin();
   } else if (role === 'prof') {
@@ -103,7 +103,6 @@ function renderBulletinsAdmin() {
       </table>
     </div>
 
-    <!-- Modal Générer Bulletins -->
     <div id="generate-bulletin-modal" class="modal hidden">
       <div class="modal-content">
         <div class="modal-header">
@@ -322,19 +321,19 @@ function renderBulletinsEleve() {
   `;
 }
 
-/* Fonctions utilitaires */
-
 function showGenerateBulletinModal() {
-  document.getElementById('generate-bulletin-modal').classList.remove('hidden');
+  const modal = document.getElementById('generate-bulletin-modal');
+  if (modal) modal.classList.remove('hidden');
 }
 
 function closeModal(modalId) {
-  document.getElementById(modalId).classList.add('hidden');
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.add('hidden');
 }
 
 function handleGenerateBulletins(event) {
   event.preventDefault();
-  
+
   const data = {
     classe: document.getElementById('gen-classe').value,
     semestre: document.getElementById('gen-semestre').value,
@@ -343,11 +342,14 @@ function handleGenerateBulletins(event) {
 
   console.log('Générer bulletins:', data);
   closeModal('generate-bulletin-modal');
-  
+
   const toast = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = 'Bulletins générés avec succès';
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  const toastMsg = document.getElementById('toast-msg');
+  if (toastMsg) toastMsg.textContent = 'Bulletins générés avec succès';
+  if (toast) {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
 }
 
 function loadBulletins() {
@@ -356,25 +358,33 @@ function loadBulletins() {
 
 function viewBulletin(bulletinId) {
   console.log('Afficher bulletin:', bulletinId);
-  // Ici on pourrait ouvrir une modal avec le détail du bulletin
   const toast = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = 'Ouverture du bulletin...';
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  const toastMsg = document.getElementById('toast-msg');
+  if (toastMsg) toastMsg.textContent = 'Ouverture du bulletin...';
+  if (toast) {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
 }
 
 function downloadBulletin(bulletinId) {
   console.log('Télécharger bulletin:', bulletinId);
   const toast = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = `Bulletin ${bulletinId} téléchargé`;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  const toastMsg = document.getElementById('toast-msg');
+  if (toastMsg) toastMsg.textContent = `Bulletin ${bulletinId} téléchargé`;
+  if (toast) {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
 }
 
 function downloadClassBulletins(classId) {
   console.log('Télécharger bulletins de la classe:', classId);
   const toast = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = `Bulletins de la classe ${classId} téléchargés`;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  const toastMsg = document.getElementById('toast-msg');
+  if (toastMsg) toastMsg.textContent = `Bulletins de la classe ${classId} téléchargés`;
+  if (toast) {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
 }
