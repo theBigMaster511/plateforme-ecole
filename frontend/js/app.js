@@ -7,6 +7,7 @@ function renderSidebar() {
       { href: '/dashboard', icon: 'ti-layout-dashboard', label: 'Tableau de bord' },
       { href: '/eleves',    icon: 'ti-users',            label: 'Élèves' },
       { href: '/classes',   icon: 'ti-building',         label: 'Classes' },
+      { href: '/professeurs', icon: 'ti-chalkboard',     label: 'Professeurs' },
       { href: '/notes',     icon: 'ti-clipboard-list',   label: 'Notes' },
       { href: '/bulletins', icon: 'ti-file-analytics',   label: 'Bulletins' },
     ],

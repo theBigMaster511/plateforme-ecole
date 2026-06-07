@@ -378,3 +378,189 @@ function showToast(message) {
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
+
+function renderElevesAdmin() {
+  document.getElementById('app').innerHTML = `
+    <div class="topbar">
+      <div>
+        <h1>Gestion des élèves</h1>
+        <p>Créer et suivre les élèves depuis le backend</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" onclick="showAddEleveModal()">
+          <i class="ti ti-plus"></i> Nouvel élève
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Tous les élèves</h3>
+        <div class="search-box">
+          <i class="ti ti-search"></i>
+          <input type="text" id="search-eleves" placeholder="Rechercher un élève..." onkeyup="filterTable('search-eleves', 'eleves-table')" />
+        </div>
+      </div>
+
+      <table class="notes-table" id="eleves-table">
+        <thead>
+          <tr>
+            <th>Nom complet</th>
+            <th>Matricule</th>
+            <th>Classe</th>
+            <th>Email</th>
+            <th>Date de naissance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="eleves-tbody">
+          <tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="add-eleve-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Ajouter un nouvel élève</h2>
+          <button class="close-btn" onclick="closeModal('add-eleve-modal')">×</button>
+        </div>
+        <form class="form-grid" onsubmit="handleAddEleve(event)">
+          <div class="field">
+            <label>Nom complet</label>
+            <input type="text" id="eleve-name" placeholder="Nom et prénom" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="eleve-email" placeholder="eleve@ecole.sn" required />
+          </div>
+          <div class="field">
+            <label>Mot de passe</label>
+            <input type="password" id="eleve-password" placeholder="••••••••" required />
+          </div>
+          <div class="field">
+            <label>Matricule</label>
+            <input type="text" id="eleve-matricule" placeholder="E-001" required />
+          </div>
+          <div class="field">
+            <label>Classe</label>
+            <select id="eleve-classe" required>
+              <option value="" selected disabled>Sélectionner une classe</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Date de naissance</label>
+            <input type="date" id="eleve-date-naissance" />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" onclick="closeModal('add-eleve-modal')">Annuler</button>
+            <button type="submit" class="btn btn-primary">Ajouter élève</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  loadElevesData();
+  loadEleveClassOptions();
+}
+
+async function loadEleveClassOptions() {
+  const select = document.getElementById('eleve-classe');
+  if (!select) return;
+
+  try {
+    const classes = await api.getClasses();
+    const rows = Array.isArray(classes) ? classes : [];
+    select.innerHTML = '<option value="" selected disabled>Sélectionner une classe</option>';
+
+    if (!rows.length) {
+      select.innerHTML += '<option value="" disabled>Aucune classe disponible</option>';
+      return;
+    }
+
+    select.innerHTML += rows.map((classe) => `
+      <option value="${classe.id}">${classe.nom} - ${classe.niveau}</option>
+    `).join('');
+  } catch (error) {
+    console.error('Erreur chargement classes pour élèves:', error);
+  }
+}
+
+async function handleAddEleve(event) {
+  event.preventDefault();
+
+  const data = {
+    name: document.getElementById('eleve-name').value.trim(),
+    email: document.getElementById('eleve-email').value.trim(),
+    password: document.getElementById('eleve-password').value.trim(),
+    matricule: document.getElementById('eleve-matricule').value.trim(),
+    classeId: document.getElementById('eleve-classe').value,
+    dateNaissance: document.getElementById('eleve-date-naissance').value || undefined,
+  };
+
+  if (!data.name || !data.email || !data.password || !data.matricule || !data.classeId) {
+    showToast('Veuillez remplir tous les champs obligatoires.');
+    return;
+  }
+
+  const result = await api.createEleve(data);
+  if (result?.error) {
+    showToast(result.error);
+    return;
+  }
+
+  closeModal('add-eleve-modal');
+  document.getElementById('eleve-name').value = '';
+  document.getElementById('eleve-email').value = '';
+  document.getElementById('eleve-password').value = '';
+  document.getElementById('eleve-matricule').value = '';
+  document.getElementById('eleve-date-naissance').value = '';
+  showToast('Élève créé avec succès');
+  loadElevesData();
+}
+
+async function loadElevesData() {
+  const tbody = document.getElementById('eleves-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '<tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>';
+
+  try {
+    const eleves = await api.getEleves();
+    const rows = Array.isArray(eleves) ? eleves : [];
+
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center">Aucun élève trouvé</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = rows.map((e) => {
+      const displayName = e?.user?.name || 'Élève';
+      const classe = e?.classe?.nom ? `${e.classe.nom}` : '—';
+      const email = e?.user?.email || '—';
+      const naissance = e?.dateNaissance ? new Date(e.dateNaissance).toLocaleDateString('fr-FR') : '—';
+
+      return `
+        <tr>
+          <td>${displayName}</td>
+          <td>${e?.matricule || '—'}</td>
+          <td>${classe}</td>
+          <td>${email}</td>
+          <td>${naissance}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-icon" title="Éditer" onclick="editEleve('${e.id}')">
+                <i class="ti ti-edit"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Erreur chargement élèves:', error);
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center">Impossible de charger les élèves.</td></tr>';
+    showToast('Impossible de charger les élèves depuis le backend.');
+  }
+}

@@ -5,6 +5,7 @@ const routes = {
   '#/admin-signup' : () => renderAdminSignup(),
   '#/dashboard'    : () => renderDashboard(),
   '#/eleves'       : () => renderEleves(),
+  '#/professeurs'  : () => renderProfesseurs(),
   '#/notes'        : () => renderNotes(),
   '#/bulletins'    : () => renderBulletins(),
   '#/classes'      : () => renderClasses(),

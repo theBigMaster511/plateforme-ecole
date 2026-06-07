@@ -57,6 +57,7 @@ const api = {
   // Routes metier
   getEleves: () => api.get('/eleves'),
   getEleve: (id) => api.get(`/eleves/${id}`),
+  createEleve: (data) => api.post('/auth/sign-up/student', data),
   updateEleve: (id, data) => api.patch(`/eleves/${id}`, data),
   deleteEleve: (id) => api.delete(`/eleves/${id}`),
   assignEleveClasse: (id, classeId) => api.post(`/eleves/${id}/classe/${classeId}`),
@@ -86,6 +87,7 @@ const api = {
 
   getProfesseurs: () => api.get('/professeurs'),
   getProfesseur: (id) => api.get(`/professeurs/${id}`),
+  createProfesseur: (data) => api.post('/auth/sign-up/teacher', data),
   updateProfesseur: (id, data) => api.patch(`/professeurs/${id}`, data),
   assignProfesseurMatiere: (id, matiereId) => api.post(`/professeurs/${id}/matieres/${matiereId}`),
   removeProfesseurMatiere: (id, matiereId) => api.delete(`/professeurs/${id}/matieres/${matiereId}`),
