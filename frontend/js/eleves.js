@@ -14,149 +14,42 @@ function renderEleves() {
   }
 }
 
-function renderElevesAdmin() {
-  document.getElementById('app').innerHTML = `
-    <div class="topbar">
-      <div>
-        <h1>Gestion des élèves</h1>
-        <p>Liste complète de tous les élèves du système</p>
-      </div>
-      <div class="topbar-actions">
-        <button class="btn btn-primary" onclick="showAddEleveModal()">
-          <i class="ti ti-plus"></i> Nouvel élève
-        </button>
-      </div>
-    </div>
 
-    <div class="card">
-      <div class="card-header">
-        <h3>Tous les élèves</h3>
-        <div class="search-box">
-          <i class="ti ti-search"></i>
-          <input type="text" id="search-eleves" placeholder="Rechercher un élève..." 
-                 onkeyup="filterTable('search-eleves', 'eleves-table')"/>
-        </div>
-      </div>
-
-      <table class="notes-table" id="eleves-table">
-        <thead>
-          <tr>
-            <th>Prénom et Nom</th>
-            <th>Matricule</th>
-            <th>Classe</th>
-            <th>Email</th>
-            <th>Téléphone</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="eleves-tbody">
-          <tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Modal Ajouter Élève -->
-    <div id="add-eleve-modal" class="modal hidden">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Ajouter un nouvel élève</h2>
-          <button class="close-btn" onclick="closeModal('add-eleve-modal')">×</button>
-        </div>
-        <form class="form-grid" onsubmit="handleAddEleve(event)">
-          <div class="field">
-            <label>Prénom</label>
-            <input type="text" id="eleve-prenom" required/>
-          </div>
-          <div class="field">
-            <label>Nom</label>
-            <input type="text" id="eleve-nom" required/>
-          </div>
-          <div class="field">
-            <label>Matricule</label>
-            <input type="text" id="eleve-matricule" required/>
-          </div>
-          <div class="field">
-            <label>Classe</label>
-            <select id="eleve-classe" required>
-              <option>Sélectionner une classe...</option>
-              <option>6e A</option>
-              <option>6e B</option>
-              <option>5e A</option>
-              <option>4e A</option>
-              <option>3e A</option>
-              <option>2nde A</option>
-              <option>1ère S</option>
-              <option>Terminale S</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Email</label>
-            <input type="email" id="eleve-email" required/>
-          </div>
-          <div class="field">
-            <label>Téléphone</label>
-            <input type="tel" id="eleve-tel"/>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn btn-outline" onclick="closeModal('add-eleve-modal')">Annuler</button>
-            <button type="submit" class="btn btn-primary">Ajouter élève</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `;
-
-  // Charge les données des élèves
-  loadElevesData();
-}
 
 async function loadElevesData() {
   const tbody = document.getElementById('eleves-tbody');
   if (!tbody) return;
 
-  tbody.innerHTML = `
-    <tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>
-  `;
-
-  const fallbackEleves = [
-    { id: 'demo-1', prenom: 'Abdoulaye', nom: 'Diallo', matricule: 'E001', classe: '6e A', email: 'abdoulaye.d@ecole.sn', tel: '+221770000001' },
-    { id: 'demo-2', prenom: 'Fatou', nom: 'Sow', matricule: 'E002', classe: '6e A', email: 'fatou.sow@ecole.sn', tel: '+221770000002' },
-    { id: 'demo-3', prenom: 'Moussa', nom: 'Ba', matricule: 'E003', classe: '6e B', email: 'moussa.ba@ecole.sn', tel: '+221770000003' },
-    { id: 'demo-4', prenom: 'Aïssatou', nom: 'Diop', matricule: 'E004', classe: '5e A', email: 'aissatou.diop@ecole.sn', tel: '+221770000004' },
-    { id: 'demo-5', prenom: 'Saliou', nom: 'Gueye', matricule: 'E005', classe: '4e A', email: 'saliou.gueye@ecole.sn', tel: '+221770000005' },
-  ];
+  tbody.innerHTML = '<tr><td colspan="6" class="text-center">Chargement des élèves...</td></tr>';
 
   try {
     const eleves = await api.getEleves();
     const rows = Array.isArray(eleves) ? eleves : [];
 
     if (!rows.length) {
-      tbody.innerHTML = `
-        <tr><td colspan="6" class="text-center">Aucun élève trouvé</td></tr>
-      `;
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center">Aucun élève trouvé</td></tr>';
       return;
     }
 
     tbody.innerHTML = rows.map((e) => {
-      const displayName = e?.user?.name || [e?.prenom, e?.nom].filter(Boolean).join(' ') || 'Élève';
-      const classeLabel = e?.classe?.nom || e?.classe?.niveau || e?.classe?.name || '—';
+      const displayName = e?.user?.name || 'Élève';
+      const classe = e?.classe?.nom ? `${e.classe.nom}` : '—';
       const email = e?.user?.email || '—';
-      const telephone = e?.telephone || e?.tel || '—';
-      const id = e?.id || e?.matricule || '0';
+      const naissance = e?.dateNaissance ? new Date(e.dateNaissance).toLocaleDateString('fr-FR') : '—';
 
       return `
         <tr>
           <td>${displayName}</td>
           <td>${e?.matricule || '—'}</td>
-          <td>${classeLabel}</td>
+          <td>${classe}</td>
           <td>${email}</td>
-          <td>${telephone}</td>
+          <td>${naissance}</td>
           <td>
             <div class="action-buttons">
-              <button class="btn-icon" title="Éditer" onclick="editEleve('${id}')">
+              <button class="btn-icon" title="Éditer" onclick="editEleve('${e.id}')">
                 <i class="ti ti-edit"></i>
               </button>
-              <button class="btn-icon" title="Supprimer" onclick="deleteEleve('${id}')">
+              <button class="btn-icon" title="Supprimer" onclick="deleteEleve('${e.id}')">
                 <i class="ti ti-trash"></i>
               </button>
             </div>
@@ -166,28 +59,11 @@ async function loadElevesData() {
     }).join('');
   } catch (error) {
     console.error('Erreur chargement élèves:', error);
-    tbody.innerHTML = fallbackEleves.map(e => `
-      <tr>
-        <td>${e.prenom} ${e.nom}</td>
-        <td>${e.matricule}</td>
-        <td>${e.classe}</td>
-        <td>${e.email}</td>
-        <td>${e.tel}</td>
-        <td>
-          <div class="action-buttons">
-            <button class="btn-icon" title="Éditer" onclick="editEleve('${e.id}')">
-              <i class="ti ti-edit"></i>
-            </button>
-            <button class="btn-icon" title="Supprimer" onclick="deleteEleve('${e.id}')">
-              <i class="ti ti-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
-    showToast('Les élèves backend sont indisponibles, affichage de données de démonstration.');
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center">Impossible de charger les élèves.</td></tr>';
+    showToast('Impossible de charger les élèves depuis le backend.');
   }
 }
+
 
 function renderElevesProf() {
   document.getElementById('app').innerHTML = `
@@ -319,45 +195,12 @@ function renderElevesEleve() {
   `;
 }
 
-/* Fonctions utilitaires */
-
 function showAddEleveModal() {
   document.getElementById('add-eleve-modal').classList.remove('hidden');
 }
 
 function closeModal(modalId) {
   document.getElementById(modalId).classList.add('hidden');
-}
-
-function handleAddEleve(event) {
-  event.preventDefault();
-  
-  const data = {
-    prenom: document.getElementById('eleve-prenom').value,
-    nom: document.getElementById('eleve-nom').value,
-    matricule: document.getElementById('eleve-matricule').value,
-    classe: document.getElementById('eleve-classe').value,
-    email: document.getElementById('eleve-email').value,
-    tel: document.getElementById('eleve-tel').value,
-  };
-
-  console.log('Nouvel élève:', data);
-  closeModal('add-eleve-modal');
-  showToast('Élève ajouté avec succès');
-  loadElevesData();
-}
-
-function editEleve(id) {
-  console.log('Éditer élève:', id);
-  showToast('Édition en cours...');
-}
-
-function deleteEleve(id) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')) {
-    console.log('Supprimer élève:', id);
-    showToast('Élève supprimé');
-    loadElevesData();
-  }
 }
 
 function filterTable(inputId, tableId) {
@@ -518,6 +361,23 @@ async function handleAddEleve(event) {
   document.getElementById('eleve-date-naissance').value = '';
   showToast('Élève créé avec succès');
   loadElevesData();
+}
+
+async function editEleve(id) {
+  showToast('Édition en cours...');
+  // À implémenter: modal d'édition d'élève
+}
+
+async function deleteEleve(id) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')) {
+    const result = await api.deleteEleve(id);
+    if (result?.error) {
+      showToast('Erreur: ' + result.error);
+      return;
+    }
+    showToast('Élève supprimé avec succès');
+    loadElevesData();
+  }
 }
 
 async function loadElevesData() {

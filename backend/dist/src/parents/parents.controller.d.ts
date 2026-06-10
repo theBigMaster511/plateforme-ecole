@@ -39,9 +39,9 @@ export declare class ParentsController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                classeId: string | null;
-                dateNaissance: Date | null;
                 matricule: string;
+                dateNaissance: Date | null;
+                classeId: string | null;
             };
         } & {
             parentId: string;
@@ -90,9 +90,9 @@ export declare class ParentsController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                classeId: string | null;
-                dateNaissance: Date | null;
                 matricule: string;
+                dateNaissance: Date | null;
+                classeId: string | null;
             };
         } & {
             parentId: string;

@@ -29,7 +29,7 @@ let ClasseController = class ClasseController {
         return this.classeService.create(dto);
     }
     findAll() {
-        return this.classeService.finAll();
+        return this.classeService.findAll();
     }
     findOne(id) {
         return this.classeService.findOne(id);

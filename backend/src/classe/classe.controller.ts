@@ -38,7 +38,7 @@ export class ClasseController {
   @ApiResponse({ status: 200, description: 'Liste des classes récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
   findAll() {
-    return this.classeService.finAll();
+    return this.classeService.findAll();
   }
 
   // Admin, prof et eleve voient une classe

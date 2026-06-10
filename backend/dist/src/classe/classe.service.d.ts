@@ -12,7 +12,7 @@ export declare class ClasseService {
         niveau: string;
         annee: string;
     }>;
-    finAll(): Promise<({
+    findAll(): Promise<({
         _count: {
             eleves: number;
             matieres: number;
@@ -46,17 +46,17 @@ export declare class ClasseService {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
-            classeId: string | null;
-            dateNaissance: Date | null;
             matricule: string;
+            dateNaissance: Date | null;
+            classeId: string | null;
         })[];
         matieres: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
             nom: string;
-            coefficient: number;
             classeId: string;
+            coefficient: number;
         }[];
     } & {
         id: string;

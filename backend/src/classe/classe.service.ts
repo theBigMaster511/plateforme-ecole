@@ -35,7 +35,7 @@ export class ClasseService {
     });
   }
 
-  async finAll() {
+  async findAll() {
     return this.prisma.classe.findMany({
       include: {
         _count: {

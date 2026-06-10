@@ -9,8 +9,8 @@ export declare class MatieresService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
     findAll(): Promise<({
         classe: {
@@ -49,8 +49,8 @@ export declare class MatieresService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     })[]>;
     findOne(id: string): Promise<{
         classe: {
@@ -61,6 +61,16 @@ export declare class MatieresService {
             niveau: string;
             annee: string;
         };
+        evaluations: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            professeurId: string;
+            matiereId: string;
+            titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
+        }[];
         professeurs: ({
             professeur: {
                 user: {
@@ -84,38 +94,28 @@ export declare class MatieresService {
             professeurId: string;
             matiereId: string;
         })[];
-        evaluations: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
-            professeurId: string;
-            matiereId: string;
-            titre: string;
-        }[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
     update(id: string, dto: UpdateMatiereDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
     remove(id: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
-        coefficient: number;
         classeId: string;
+        coefficient: number;
     }>;
 }

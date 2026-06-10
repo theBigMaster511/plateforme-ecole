@@ -40,9 +40,9 @@ export declare class NotesController {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
-            classeId: string | null;
-            dateNaissance: Date | null;
             matricule: string;
+            dateNaissance: Date | null;
+            classeId: string | null;
         };
         evaluation: {
             professeur: {
@@ -68,18 +68,18 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
-                coefficient: number;
                 classeId: string;
+                coefficient: number;
             };
         } & {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         };
     } & {
         id: string;
@@ -115,18 +115,18 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
-                coefficient: number;
                 classeId: string;
+                coefficient: number;
             };
         } & {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         };
     } & {
         id: string;

@@ -64,6 +64,16 @@ let AuthController = class AuthController {
     }
     async SignUpStudent(body, req, res) {
         console.log(body);
+        if (body.classeId) {
+            const classe = await this.prisma.classe.findUnique({
+                where: { id: body.classeId },
+            });
+            if (!classe) {
+                return res.status(404).json({
+                    error: 'Classe introuvable',
+                });
+            }
+        }
         const account = await this.authService.api.signUpEmail({
             body: {
                 email: body.email || '',
@@ -77,6 +87,16 @@ let AuthController = class AuthController {
             });
         }
         await this.localAuthService.ToggleStudentRole(account.user.id);
+        await this.prisma.eleve.create({
+            data: {
+                userId: account.user.id,
+                matricule: body.matricule || `E-${Date.now()}`,
+                dateNaissance: body.dateNaissance
+                    ? new Date(body.dateNaissance)
+                    : undefined,
+                classeId: body.classeId || undefined,
+            },
+        });
         res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
             sameSite: 'lax',
@@ -147,6 +167,12 @@ let AuthController = class AuthController {
             });
         }
         await this.localAuthService.ToggleTeacherRole(account.user.id);
+        await this.prisma.professeur.create({
+            data: {
+                userId: account.user.id,
+                specialite: body.specialite || undefined,
+            },
+        });
         res.cookie('better-auth.session_token', account.token, {
             httpOnly: true,
             sameSite: 'lax',
