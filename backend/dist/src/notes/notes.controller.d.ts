@@ -75,11 +75,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;
@@ -122,11 +122,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;

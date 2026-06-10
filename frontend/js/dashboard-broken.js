@@ -1,4 +1,4 @@
-function renderDashboard() {
+﻿function renderDashboard() {
   const role = auth.getRole();
   const user = auth.getUser();
 
@@ -12,7 +12,7 @@ async function renderDashboardAdmin(user) {
   // Affiche un loader pendant le fetch
   document.getElementById('app').innerHTML = `<div class="loader">Chargement...</div>`;
 
-  // Fetch les données
+  // Fetch les donnÃ©es
   const [elevesResponse, classesResponse] = await Promise.all([
     api.getEleves(),
     api.getClasses()
@@ -25,16 +25,16 @@ async function renderDashboardAdmin(user) {
     <div class="topbar">
       <div>
         <h1>Tableau de bord</h1>
-        <p>Année scolaire 2025–2026 · Semestre 1</p>
+        <p>AnnÃ©e scolaire 2025â€“2026 Â· Semestre 1</p>
       </div>
       <button class="btn btn-primary" onclick="navigate('#/eleves')">
-        <i class="ti ti-plus"></i> Nouvel élève
+        <i class="ti ti-plus"></i> Nouvel Ã©lÃ¨ve
       </button>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card">
-        <span class="stat-label">Total élèves</span>
+        <span class="stat-label">Total Ã©lÃ¨ves</span>
         <div class="stat-value">${eleves.length}</div>
       </div>
       <div class="stat-card">
@@ -44,7 +44,7 @@ async function renderDashboardAdmin(user) {
     </div>
 
     <div class="card">
-      <div class="card-header"><h3>Élèves récents</h3></div>
+      <div class="card-header"><h3>Ã‰lÃ¨ves rÃ©cents</h3></div>
       <table class="notes-table">
         <thead><tr><th>Nom</th><th>Classe</th><th>Moyenne</th></tr></thead>
         <tbody>
@@ -64,38 +64,6 @@ async function renderDashboardAdmin(user) {
           }).join('')}
         </tbody>
       </table>
-    </div>
-  `;
-}
-
-function renderDashboardProf(user) {
-  document.getElementById('app').innerHTML = `
-    <div class="topbar">
-      <div>
-        <h1>Tableau de bord</h1>
-        <p>Bienvenue ${user?.name || 'Professeur'}</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><h3>Mes classes</h3></div>
-      <p class="text-muted">À implémenter</p>
-    </div>
-  `;
-}
-
-function renderDashboardEleve(user) {
-  document.getElementById('app').innerHTML = `
-    <div class="topbar">
-      <div>
-        <h1>Tableau de bord</h1>
-        <p>Bienvenue ${user?.name || 'Élève'}</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><h3>Mes notes</h3></div>
-      <p class="text-muted">À implémenter</p>
     </div>
   `;
 }

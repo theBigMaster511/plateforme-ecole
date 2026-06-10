@@ -9,6 +9,7 @@ export declare class EcoleService {
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -18,13 +19,13 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }>;
     findAll(): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -34,13 +35,13 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }[]>;
     findOne(): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -50,13 +51,13 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }>;
     update(id: string, dto: UpdateEcoleDto): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -66,13 +67,13 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }>;
     remove(id: string): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -82,6 +83,5 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }>;
 }
