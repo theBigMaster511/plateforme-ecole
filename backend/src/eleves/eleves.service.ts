@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateEleveDto } from './dto/update-eleve.dto';
+import { CreateEcoleDto } from 'src/ecole/dto/create-ecole.dto';
+import { CreateEleveDto } from './dto/create-eleve.dto';
 
 @Injectable()
 export class ElevesService {
@@ -106,5 +108,31 @@ export class ElevesService {
         classeId,
       },
     });
+  }
+
+  async createEleve(data:CreateEleveDto, userId: string) {
+    const { dateNaissance, adresse, Nom, Matricule, MotDePasse, ClasseId, email } = data;
+    const existingEleve = await this.prisma.eleve.findUnique({
+      where:{
+        matricule: Matricule
+      }
+    })
+
+
+    if(existingEleve){
+      throw new NotFoundException(`Un élève avec le matricule ${Matricule} existe déjà.`);
+    }
+
+    
+    const user = await this.prisma.eleve.create({
+      data:{
+        dateNaissance: new Date(dateNaissance),
+        matricule: Matricule,
+        classeId: ClasseId,
+        userId : userId
+      }
+    });
+
+    return user
   }
 }

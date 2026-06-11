@@ -1,14 +1,17 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
 import { ElevesService } from './eleves.service';
 import { UpdateEleveDto } from './dto/update-eleve.dto';
+import { CreateEleveDto } from './dto/create-eleve.dto';
+import { AuthService } from '@thallesp/nestjs-better-auth';
+import { AuthService as LocalAuthService } from '../auth/auth.service';
 
 @Controller('eleves')
 @ApiTags('Gestion des Élèves')
 export class ElevesController {
-  constructor(private readonly elevesService: ElevesService) { }
+  constructor(private readonly elevesService: ElevesService, private readonly AuthService: AuthService, private LocalAuthService: LocalAuthService) { }
 
   @Get()
   @Roles(Role.ADMIN, Role.PROFESSEUR)
@@ -55,5 +58,30 @@ export class ElevesController {
     @Param('classeId') classeId: string,
   ) {
     return this.elevesService.assignClasse(eleveId, classeId);
+  }
+
+
+
+  @Post("create-student")
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Créer un nouvel élève', description: 'Ajouter un nouvel élève à la base de données (ADMIN uniquement)' })
+  @ApiBody({ description: 'Données de l\'élève à créer', type: CreateEleveDto })
+  @ApiResponse({ status: 201, description: 'Élève créé avec succès' })
+  @ApiResponse({ status: 400, description: 'Données invalides' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
+  async createEleve(@Body() data: CreateEleveDto) {
+    const account = await this.AuthService.api.signUpEmail({
+      body: {
+        email: data.email,
+        password: data.MotDePasse,
+        name: data.Nom,
+      }
+    });
+
+      if (!account) {
+        throw new NotFoundException(`Erreur lors de la création du compte utilisateur pour l'élève ${data.Nom}.`);
+      }
+      await this.LocalAuthService.ToggleStudentRole(account.user.id);
+    return this.elevesService.createEleve(data, account.user.id);
   }
 }

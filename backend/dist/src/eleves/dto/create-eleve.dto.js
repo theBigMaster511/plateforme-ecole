@@ -13,12 +13,42 @@ exports.CreateEleveDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateEleveDto {
     dateNaissance;
+    adresse;
+    Nom;
+    email;
+    Matricule;
+    MotDePasse;
+    ClasseId;
 }
 exports.CreateEleveDto = CreateEleveDto;
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
 ], CreateEleveDto.prototype, "dateNaissance", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateEleveDto.prototype, "adresse", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateEleveDto.prototype, "Nom", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateEleveDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateEleveDto.prototype, "Matricule", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateEleveDto.prototype, "MotDePasse", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateEleveDto.prototype, "ClasseId", void 0);
 //# sourceMappingURL=create-eleve.dto.js.map

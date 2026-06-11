@@ -19,10 +19,17 @@ const roles_decorator_1 = require("../role/roles.decorator");
 const roles_enum_1 = require("../role/roles.enum");
 const eleves_service_1 = require("./eleves.service");
 const update_eleve_dto_1 = require("./dto/update-eleve.dto");
+const create_eleve_dto_1 = require("./dto/create-eleve.dto");
+const nestjs_better_auth_1 = require("@thallesp/nestjs-better-auth");
+const auth_service_1 = require("../auth/auth.service");
 let ElevesController = class ElevesController {
     elevesService;
-    constructor(elevesService) {
+    AuthService;
+    LocalAuthService;
+    constructor(elevesService, AuthService, LocalAuthService) {
         this.elevesService = elevesService;
+        this.AuthService = AuthService;
+        this.LocalAuthService = LocalAuthService;
     }
     findAll() {
         return this.elevesService.findAll();
@@ -35,6 +42,20 @@ let ElevesController = class ElevesController {
     }
     assignClasse(eleveId, classeId) {
         return this.elevesService.assignClasse(eleveId, classeId);
+    }
+    async createEleve(data) {
+        const account = await this.AuthService.api.signUpEmail({
+            body: {
+                email: data.email,
+                password: data.MotDePasse,
+                name: data.Nom,
+            }
+        });
+        if (!account) {
+            throw new common_1.NotFoundException(`Erreur lors de la création du compte utilisateur pour l'élève ${data.Nom}.`);
+        }
+        await this.LocalAuthService.ToggleStudentRole(account.user.id);
+        return this.elevesService.createEleve(data, account.user.id);
     }
 };
 exports.ElevesController = ElevesController;
@@ -91,9 +112,22 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], ElevesController.prototype, "assignClasse", null);
+__decorate([
+    (0, common_1.Post)("create-student"),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
+    (0, swagger_1.ApiOperation)({ summary: 'Créer un nouvel élève', description: 'Ajouter un nouvel élève à la base de données (ADMIN uniquement)' }),
+    (0, swagger_1.ApiBody)({ description: 'Données de l\'élève à créer', type: create_eleve_dto_1.CreateEleveDto }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Élève créé avec succès' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_eleve_dto_1.CreateEleveDto]),
+    __metadata("design:returntype", Promise)
+], ElevesController.prototype, "createEleve", null);
 exports.ElevesController = ElevesController = __decorate([
     (0, common_1.Controller)('eleves'),
     (0, swagger_1.ApiTags)('Gestion des Élèves'),
-    __metadata("design:paramtypes", [eleves_service_1.ElevesService])
+    __metadata("design:paramtypes", [eleves_service_1.ElevesService, nestjs_better_auth_1.AuthService, auth_service_1.AuthService])
 ], ElevesController);
 //# sourceMappingURL=eleves.controller.js.map

@@ -108,6 +108,26 @@ let ElevesService = class ElevesService {
             },
         });
     }
+    async createEleve(data, userId) {
+        const { dateNaissance, adresse, Nom, Matricule, MotDePasse, ClasseId, email } = data;
+        const existingEleve = await this.prisma.eleve.findUnique({
+            where: {
+                matricule: Matricule
+            }
+        });
+        if (existingEleve) {
+            throw new common_1.NotFoundException(`Un élève avec le matricule ${Matricule} existe déjà.`);
+        }
+        const user = await this.prisma.eleve.create({
+            data: {
+                dateNaissance: new Date(dateNaissance),
+                matricule: Matricule,
+                classeId: ClasseId,
+                userId: userId
+            }
+        });
+        return user;
+    }
 };
 exports.ElevesService = ElevesService;
 exports.ElevesService = ElevesService = __decorate([

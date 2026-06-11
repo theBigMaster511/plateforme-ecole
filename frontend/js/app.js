@@ -26,6 +26,9 @@ function renderSidebar() {
   const items = navItems[role] || [];
   const current = (window.location.hash || '#/login').replace(/^#/, '');
 
+  console.log(user);
+  
+
   document.getElementById('sidebar').innerHTML = `
     <div class="sidebar-brand">
       <div class="icon"><i class="ti ti-school"></i></div>
@@ -46,9 +49,9 @@ function renderSidebar() {
 
     <div class="sidebar-footer">
       <div class="user-block">
-        <div class="avatar">${user.initiales || 'U'}</div>
+        <div class="avatar">${user.name?.charAt(0).toUpperCase() || 'U'}</div>
         <div class="user-info">
-          <span>${user.nom || 'Utilisateur'}</span>
+          <span>${user.name || 'Utilisateur'}</span>
           <small>${user.email || ''}</small>
         </div>
         <button class="logout-btn" onclick="auth.logout()">

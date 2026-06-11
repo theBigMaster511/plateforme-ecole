@@ -334,15 +334,15 @@ async function handleAddEleve(event) {
   event.preventDefault();
 
   const data = {
-    name: document.getElementById('eleve-name').value.trim(),
+    Nom: document.getElementById('eleve-name').value.trim().toLocaleString(),
     email: document.getElementById('eleve-email').value.trim(),
-    password: document.getElementById('eleve-password').value.trim(),
-    matricule: document.getElementById('eleve-matricule').value.trim(),
-    classeId: document.getElementById('eleve-classe').value,
+    MotDePasse: document.getElementById('eleve-password').value.trim(),
+    Matricule: document.getElementById('eleve-matricule').value.trim(),
+    ClasseId: document.getElementById('eleve-classe').value,
     dateNaissance: document.getElementById('eleve-date-naissance').value || undefined,
   };
 
-  if (!data.name || !data.email || !data.password || !data.matricule || !data.classeId) {
+  if (!data.Nom || !data.email || !data.MotDePasse || !data.Matricule || !data.ClasseId) {
     showToast('Veuillez remplir tous les champs obligatoires.');
     return;
   }
