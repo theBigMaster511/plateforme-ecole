@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const eleves_controller_1 = require("./eleves.controller");
 const eleves_service_1 = require("./eleves.service");
 const prisma_module_1 = require("../prisma/prisma.module");
+const auth_service_1 = require("../auth/auth.service");
 let ElevesModule = class ElevesModule {
 };
 exports.ElevesModule = ElevesModule;
@@ -18,7 +19,7 @@ exports.ElevesModule = ElevesModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule],
         controllers: [eleves_controller_1.ElevesController],
-        providers: [eleves_service_1.ElevesService],
+        providers: [eleves_service_1.ElevesService, auth_service_1.AuthService],
         exports: [eleves_service_1.ElevesService],
     })
 ], ElevesModule);
