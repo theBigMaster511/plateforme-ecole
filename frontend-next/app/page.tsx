@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 export default function LoginPage() {
   const { login, isLoggedIn, isLoading } = useAuth();
@@ -158,12 +157,6 @@ export default function LoginPage() {
             <hr />
           </div>
           <div className="text-center text-muted">
-            <div style={{ marginBottom: '8px' }}>
-              Admin ?{' '}
-              <Link href="/admin-login" style={{ color: 'var(--color-info)' }}>
-                Accès administrateur
-              </Link>
-            </div>
             Problème ?{' '}
             <a href="#" style={{ color: 'var(--color-info)' }}>
               Contacter l'administration

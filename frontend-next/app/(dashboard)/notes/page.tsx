@@ -74,7 +74,7 @@ export default function NotesPage() {
             return;
         }
         setEditTarget(null);
-        setForm({ eleveId: '', evaluationId: '', valeur: '', appreciation: '' });
+        setForm({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '' });
         loadData();
     };
 
