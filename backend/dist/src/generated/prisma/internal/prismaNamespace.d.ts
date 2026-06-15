@@ -1343,6 +1343,7 @@ export declare const ProfesseurScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
     readonly specialite: "specialite";
+    readonly telephone: "telephone";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };

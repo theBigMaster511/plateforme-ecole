@@ -256,6 +256,7 @@ export class AuthController {
       data: {
         userId: account.user.id,
         specialite: body.specialite || undefined,
+        telephone: body.telephone || undefined,
       },
     });
 

@@ -13,6 +13,7 @@ exports.CreateProfesseurDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateProfesseurDto {
     specialite;
+    telephone;
 }
 exports.CreateProfesseurDto = CreateProfesseurDto;
 __decorate([
@@ -20,4 +21,9 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateProfesseurDto.prototype, "specialite", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProfesseurDto.prototype, "telephone", void 0);
 //# sourceMappingURL=create-professeur.dto.js.map

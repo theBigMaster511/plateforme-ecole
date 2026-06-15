@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { CreateNotesBulkDto } from './dto/create-notes-bulk.dto';
@@ -18,7 +20,10 @@ import { UpdateNoteDto } from './dto/update-note.dto';
 @Controller('notes')
 @ApiTags('Gestion des Notes')
 export class NotesController {
-  constructor(private readonly notesService: NotesService) { }
+  constructor(
+    private readonly notesService: NotesService,
+    private readonly prisma: PrismaService,
+  ) { }
 
   @Post()
   @Roles(Role.PROFESSEUR)
@@ -28,8 +33,14 @@ export class NotesController {
   @ApiResponse({ status: 404, description: 'Élève ou évaluation introuvable' })
   @ApiResponse({ status: 409, description: 'Une note existe déjà' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  create(@Body() dto: CreateNoteDto) {
-    return this.notesService.create(dto);
+  async create(@Body() dto: CreateNoteDto, @Req() req: any) {
+    const user = req.user;
+    let professeurId: string | undefined;
+    if (user) {
+      const prof = await this.prisma.professeur.findUnique({ where: { userId: user.id } });
+      professeurId = prof?.id;
+    }
+    return this.notesService.create(dto, professeurId);
   }
 
   @Post('bulk')

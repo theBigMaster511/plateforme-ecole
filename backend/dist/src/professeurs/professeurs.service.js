@@ -60,10 +60,33 @@ let ProfesseursService = class ProfesseursService {
         return professeur;
     }
     async update(id, dto) {
-        await this.findOne(id);
-        return this.prisma.professeur.update({
+        const professeur = await this.prisma.professeur.findUnique({
             where: { id },
-            data: dto,
+            include: { user: true },
+        });
+        if (!professeur) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+        }
+        const { name, email, ...profData } = dto;
+        if (name || email) {
+            await this.prisma.user.update({
+                where: { id: professeur.userId },
+                data: {
+                    ...(name && { name }),
+                    ...(email && { email }),
+                },
+            });
+        }
+        if (Object.keys(profData).length > 0) {
+            return this.prisma.professeur.update({
+                where: { id },
+                data: profData,
+                include: { user: true },
+            });
+        }
+        return this.prisma.professeur.findUnique({
+            where: { id },
+            include: { user: true },
         });
     }
     async assignMatiere(professeurId, matiereId) {
@@ -96,6 +119,31 @@ let ProfesseursService = class ProfesseursService {
                 matiereId,
             },
         });
+    }
+    async remove(id) {
+        const professeur = await this.prisma.professeur.findUnique({
+            where: { id },
+            include: { user: true },
+        });
+        if (!professeur) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+        }
+        const evaluations = await this.prisma.evaluation.findMany({
+            where: { professeurId: id },
+            select: { id: true },
+        });
+        const evaluationIds = evaluations.map((e) => e.id);
+        if (evaluationIds.length > 0) {
+            await this.prisma.note.deleteMany({
+                where: { evaluationId: { in: evaluationIds } },
+            });
+            await this.prisma.evaluation.deleteMany({
+                where: { id: { in: evaluationIds } },
+            });
+        }
+        await this.prisma.professeur.delete({ where: { id } });
+        await this.prisma.user.delete({ where: { id: professeur.userId } });
+        return { message: 'Professeur supprimé avec succès' };
     }
     async removeMatiere(professeurId, matiereId) {
         const exists = await this.prisma.professeurMatiere.findUnique({

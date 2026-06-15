@@ -1,11 +1,13 @@
+import { PrismaService } from "../prisma/prisma.service";
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { CreateNotesBulkDto } from './dto/create-notes-bulk.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 export declare class NotesController {
     private readonly notesService;
-    constructor(notesService: NotesService);
-    create(dto: CreateNoteDto): Promise<{
+    private readonly prisma;
+    constructor(notesService: NotesService, prisma: PrismaService);
+    create(dto: CreateNoteDto, req: any): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -61,6 +63,7 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 specialite: string | null;
             };
             matiere: {
@@ -75,11 +78,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         };
     } & {
         id: string;
@@ -108,6 +111,7 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 specialite: string | null;
             };
             matiere: {
@@ -122,11 +126,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         };
     } & {
         id: string;

@@ -38,6 +38,7 @@ export declare class MatieresService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 specialite: string | null;
             };
         } & {
@@ -65,11 +66,11 @@ export declare class MatieresService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         }[];
         professeurs: ({
             professeur: {
@@ -88,6 +89,7 @@ export declare class MatieresService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 specialite: string | null;
             };
         } & {

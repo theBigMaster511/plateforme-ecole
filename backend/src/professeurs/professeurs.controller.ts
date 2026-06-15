@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
@@ -67,6 +68,18 @@ export class ProfesseursController {
     @Param('matiereId') matiereId: string,
   ) {
     return this.professeursService.assignMatiere(professeurId, matiereId);
+  }
+
+  @Delete(':id')
+  @Roles(Role.ADMIN)
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Supprimer un professeur', description: 'Supprimer définitivement un professeur et son compte utilisateur (ADMIN uniquement)' })
+  @ApiParam({ name: 'id', description: 'ID unique du professeur', example: 'prof123456789' })
+  @ApiResponse({ status: 200, description: 'Professeur supprimé' })
+  @ApiResponse({ status: 404, description: 'Professeur introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
+  remove(@Param('id') id: string) {
+    return this.professeursService.remove(id);
   }
 
   @Delete(':id/matieres/:matiereId')

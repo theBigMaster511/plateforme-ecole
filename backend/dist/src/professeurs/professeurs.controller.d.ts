@@ -40,17 +40,18 @@ export declare class ProfesseursController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         }[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        telephone: string | null;
         specialite: string | null;
     })[]>;
     findOne(id: string): Promise<{
@@ -90,29 +91,45 @@ export declare class ProfesseursController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
         }[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        telephone: string | null;
         specialite: string | null;
     }>;
-    update(id: string, dto: UpdateProfesseurDto): Promise<{
+    update(id: string, dto: UpdateProfesseurDto): Promise<({
+        user: {
+            id: string;
+            name: string;
+            email: string;
+            emailVerified: boolean;
+            image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            role: import("../generated/prisma/enums").Role;
+        };
+    } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        telephone: string | null;
         specialite: string | null;
-    }>;
+    }) | null>;
     assignMatiere(professeurId: string, matiereId: string): Promise<{
         professeurId: string;
         matiereId: string;
+    }>;
+    remove(id: string): Promise<{
+        message: string;
     }>;
     removeMatiere(professeurId: string, matiereId: string): Promise<{
         professeurId: string;

@@ -27,7 +27,12 @@ export class CreateNoteDto {
   eleveId: string;
 
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ example: 'eval123456789', description: 'ID de l\'évaluation' })
-  evaluationId: string;
+  @IsOptional()
+  @ApiProperty({ example: 'eval123456789', description: 'ID de l\'évaluation (optionnel si matiereNom fourni)' })
+  evaluationId?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ example: 'Mathématiques', description: 'Nom de la matière (utilisé si evaluationId non fourni)' })
+  matiereNom?: string;
 }

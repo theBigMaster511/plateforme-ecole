@@ -4,4 +4,8 @@ export class CreateProfesseurDto {
   @IsString()
   @IsOptional()
   specialite?: string;
+
+  @IsString()
+  @IsOptional()
+  telephone?: string;
 }

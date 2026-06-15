@@ -36,6 +36,9 @@ let ProfesseursController = class ProfesseursController {
     assignMatiere(professeurId, matiereId) {
         return this.professeursService.assignMatiere(professeurId, matiereId);
     }
+    remove(id) {
+        return this.professeursService.remove(id);
+    }
     removeMatiere(professeurId, matiereId) {
         return this.professeursService.removeMatiere(professeurId, matiereId);
     }
@@ -98,6 +101,20 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "assignMatiere", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
+    (0, common_1.HttpCode)(200),
+    (0, swagger_1.ApiOperation)({ summary: 'Supprimer un professeur', description: 'Supprimer définitivement un professeur et son compte utilisateur (ADMIN uniquement)' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID unique du professeur', example: 'prof123456789' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Professeur supprimé' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Professeur introuvable' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ProfesseursController.prototype, "remove", null);
 __decorate([
     (0, common_1.Delete)(':id/matieres/:matiereId'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),

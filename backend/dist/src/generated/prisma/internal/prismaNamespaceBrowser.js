@@ -147,6 +147,7 @@ exports.ProfesseurScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
     specialite: 'specialite',
+    telephone: 'telephone',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

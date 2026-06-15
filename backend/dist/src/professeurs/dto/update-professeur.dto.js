@@ -13,13 +13,34 @@ exports.UpdateProfesseurDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class UpdateProfesseurDto {
+    name;
+    email;
     specialite;
+    telephone;
 }
 exports.UpdateProfesseurDto = UpdateProfesseurDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: 'Jean Dupont', description: 'Nom du professeur', required: false }),
+    __metadata("design:type", String)
+], UpdateProfesseurDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: 'jean@ecole.fr', description: 'Email du professeur', required: false }),
+    __metadata("design:type", String)
+], UpdateProfesseurDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, swagger_1.ApiProperty)({ example: 'Mathématiques', description: 'Spécialité du professeur', required: false }),
     __metadata("design:type", String)
 ], UpdateProfesseurDto.prototype, "specialite", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: '0612345678', description: 'Téléphone du professeur', required: false }),
+    __metadata("design:type", String)
+], UpdateProfesseurDto.prototype, "telephone", void 0);
 //# sourceMappingURL=update-professeur.dto.js.map

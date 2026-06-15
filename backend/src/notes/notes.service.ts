@@ -12,10 +12,10 @@ import { UpdateNoteDto } from './dto/update-note.dto';
 export class NotesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateNoteDto) {
-    // Vérifier que l'élève et l'évaluation existent
+  async create(dto: CreateNoteDto, professeurId?: string) {
     const eleve = await this.prisma.eleve.findUnique({
       where: { id: dto.eleveId },
+      include: { classe: true },
     });
     if (!eleve) {
       throw new NotFoundException(
@@ -23,21 +23,69 @@ export class NotesService {
       );
     }
 
-    const evaluation = await this.prisma.evaluation.findUnique({
-      where: { id: dto.evaluationId },
-    });
-    if (!evaluation) {
+    let evaluationId = dto.evaluationId;
+
+    if (!evaluationId && dto.matiereNom) {
+      let classeId = eleve.classeId;
+      if (!classeId) {
+        const firstClasse = await this.prisma.classe.findFirst();
+        classeId = firstClasse?.id || null;
+      }
+      let matiere = classeId
+        ? await this.prisma.matiere.findFirst({
+            where: { nom: dto.matiereNom, classeId },
+          })
+        : null;
+      if (!matiere && classeId) {
+        matiere = await this.prisma.matiere.create({
+          data: { nom: dto.matiereNom, coefficient: 1, classeId },
+        });
+      }
+      if (!matiere) {
+        throw new NotFoundException(
+          `Aucune classe trouvée pour créer la matière "${dto.matiereNom}".`,
+        );
+      }
+      const pid = professeurId || (await this.prisma.professeur.findFirst())?.id;
+      const existingEval = await this.prisma.evaluation.findFirst({
+        where: { matiereId: matiere.id, professeurId: pid || undefined },
+      });
+      if (existingEval) {
+        evaluationId = existingEval.id;
+      } else if (pid) {
+        const created = await this.prisma.evaluation.create({
+          data: {
+            titre: dto.matiereNom,
+            type: 'DEVOIR' as any,
+            date: new Date(),
+            matiereId: matiere.id,
+            professeurId: pid,
+          },
+        });
+        evaluationId = created.id;
+      }
+    }
+
+    if (!evaluationId) {
       throw new NotFoundException(
-        `Évaluation avec l'ID ${dto.evaluationId} introuvable.`,
+        'Aucune évaluation trouvée. Fournissez evaluationId ou matiereNom.',
       );
     }
 
-    // Vérifier qu'une note unique n'existe pas déjà pour cet élève et cette évaluation
+    const evaluation = await this.prisma.evaluation.findUnique({
+      where: { id: evaluationId },
+    });
+    if (!evaluation) {
+      throw new NotFoundException(
+        `Évaluation avec l'ID ${evaluationId} introuvable.`,
+      );
+    }
+
     const exists = await this.prisma.note.findUnique({
       where: {
         eleveId_evaluationId: {
           eleveId: dto.eleveId,
-          evaluationId: dto.evaluationId,
+          evaluationId: evaluationId,
         },
       },
     });
@@ -52,7 +100,7 @@ export class NotesService {
         valeur: dto.valeur,
         appreciation: dto.appreciation,
         eleveId: dto.eleveId,
-        evaluationId: dto.evaluationId,
+        evaluationId: evaluationId,
       },
     });
   }

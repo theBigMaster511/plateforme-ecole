@@ -172,6 +172,7 @@ model Professeur {
   id         String   @id @default(cuid())
   userId     String   @unique
   specialite String?
+  telephone  String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

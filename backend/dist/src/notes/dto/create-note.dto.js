@@ -17,6 +17,7 @@ class CreateNoteDto {
     appreciation;
     eleveId;
     evaluationId;
+    matiereNom;
 }
 exports.CreateNoteDto = CreateNoteDto;
 __decorate([
@@ -41,8 +42,14 @@ __decorate([
 ], CreateNoteDto.prototype, "eleveId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, swagger_1.ApiProperty)({ example: 'eval123456789', description: 'ID de l\'évaluation' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: 'eval123456789', description: 'ID de l\'évaluation (optionnel si matiereNom fourni)' }),
     __metadata("design:type", String)
 ], CreateNoteDto.prototype, "evaluationId", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ example: 'Mathématiques', description: 'Nom de la matière (utilisé si evaluationId non fourni)' }),
+    __metadata("design:type", String)
+], CreateNoteDto.prototype, "matiereNom", void 0);
 //# sourceMappingURL=create-note.dto.js.map
