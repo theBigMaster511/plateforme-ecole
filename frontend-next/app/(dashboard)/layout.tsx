@@ -15,7 +15,9 @@ export default function DashboardLayout({
 
     useEffect(() => {
         if (!isLoading && !user) {
-            router.replace('/');
+            const lastRole = sessionStorage.getItem('lastRole');
+            sessionStorage.removeItem('lastRole');
+            router.replace(lastRole === 'admin' ? '/admin-login' : '/');
         }
     }, [isLoading, user]);
 

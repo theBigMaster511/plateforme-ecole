@@ -9,13 +9,15 @@ interface User {
     firstName?: string;
     lastName?: string;
     role?: string;
+    eleve?: { id: string; userId: string; matricule: string; classeId?: string } | null;
+    professeur?: { id: string; userId: string; specialite?: string } | null;
 }
 
 interface AuthContextType {
     user: User | null;
     role: string | null;
     isLoading: boolean;
-    login: (email: string, password: string, role: string) => Promise<{ user?: User; error?: string }>;
+    login: (email: string, password: string, role?: string) => Promise<{ user?: User; error?: string }>;
     logout: () => Promise<void>;
     restoreSession: () => Promise<boolean>;
     isLoggedIn: () => boolean;
@@ -39,58 +41,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         restoreSession();
     }, []);
 
-    const login = async (email: string, password: string, userRole: string) => {
-        try {
-            const endpoints: Record<string, string> = {
-                admin: '/auth/sign-in/school',
-                prof: '/auth/sign-in/teacher',
-                eleve: '/auth/sign-in/student',
-                parent: '/auth/sign-in/parent',
-            };
+    const fetchProfile = async () => {
+        const res = await fetch('/api/auth/me', { credentials: 'include' });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (data.error) return null;
+        const userData = data.user || data;
+        if (data.eleve) (userData as any).eleve = data.eleve;
+        if (data.professeur) (userData as any).professeur = data.professeur;
+        return userData;
+    };
 
-            const endpoint = endpoints[userRole];
-            if (!endpoint) {
-                return { error: 'Role inconnu' };
-            }
+    const login = async (email: string, password: string, explicitRole?: string) => {
+        const endpoints = explicitRole
+            ? [explicitRole === 'admin' ? '/auth/sign-in/school' : explicitRole === 'prof' ? '/auth/sign-in/teacher' : '/auth/sign-in/student']
+            : ['/auth/sign-in/teacher', '/auth/sign-in/student', '/auth/sign-in/school'];
 
-            const res = await fetch(`/api${endpoint}`, {
+        let ok = false;
+        for (const ep of endpoints) {
+            const res = await fetch(`/api${ep}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({ email, password }),
             });
-
-            const data = await res.json();
-
-            if (!res.ok || data.error) {
-                return { error: data.error || 'Identifiants invalides' };
-            }
-
-            const userData = data.user || data;
-            setUser(userData);
-            setRole(userRole);
-            return { user: userData };
-        } catch (error) {
-            console.error('Login error:', error);
-            return { error: 'Erreur lors de la connexion' };
+            if (res.ok) { ok = true; break; }
         }
+
+        if (!ok) return { error: 'Identifiants invalides' };
+
+        // Lecture du profil pour obtenir le rôle et les profils liés (eleve/professeur)
+        const userData = await fetchProfile();
+        if (!userData) return { error: 'Erreur lors de la récupération du profil' };
+
+        const detectedRole = ROLE_MAP[userData?.role as string] || 'eleve';
+        setUser(userData);
+        setRole(detectedRole);
+        return { user: userData };
     };
 
     const restoreSession = async () => {
         try {
-            const res = await fetch('/api/auth/me', {
-                credentials: 'include',
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-                const userData = data.user || data;
+            const userData = await fetchProfile();
+            if (userData) {
                 setUser(userData);
                 setRole(ROLE_MAP[userData?.role as string] || 'eleve');
                 setIsLoading(false);
                 return true;
             }
-
             setIsLoading(false);
             return false;
         } catch (error) {
@@ -102,6 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const logout = async () => {
         try {
+            if (role) sessionStorage.setItem('lastRole', role);
             await fetch('/api/auth/logout', {
                 method: 'POST',
                 credentials: 'include',

@@ -1,8 +1,13 @@
 import { ElevesService } from './eleves.service';
 import { UpdateEleveDto } from './dto/update-eleve.dto';
+import { CreateEleveDto } from './dto/create-eleve.dto';
+import { AuthService } from '@thallesp/nestjs-better-auth';
+import { AuthService as LocalAuthService } from '../auth/auth.service';
 export declare class ElevesController {
     private readonly elevesService;
-    constructor(elevesService: ElevesService);
+    private readonly AuthService;
+    private LocalAuthService;
+    constructor(elevesService: ElevesService, AuthService: AuthService, LocalAuthService: LocalAuthService);
     findAll(): Promise<({
         user: {
             id: string;
@@ -173,6 +178,15 @@ export declare class ElevesController {
         classeId: string | null;
     }>;
     assignClasse(eleveId: string, classeId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        matricule: string;
+        dateNaissance: Date | null;
+        classeId: string | null;
+    }>;
+    createEleve(data: CreateEleveDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;

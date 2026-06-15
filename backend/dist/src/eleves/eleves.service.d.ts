@@ -1,5 +1,6 @@
 import { PrismaService } from "../prisma/prisma.service";
 import { UpdateEleveDto } from './dto/update-eleve.dto';
+import { CreateEleveDto } from './dto/create-eleve.dto';
 export declare class ElevesService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -173,6 +174,15 @@ export declare class ElevesService {
         classeId: string | null;
     }>;
     assignClasse(eleveId: string, classeId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        matricule: string;
+        dateNaissance: Date | null;
+        classeId: string | null;
+    }>;
+    createEleve(data: CreateEleveDto, userId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;

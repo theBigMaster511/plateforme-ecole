@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 
 export default function NotesPage() {
-    const { role } = useAuth();
+    const { user, role } = useAuth();
     const [notes, setNotes] = useState<any[]>([]);
     const [evaluations, setEvaluations] = useState<any[]>([]);
     const [eleves, setEleves] = useState<any[]>([]);
@@ -24,14 +24,26 @@ export default function NotesPage() {
     const loadData = async () => {
         setLoading(true);
         try {
-            const [notesRes, evaluationsRes, elevesRes] = await Promise.all([
-                api.getNotes(),
-                api.getEvaluations(),
-                api.getEleves(),
-            ]);
-            setNotes(Array.isArray(notesRes) ? notesRes : []);
-            setEvaluations(Array.isArray(evaluationsRes) ? evaluationsRes : []);
-            setEleves(Array.isArray(elevesRes) ? elevesRes : []);
+            if (role === 'eleve') {
+                let mesNotes: any[] = [];
+                const eleveId = (user as any)?.eleve?.id;
+                if (eleveId) {
+                    const notesByEleve = await api.getNotesByEleve(eleveId);
+                    if (Array.isArray(notesByEleve)) mesNotes = notesByEleve;
+                }
+                setNotes(mesNotes);
+                setEvaluations([]);
+                setEleves([]);
+            } else {
+                const [notesRes, evaluationsRes, elevesRes] = await Promise.all([
+                    api.getNotes(),
+                    api.getEvaluations(),
+                    api.getEleves(),
+                ]);
+                setNotes(Array.isArray(notesRes) ? notesRes : []);
+                setEvaluations(Array.isArray(evaluationsRes) ? evaluationsRes : []);
+                setEleves(Array.isArray(elevesRes) ? elevesRes : []);
+            }
         } catch (error) {
             console.error('Error loading data:', error);
         }

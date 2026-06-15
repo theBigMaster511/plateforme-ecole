@@ -218,7 +218,11 @@ let AuthController = class AuthController {
             userToken: session.token,
             userIpAddress: req.ip || '',
         });
-        return res.json(session);
+        const [eleve, professeur] = await Promise.all([
+            this.prisma.eleve.findUnique({ where: { userId: session.userId } }),
+            this.prisma.professeur.findUnique({ where: { userId: session.userId } }),
+        ]);
+        return res.json({ ...session, eleve, professeur });
     }
 };
 exports.AuthController = AuthController;

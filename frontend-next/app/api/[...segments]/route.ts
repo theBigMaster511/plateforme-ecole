@@ -35,10 +35,10 @@ export async function handler(req: NextRequest, context: any) {
         const data = await response.text();
 
         const resHeaders = new Headers(response.headers);
-        // Forward Set-Cookie sauf pour sign-up (ne pas écraser la session admin)
-        const setCookieHeaders = response.headers.getSetCookie();
-        if (!path.startsWith('/auth/sign-up') && setCookieHeaders.length > 0) {
-            resHeaders.set('Set-Cookie', setCookieHeaders.join(', '));
+        // Bloquer Set-Cookie pour sign-up (préserver la session admin)
+        // delete avant tout car new Headers(response.headers) copie Set-Cookie
+        if (path.startsWith('/auth/sign-up')) {
+            resHeaders.delete('Set-Cookie');
         }
 
         return new NextResponse(data, {

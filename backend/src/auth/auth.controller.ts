@@ -329,6 +329,12 @@ export class AuthController {
       userIpAddress: req.ip || '',
     });
 
-    return res.json(session);
+    // Inclure les profils liés (eleve/professeur) pour éviter des appels supplémentaires
+    const [eleve, professeur] = await Promise.all([
+      this.prisma.eleve.findUnique({ where: { userId: session.userId } }),
+      this.prisma.professeur.findUnique({ where: { userId: session.userId } }),
+    ]);
+
+    return res.json({ ...session, eleve, professeur });
   }
 }

@@ -1,23 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const { login, isLoggedIn, isLoading } = useAuth();
+  const { login, isLoading } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('prof');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading && isLoggedIn()) {
-      router.push('/dashboard');
-    }
-  }, [isLoading, isLoggedIn, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +23,7 @@ export default function LoginPage() {
       return;
     }
 
-    const result = await login(email, password, role);
+    const result = await login(email, password);
 
     if (result.error) {
       setError(result.error);
@@ -51,7 +44,6 @@ export default function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-page">
-        {/* Panneau gauche */}
         <div className="login-left">
           <div className="login-brand">
             <div className="login-brand-icon">
@@ -89,26 +81,10 @@ export default function LoginPage() {
           <div className="login-year">Année scolaire 2025 — 2026</div>
         </div>
 
-        {/* Panneau droit */}
         <div className="login-right">
           <div className="login-header">
-            <h2>Bienvenue 👋</h2>
+            <h2>Connexion</h2>
             <p>Connectez-vous à votre espace personnel</p>
-          </div>
-
-          <div className="role-tabs">
-            <button
-              className={`tab ${role === 'prof' ? 'active' : ''}`}
-              onClick={() => setRole('prof')}
-            >
-              <i className="ti ti-chalkboard"></i> Professeur
-            </button>
-            <button
-              className={`tab ${role === 'eleve' ? 'active' : ''}`}
-              onClick={() => setRole('eleve')}
-            >
-              <i className="ti ti-user-circle"></i> Élève / Parent
-            </button>
           </div>
 
           {error && (
@@ -122,7 +98,7 @@ export default function LoginPage() {
               <label>Identifiant</label>
               <input
                 type="email"
-                placeholder={role === 'prof' ? 'prof.nom@ecole.sn' : 'eleve@ecole.sn'}
+                placeholder="email@ecole.sn"
                 autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -147,7 +123,7 @@ export default function LoginPage() {
 
             <button type="submit" className="btn btn-primary btn-full" disabled={isSubmitting}>
               <i className="ti ti-login"></i>
-              <span>Se connecter en tant que {role === 'prof' ? 'Professeur' : 'Élève'}</span>
+              <span>Se connecter</span>
             </button>
           </form>
 
