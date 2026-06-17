@@ -26,8 +26,8 @@ body {
 :root {
   /* Couleurs principales par rôle */
   --color-admin: #0f2d4a;
-  --color-prof: #1a3a2a;
-  --color-eleve: #2d1b69;
+  --color-prof: #1D9E75;
+  --color-eleve: #B8860B;
 
   /* Couleurs sémantiques */
   --color-success: #1D9E75;
@@ -1138,4 +1138,14 @@ select {
   color: var(--color-text-primary);
   text-align: left;
   flex-shrink: 0;
+}
+
+/* Landing page */
+.cta-secondary {
+  transition: all .2s;
+}
+
+.cta-secondary:hover {
+  background: #1D9E75 !important;
+  color: #fff !important;
 }
