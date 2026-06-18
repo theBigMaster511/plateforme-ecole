@@ -96,4 +96,28 @@ export class ProfesseursController {
   ) {
     return this.professeursService.removeMatiere(professeurId, matiereId);
   }
+
+  @Post(':id/classes/:classeId')
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Assigner une classe à un professeur' })
+  @ApiResponse({ status: 201, description: 'Classe assignée' })
+  @ApiResponse({ status: 409, description: 'Assignation déjà existante' })
+  assignClasse(
+    @Param('id') professeurId: string,
+    @Param('classeId') classeId: string,
+  ) {
+    return this.professeursService.assignClasse(professeurId, classeId);
+  }
+
+  @Delete(':id/classes/:classeId')
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: "Retirer une classe d'un professeur" })
+  @ApiResponse({ status: 200, description: 'Classe retirée' })
+  @ApiResponse({ status: 404, description: 'Assignation introuvable' })
+  removeClasse(
+    @Param('id') professeurId: string,
+    @Param('classeId') classeId: string,
+  ) {
+    return this.professeursService.removeClasse(professeurId, classeId);
+  }
 }

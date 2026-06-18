@@ -14,5 +14,6 @@ export type Professeur = Prisma.ProfesseurModel;
 export type Classe = Prisma.ClasseModel;
 export type Matiere = Prisma.MatiereModel;
 export type ProfesseurMatiere = Prisma.ProfesseurMatiereModel;
+export type ProfesseurClasse = Prisma.ProfesseurClasseModel;
 export type Evaluation = Prisma.EvaluationModel;
 export type Note = Prisma.NoteModel;

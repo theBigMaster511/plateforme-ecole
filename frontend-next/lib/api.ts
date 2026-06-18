@@ -95,6 +95,8 @@ export const api = {
     deleteProfesseur: (id: string) => api.delete(`/professeurs/${id}`),
     assignMatiere: (profId: string, matiereId: string) => api.post(`/professeurs/${profId}/matieres/${matiereId}`),
     removeMatiere: (profId: string, matiereId: string) => api.delete(`/professeurs/${profId}/matieres/${matiereId}`),
+    assignClasse: (profId: string, classeId: string) => api.post(`/professeurs/${profId}/classes/${classeId}`),
+    removeClasse: (profId: string, classeId: string) => api.delete(`/professeurs/${profId}/classes/${classeId}`),
 
     // Communication endpoints
     getCommunications: () => api.get('/communications'),

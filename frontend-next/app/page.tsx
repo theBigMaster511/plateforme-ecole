@@ -207,11 +207,11 @@ export default function LandingPage() {
 
   return (
     <div style={container}>
-      <nav style={nav}>
+      <nav className="landing-nav" style={nav}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img src="/jangoo.png" alt="Jangoo.sn" style={{ height: 36 }} />
         </div>
-        <div style={navLinks}>
+        <div className="landing-nav-links" style={navLinks}>
           <span onClick={() => scrollTo('features')}>Fonctionnalités</span>
           <span onClick={() => scrollTo('roles')}>Rôles</span>
           <span onClick={() => scrollTo('contact')}>Contact</span>
@@ -219,14 +219,14 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <section style={hero}>
+      <section className="landing-hero" style={hero}>
         <div>
           <h1 style={heroTitle}>La plateforme qui<br />simplifie la gestion<br />scolaire</h1>
           <p style={heroSub}>
             Gérez vos établissements, suivez les notes, les classes et les professeurs
             en toute simplicité. Une solution moderne adaptée aux écoles africaines.
           </p>
-          <div style={ctaRow}>
+          <div className="landing-cta-row" style={ctaRow}>
             <button style={ctaPrimary} onClick={() => router.push('/login')}>
               <i className="ti ti-rocket" style={{ marginRight: 6 }}></i>
               Commencer
@@ -236,7 +236,7 @@ export default function LandingPage() {
             </button>
           </div>
         </div>
-        <div style={{
+        <div className="landing-hero-img" style={{
           width: 420,
           height: 360,
           background: '#fff',
@@ -252,12 +252,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="features" style={section}>
+      <section id="features" className="landing-section" style={section}>
         <h2 style={sectionTitle}>Fonctionnalités</h2>
         <p style={sectionSub}>
           Tout ce dont vous avez besoin pour gérer votre établissement au quotidien
         </p>
-        <div style={features}>
+        <div className="landing-features" style={features}>
           {[
             { icon: 'ti ti-clipboard-list', bg: '#0f2d4a', title: 'Gestion des notes', desc: 'Saisie et consultation en temps réel par les professeurs et les élèves.' },
             { icon: 'ti ti-users', bg: '#1D9E75', title: 'Élèves & Professeurs', desc: 'CRUD complet, affectation aux classes et matières, suivi des effectifs.' },
@@ -275,12 +275,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="roles" style={{ ...section, background: '#f1f5f9', borderRadius: 24, margin: '0 4rem 3rem' }}>
+      <section id="roles" className="landing-section" style={{ ...section, background: '#f1f5f9', borderRadius: 24, margin: '0 4rem 3rem' }}>
         <h2 style={sectionTitle}>Trois rôles, une plateforme</h2>
         <p style={sectionSub}>
           Chaque utilisateur accède à un espace adapté à ses besoins
         </p>
-        <div style={rolesGrid}>
+        <div className="landing-roles" style={rolesGrid}>
           {[
             { icon: 'ti ti-user-shield', bg: '#0f2d4a', title: 'Administration', desc: 'Gère les classes, les matières, les professeurs, les élèves et la communication.' },
             { icon: 'ti ti-user-check', bg: '#1D9E75', title: 'Professeur', desc: 'Saisit les notes, consulte ses classes et matières, suit ses élèves.' },
@@ -295,12 +295,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="contact" style={{ ...section, textAlign: 'center' }}>
+      <section id="contact" className="landing-section" style={{ ...section, textAlign: 'center' }}>
         <h2 style={sectionTitle}>Prêt à moderniser votre école ?</h2>
         <p style={{ ...sectionSub, marginBottom: '2rem' }}>
           Contactez-nous pour une démonstration ou un déploiement
         </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 24 }}>
+        <div className="landing-contact" style={{ display: 'flex', justifyContent: 'center', gap: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6b7280' }}>
             <i className="ti ti-mail" style={{ color: '#0f2d4a', fontSize: 18 }}></i>
             contact@jangoo.sn

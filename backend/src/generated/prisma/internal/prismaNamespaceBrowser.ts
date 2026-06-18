@@ -63,6 +63,7 @@ export const ModelName = {
   Classe: 'Classe',
   Matiere: 'Matiere',
   ProfesseurMatiere: 'ProfesseurMatiere',
+  ProfesseurClasse: 'ProfesseurClasse',
   Evaluation: 'Evaluation',
   Note: 'Note'
 } as const
@@ -234,6 +235,14 @@ export const ProfesseurMatiereScalarFieldEnum = {
 } as const
 
 export type ProfesseurMatiereScalarFieldEnum = (typeof ProfesseurMatiereScalarFieldEnum)[keyof typeof ProfesseurMatiereScalarFieldEnum]
+
+
+export const ProfesseurClasseScalarFieldEnum = {
+  professeurId: 'professeurId',
+  classeId: 'classeId'
+} as const
+
+export type ProfesseurClasseScalarFieldEnum = (typeof ProfesseurClasseScalarFieldEnum)[keyof typeof ProfesseurClasseScalarFieldEnum]
 
 
 export const EvaluationScalarFieldEnum = {

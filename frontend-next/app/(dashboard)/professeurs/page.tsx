@@ -13,6 +13,7 @@ export default function ProfesseursPage() {
     const [matieres, setMatieres] = useState<any[]>([]);
     const [classes, setClasses] = useState<any[]>([]);
     const [toAssign, setToAssign] = useState<string[]>([]);
+    const [toAssignClasses, setToAssignClasses] = useState<string[]>([]);
     const [matiereInput, setMatiereInput] = useState('');
     const [error, setError] = useState('');
 
@@ -116,6 +117,22 @@ export default function ProfesseursPage() {
         setToAssign((prev) => prev.filter((id) => id !== matiereId));
     };
 
+    const assignedClasses = classes.filter((c) => toAssignClasses.includes(c.id));
+
+    const handleAssignClasse = async (classeId: string) => {
+        setError('');
+        const res = await api.assignClasse(editTarget.id, classeId);
+        if (res?.error) { setError(res.error); return; }
+        setToAssignClasses((prev) => [...prev, classeId]);
+    };
+
+    const handleRemoveClasse = async (classeId: string) => {
+        setError('');
+        const res = await api.removeClasse(editTarget.id, classeId);
+        if (res?.error) { setError(res.error); return; }
+        setToAssignClasses((prev) => prev.filter((id) => id !== classeId));
+    };
+
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -200,7 +217,7 @@ export default function ProfesseursPage() {
                                     <td><span className="badge badge-success">Actif</span></td>
                                     <td>
                                         <div className="action-buttons">
-                                            <button className="btn-icon" title="Éditer" onClick={() => { setEditTarget(p); setForm({ name: p.user?.name || '', email: p.user?.email || '', password: '', specialite: p.specialite || '', telephone: p.telephone || '' }); setToAssign(p.matieres?.map((m: any) => m.matiereId) || []); setMatiereInput(''); setError(''); }}>
+                                            <button className="btn-icon" title="Éditer" onClick={() => { setEditTarget(p); setForm({ name: p.user?.name || '', email: p.user?.email || '', password: '', specialite: p.specialite || '', telephone: p.telephone || '' }); setToAssign(p.matieres?.map((m: any) => m.matiereId) || []); setToAssignClasses(p.classes?.map((c: any) => c.classeId) || []); setMatiereInput(''); setError(''); }}>
                                                 <i className="ti ti-edit"></i>
                                             </button>
                                             <button className="btn-icon" title="Supprimer" onClick={() => setDeleteTarget(p)}>
@@ -306,6 +323,33 @@ export default function ProfesseursPage() {
                                     {matieres.length === 0 && (
                                         <small style={{ color: 'var(--color-text-muted)', marginTop: '4px', display: 'block' }}>Aucune matière dans la base. Créez d'abord des matières via une classe.</small>
                                     )}
+                                </div>
+                                <div className="field">
+                                    <label>Classes assignées</label>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                                        {classes.length === 0 ? (
+                                            <small style={{ color: 'var(--color-text-muted)' }}>Aucune classe disponible</small>
+                                        ) : (
+                                            classes.map((c) => {
+                                                const isAssigned = toAssignClasses.includes(c.id);
+                                                return (
+                                                    <span key={c.id}
+                                                        onClick={() => isAssigned ? handleRemoveClasse(c.id) : handleAssignClasse(c.id)}
+                                                        style={{
+                                                            display: 'inline-flex', alignItems: 'center', gap: '4px',
+                                                            padding: '6px 12px', borderRadius: '20px', fontSize: '12px',
+                                                            cursor: 'pointer', transition: 'all .2s',
+                                                            background: isAssigned ? '#1D9E75' : '#f3f4f6',
+                                                            color: isAssigned ? '#fff' : '#374151',
+                                                            border: isAssigned ? 'none' : '1px solid #e5e7eb',
+                                                        }}>
+                                                        <i className={`ti ${isAssigned ? 'ti-check-circle' : 'ti-plus-circle'}`}></i>
+                                                        {c.niveau} {c.nom}
+                                                    </span>
+                                                );
+                                            })
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">

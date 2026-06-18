@@ -23,6 +23,7 @@ export declare const ModelName: {
     readonly Classe: "Classe";
     readonly Matiere: "Matiere";
     readonly ProfesseurMatiere: "ProfesseurMatiere";
+    readonly ProfesseurClasse: "ProfesseurClasse";
     readonly Evaluation: "Evaluation";
     readonly Note: "Note";
 };
@@ -151,6 +152,11 @@ export declare const ProfesseurMatiereScalarFieldEnum: {
     readonly matiereId: "matiereId";
 };
 export type ProfesseurMatiereScalarFieldEnum = (typeof ProfesseurMatiereScalarFieldEnum)[keyof typeof ProfesseurMatiereScalarFieldEnum];
+export declare const ProfesseurClasseScalarFieldEnum: {
+    readonly professeurId: "professeurId";
+    readonly classeId: "classeId";
+};
+export type ProfesseurClasseScalarFieldEnum = (typeof ProfesseurClasseScalarFieldEnum)[keyof typeof ProfesseurClasseScalarFieldEnum];
 export declare const EvaluationScalarFieldEnum: {
     readonly id: "id";
     readonly titre: "titre";

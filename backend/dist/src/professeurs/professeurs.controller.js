@@ -42,6 +42,12 @@ let ProfesseursController = class ProfesseursController {
     removeMatiere(professeurId, matiereId) {
         return this.professeursService.removeMatiere(professeurId, matiereId);
     }
+    assignClasse(professeurId, classeId) {
+        return this.professeursService.assignClasse(professeurId, classeId);
+    }
+    removeClasse(professeurId, classeId) {
+        return this.professeursService.removeClasse(professeurId, classeId);
+    }
 };
 exports.ProfesseursController = ProfesseursController;
 __decorate([
@@ -130,6 +136,30 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "removeMatiere", null);
+__decorate([
+    (0, common_1.Post)(':id/classes/:classeId'),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
+    (0, swagger_1.ApiOperation)({ summary: 'Assigner une classe à un professeur' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Classe assignée' }),
+    (0, swagger_1.ApiResponse)({ status: 409, description: 'Assignation déjà existante' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)('classeId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], ProfesseursController.prototype, "assignClasse", null);
+__decorate([
+    (0, common_1.Delete)(':id/classes/:classeId'),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
+    (0, swagger_1.ApiOperation)({ summary: "Retirer une classe d'un professeur" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Classe retirée' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Assignation introuvable' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)('classeId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], ProfesseursController.prototype, "removeClasse", null);
 exports.ProfesseursController = ProfesseursController = __decorate([
     (0, common_1.Controller)('professeurs'),
     (0, swagger_1.ApiTags)('Gestion des Professeurs'),

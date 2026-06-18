@@ -34,7 +34,17 @@ export default function ClassesPage() {
         setLoading(true);
         try {
             const data = await api.getClasses();
-            setClasses(Array.isArray(data) ? data : []);
+            let allClasses = Array.isArray(data) ? data : [];
+            if (role === 'prof') {
+                const profClasses: any[] = (user as any)?.professeur?.classes || [];
+                const classeIds = profClasses.map((pc: any) => pc.classeId);
+                if (classeIds.length > 0) {
+                    allClasses = allClasses.filter((c: any) => classeIds.includes(c.id));
+                } else {
+                    allClasses = [];
+                }
+            }
+            setClasses(allClasses);
         } catch (error) {
             console.error('Error loading classes:', error);
         }
