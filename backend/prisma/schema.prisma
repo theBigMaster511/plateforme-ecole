@@ -123,8 +123,8 @@ model Ecole {
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  professeur  Professeur?
-  classes     Classe?
+  professeurs Professeur[]
+  classes     Classe[]
 
   @@map("ecole")
 }
@@ -176,7 +176,7 @@ model ParentEleve {
 model Professeur {
   id         String   @id @default(cuid())
   userId     String   @unique
-  ecoleId    String   @unique
+  ecoleId    String
   specialite String?
   telephone  String?
   createdAt  DateTime @default(now())
@@ -188,14 +188,15 @@ model Professeur {
   classes     ProfesseurClasse[]
   evaluations Evaluation[]
   classe      Classe[]
+  emploisTemps EmploiTemps[]
 
   @@map("professeur")
 }
 
 model Classe {
   id         String     @id @default(cuid())
-  ecoleId    String     @unique
-  profId     String     @unique
+  ecoleId    String
+  profId     String
   nom        String // ex: "6ème A", "Terminale S"
   niveau     String // ex: "6ème", "Terminale"
   annee      String // ex: "2024-2025"
