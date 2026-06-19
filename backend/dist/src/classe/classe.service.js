@@ -22,6 +22,7 @@ let ClasseService = class ClasseService {
             where: {
                 nom: dto.name,
                 annee: dto.years,
+                ecoleId: dto.schoolId,
             },
         });
         if (exists) {
@@ -32,11 +33,28 @@ let ClasseService = class ClasseService {
                 nom: dto.name,
                 annee: dto.years,
                 niveau: dto.level,
+                ecoleId: dto.schoolId,
+                profId: dto.profId || '',
             },
         });
     }
-    async findAll() {
+    async schoolId(userId) {
+        return await this.prisma.ecole.findFirst({
+            where: {
+                userId,
+            },
+            select: {
+                id: true,
+            },
+        });
+    }
+    async findAll(schoolId) {
+        if (schoolId === null)
+            return;
         return this.prisma.classe.findMany({
+            where: {
+                ecoleId: schoolId,
+            },
             include: {
                 _count: {
                     select: {

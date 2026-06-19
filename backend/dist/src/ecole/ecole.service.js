@@ -17,8 +17,12 @@ let EcoleService = class EcoleService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async create(dto) {
-        const exists = await this.prisma.ecole.findFirst();
+    async create(dto, userId) {
+        const exists = await this.prisma.ecole.findFirst({
+            where: {
+                userId,
+            },
+        });
         if (exists) {
             throw new common_1.ConflictException('Une école existe déjà. Une seule école est autorisée.');
         }
@@ -43,14 +47,19 @@ let EcoleService = class EcoleService {
                 pays: dto.pays || 'Sénégal',
                 codePostal: dto.codePostal,
                 description: dto.description,
+                userId: userId,
             },
         });
     }
     async findAll() {
         return this.prisma.ecole.findMany();
     }
-    async findOne() {
-        const ecole = await this.prisma.ecole.findFirst();
+    async findOne(userId) {
+        const ecole = await this.prisma.ecole.findFirst({
+            where: {
+                userId,
+            },
+        });
         if (!ecole) {
             throw new common_1.NotFoundException('Aucune école configurée.');
         }

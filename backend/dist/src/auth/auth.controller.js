@@ -154,11 +154,15 @@ let AuthController = class AuthController {
     }
     async SignUpTeacher(body, req, res) {
         console.log(body);
+        const { email, password, name, ecoleId } = body;
+        if (!email && !password && !name && !ecoleId) {
+            return new common_1.ForbiddenException('champ manquant');
+        }
         const account = await this.authService.api.signUpEmail({
             body: {
-                email: body.email || '',
-                password: body.password || '',
-                name: body.name || '',
+                email,
+                password,
+                name,
             },
         });
         if (!account) {
@@ -172,6 +176,7 @@ let AuthController = class AuthController {
                 userId: account.user.id,
                 specialite: body.specialite || undefined,
                 telephone: body.telephone || undefined,
+                ecoleId,
             },
         });
         res.cookie('better-auth.session_token', account.token, {

@@ -4,11 +4,12 @@ import { UpdateEcoleDto } from './dto/update-ecole.dto';
 export declare class EcoleService {
     private prisma;
     constructor(prisma: PrismaService);
-    create(dto: CreateEcoleDto): Promise<{
+    create(dto: CreateEcoleDto, userId: string): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -25,6 +26,7 @@ export declare class EcoleService {
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -36,11 +38,12 @@ export declare class EcoleService {
         codePostal: string | null;
         description: string | null;
     }[]>;
-    findOne(): Promise<{
+    findOne(userId: string): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -57,6 +60,7 @@ export declare class EcoleService {
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -73,6 +77,7 @@ export declare class EcoleService {
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;

@@ -24,6 +24,8 @@ export declare class ElevesController {
             createdAt: Date;
             updatedAt: Date;
             nom: string;
+            ecoleId: string;
+            profId: string;
             niveau: string;
             annee: string;
         } | null;
@@ -104,6 +106,8 @@ export declare class ElevesController {
             createdAt: Date;
             updatedAt: Date;
             nom: string;
+            ecoleId: string;
+            profId: string;
             niveau: string;
             annee: string;
         } | null;

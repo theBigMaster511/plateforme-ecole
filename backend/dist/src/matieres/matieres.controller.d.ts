@@ -18,6 +18,8 @@ export declare class MatieresController {
             createdAt: Date;
             updatedAt: Date;
             nom: string;
+            ecoleId: string;
+            profId: string;
             niveau: string;
             annee: string;
         };
@@ -39,6 +41,7 @@ export declare class MatieresController {
                 updatedAt: Date;
                 userId: string;
                 telephone: string | null;
+                ecoleId: string;
                 specialite: string | null;
             };
         } & {
@@ -59,6 +62,8 @@ export declare class MatieresController {
             createdAt: Date;
             updatedAt: Date;
             nom: string;
+            ecoleId: string;
+            profId: string;
             niveau: string;
             annee: string;
         };
@@ -90,6 +95,7 @@ export declare class MatieresController {
                 updatedAt: Date;
                 userId: string;
                 telephone: string | null;
+                ecoleId: string;
                 specialite: string | null;
             };
         } & {

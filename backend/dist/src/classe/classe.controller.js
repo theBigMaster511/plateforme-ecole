@@ -28,8 +28,13 @@ let ClasseController = class ClasseController {
     create(dto) {
         return this.classeService.create(dto);
     }
-    findAll() {
-        return this.classeService.findAll();
+    async findAll(req) {
+        const user = req.user;
+        const schoolId = await this.classeService.schoolId(user.id);
+        if (!schoolId) {
+            return new common_1.NotFoundException();
+        }
+        return this.classeService.findAll(schoolId.id);
     }
     findOne(id) {
         return this.classeService.findOne(id);
@@ -45,9 +50,16 @@ exports.ClasseController = ClasseController;
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Créer une nouvelle classe', description: 'Créer une nouvelle classe (ADMIN uniquement)' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Créer une nouvelle classe',
+        description: 'Créer une nouvelle classe (ADMIN uniquement)',
+    }),
     (0, swagger_1.ApiBody)({ type: create_classe_dto_1.CreateClasseDto, description: 'Données de la classe' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Classe créée avec succès', type: create_classe_dto_1.CreateClasseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Classe créée avec succès',
+        type: create_classe_dto_1.CreateClasseDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 409, description: 'La classe existe déjà' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Body)()),
@@ -58,19 +70,38 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN, roles_enum_1.Role.PROFESSEUR),
-    (0, swagger_1.ApiOperation)({ summary: 'Récupérer toutes les classes', description: 'Lister toutes les classes (ADMIN, PROFESSEUR)' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des classes récupérée', isArray: true }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Récupérer toutes les classes',
+        description: 'Lister toutes les classes (ADMIN, PROFESSEUR)',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Liste des classes récupérée',
+        isArray: true,
+    }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], ClasseController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN, roles_enum_1.Role.ELEVE, roles_enum_1.Role.PROFESSEUR),
-    (0, swagger_1.ApiOperation)({ summary: 'Récupérer une classe par son ID', description: 'Détail d\'une classe spécifique (ADMIN, PROFESSEUR, ELEVE)' }),
-    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID unique de la classe', example: 'cl1234567890' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Détails de la classe récupérés', type: create_classe_dto_1.CreateClasseDto }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Récupérer une classe par son ID',
+        description: "Détail d'une classe spécifique (ADMIN, PROFESSEUR, ELEVE)",
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID unique de la classe',
+        example: 'cl1234567890',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Détails de la classe récupérés',
+        type: create_classe_dto_1.CreateClasseDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Classe introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
@@ -81,10 +112,24 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Modifier une classe', description: 'Modifier les informations d\'une classe (ADMIN uniquement)' }),
-    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID unique de la classe', example: 'cl1234567890' }),
-    (0, swagger_1.ApiBody)({ type: update_classe_dto_1.UpdateClassDto, description: 'Champs à mettre à jour (tous optionnels)' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Classe mise à jour avec succès', type: create_classe_dto_1.CreateClasseDto }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Modifier une classe',
+        description: "Modifier les informations d'une classe (ADMIN uniquement)",
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID unique de la classe',
+        example: 'cl1234567890',
+    }),
+    (0, swagger_1.ApiBody)({
+        type: update_classe_dto_1.UpdateClassDto,
+        description: 'Champs à mettre à jour (tous optionnels)',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Classe mise à jour avec succès',
+        type: create_classe_dto_1.CreateClasseDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Classe introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
@@ -96,8 +141,15 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Supprimer une classe', description: 'Supprimer une classe (ADMIN uniquement)' }),
-    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID unique de la classe', example: 'cl1234567890' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Supprimer une classe',
+        description: 'Supprimer une classe (ADMIN uniquement)',
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID unique de la classe',
+        example: 'cl1234567890',
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Classe supprimée avec succès' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Classe introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),

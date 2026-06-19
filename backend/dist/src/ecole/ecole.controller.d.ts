@@ -1,14 +1,17 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { EcoleService } from './ecole.service';
 import { CreateEcoleDto } from './dto/create-ecole.dto';
 import { UpdateEcoleDto } from './dto/update-ecole.dto';
+import type { Request } from 'express';
 export declare class EcoleController {
     private readonly ecoleService;
     constructor(ecoleService: EcoleService);
-    create(dto: CreateEcoleDto): Promise<{
+    create(dto: CreateEcoleDto, req: Request): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -19,12 +22,13 @@ export declare class EcoleController {
         pays: string;
         codePostal: string | null;
         description: string | null;
-    }>;
-    findOne(): Promise<{
+    }> | UnauthorizedException;
+    findOne(req: Request): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -35,12 +39,13 @@ export declare class EcoleController {
         pays: string;
         codePostal: string | null;
         description: string | null;
-    }>;
+    }> | UnauthorizedException;
     update(id: string, dto: UpdateEcoleDto): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -57,6 +62,7 @@ export declare class EcoleController {
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
         nom: string;
         adresse: string | null;
         telephone: string | null;

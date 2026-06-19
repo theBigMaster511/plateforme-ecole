@@ -9,10 +9,15 @@ export declare class ClasseService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;
-    findAll(): Promise<({
+    schoolId(userId: string): Promise<{
+        id: string;
+    } | null>;
+    findAll(schoolId: string | null): Promise<({
         _count: {
             eleves: number;
             matieres: number;
@@ -22,9 +27,11 @@ export declare class ClasseService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
-    })[]>;
+    })[] | undefined>;
     findOne(id: string): Promise<{
         _count: {
             eleves: number;
@@ -63,6 +70,8 @@ export declare class ClasseService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;
@@ -71,6 +80,8 @@ export declare class ClasseService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;
@@ -79,6 +90,8 @@ export declare class ClasseService {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;

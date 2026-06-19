@@ -1,3 +1,4 @@
+import { ForbiddenException } from '@nestjs/common';
 import { AuthService } from '@thallesp/nestjs-better-auth';
 import type { Response, Request as ExpressRequest } from 'express';
 import { AuthService as LocalAuthService } from './auth.service';
@@ -13,7 +14,7 @@ export declare class AuthController {
     SignInStudent(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
     SignUpParent(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
     SignInParent(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
-    SignUpTeacher(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+    SignUpTeacher(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>> | ForbiddenException>;
     SignInTeacher(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
     logout(res: Response): Promise<Response<any, Record<string, any>>>;
     getProfile(req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;

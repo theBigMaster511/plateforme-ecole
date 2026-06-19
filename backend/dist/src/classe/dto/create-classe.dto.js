@@ -15,6 +15,8 @@ const swagger_1 = require("@nestjs/swagger");
 class CreateClasseDto {
     name;
     level;
+    schoolId;
+    profId;
     years;
 }
 exports.CreateClasseDto = CreateClasseDto;
@@ -30,6 +32,21 @@ __decorate([
     (0, swagger_1.ApiProperty)({ example: '6ème', description: 'Niveau scolaire' }),
     __metadata("design:type", String)
 ], CreateClasseDto.prototype, "level", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ example: 'id ecole', description: "L'identifiant de l'ecole" }),
+    __metadata("design:type", String)
+], CreateClasseDto.prototype, "schoolId", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({
+        example: 'id professeurs',
+        description: "L'identifiant professeurs",
+    }),
+    __metadata("design:type", String)
+], CreateClasseDto.prototype, "profId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

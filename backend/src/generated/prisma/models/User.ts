@@ -211,6 +211,7 @@ export type UserWhereInput = {
   eleve?: Prisma.XOR<Prisma.EleveNullableScalarRelationFilter, Prisma.EleveWhereInput> | null
   professeur?: Prisma.XOR<Prisma.ProfesseurNullableScalarRelationFilter, Prisma.ProfesseurWhereInput> | null
   parent?: Prisma.XOR<Prisma.ParentNullableScalarRelationFilter, Prisma.ParentWhereInput> | null
+  ecole?: Prisma.XOR<Prisma.EcoleNullableScalarRelationFilter, Prisma.EcoleWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -227,6 +228,7 @@ export type UserOrderByWithRelationInput = {
   eleve?: Prisma.EleveOrderByWithRelationInput
   professeur?: Prisma.ProfesseurOrderByWithRelationInput
   parent?: Prisma.ParentOrderByWithRelationInput
+  ecole?: Prisma.EcoleOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -246,6 +248,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   eleve?: Prisma.XOR<Prisma.EleveNullableScalarRelationFilter, Prisma.EleveWhereInput> | null
   professeur?: Prisma.XOR<Prisma.ProfesseurNullableScalarRelationFilter, Prisma.ProfesseurWhereInput> | null
   parent?: Prisma.XOR<Prisma.ParentNullableScalarRelationFilter, Prisma.ParentWhereInput> | null
+  ecole?: Prisma.XOR<Prisma.EcoleNullableScalarRelationFilter, Prisma.EcoleWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -290,6 +293,7 @@ export type UserCreateInput = {
   eleve?: Prisma.EleveCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -306,6 +310,7 @@ export type UserUncheckedCreateInput = {
   eleve?: Prisma.EleveUncheckedCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentUncheckedCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -322,6 +327,7 @@ export type UserUpdateInput = {
   eleve?: Prisma.EleveUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -338,6 +344,7 @@ export type UserUncheckedUpdateInput = {
   eleve?: Prisma.EleveUncheckedUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUncheckedUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -459,6 +466,20 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutEcoleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEcoleInput, Prisma.UserUncheckedCreateWithoutEcoleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEcoleInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEcoleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEcoleInput, Prisma.UserUncheckedCreateWithoutEcoleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEcoleInput
+  upsert?: Prisma.UserUpsertWithoutEcoleInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEcoleInput, Prisma.UserUpdateWithoutEcoleInput>, Prisma.UserUncheckedUpdateWithoutEcoleInput>
+}
+
 export type UserCreateNestedOneWithoutEleveInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutEleveInput, Prisma.UserUncheckedCreateWithoutEleveInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutEleveInput
@@ -514,6 +535,7 @@ export type UserCreateWithoutSessionsInput = {
   eleve?: Prisma.EleveCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -529,6 +551,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   eleve?: Prisma.EleveUncheckedCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentUncheckedCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -560,6 +583,7 @@ export type UserUpdateWithoutSessionsInput = {
   eleve?: Prisma.EleveUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -575,6 +599,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   eleve?: Prisma.EleveUncheckedUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUncheckedUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -590,6 +615,7 @@ export type UserCreateWithoutAccountsInput = {
   eleve?: Prisma.EleveCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -605,6 +631,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   eleve?: Prisma.EleveUncheckedCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentUncheckedCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -636,6 +663,7 @@ export type UserUpdateWithoutAccountsInput = {
   eleve?: Prisma.EleveUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -648,6 +676,87 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  eleve?: Prisma.EleveUncheckedUpdateOneWithoutUserNestedInput
+  professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutUserNestedInput
+  parent?: Prisma.ParentUncheckedUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutEcoleInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  eleve?: Prisma.EleveCreateNestedOneWithoutUserInput
+  professeur?: Prisma.ProfesseurCreateNestedOneWithoutUserInput
+  parent?: Prisma.ParentCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutEcoleInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  eleve?: Prisma.EleveUncheckedCreateNestedOneWithoutUserInput
+  professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutUserInput
+  parent?: Prisma.ParentUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutEcoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEcoleInput, Prisma.UserUncheckedCreateWithoutEcoleInput>
+}
+
+export type UserUpsertWithoutEcoleInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEcoleInput, Prisma.UserUncheckedUpdateWithoutEcoleInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEcoleInput, Prisma.UserUncheckedCreateWithoutEcoleInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEcoleInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEcoleInput, Prisma.UserUncheckedUpdateWithoutEcoleInput>
+}
+
+export type UserUpdateWithoutEcoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  eleve?: Prisma.EleveUpdateOneWithoutUserNestedInput
+  professeur?: Prisma.ProfesseurUpdateOneWithoutUserNestedInput
+  parent?: Prisma.ParentUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEcoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   eleve?: Prisma.EleveUncheckedUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUncheckedUpdateOneWithoutUserNestedInput
@@ -666,6 +775,7 @@ export type UserCreateWithoutEleveInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   professeur?: Prisma.ProfesseurCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEleveInput = {
@@ -681,6 +791,7 @@ export type UserUncheckedCreateWithoutEleveInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentUncheckedCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEleveInput = {
@@ -712,6 +823,7 @@ export type UserUpdateWithoutEleveInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEleveInput = {
@@ -727,6 +839,7 @@ export type UserUncheckedUpdateWithoutEleveInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUncheckedUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutParentInput = {
@@ -742,6 +855,7 @@ export type UserCreateWithoutParentInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   eleve?: Prisma.EleveCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutParentInput = {
@@ -757,6 +871,7 @@ export type UserUncheckedCreateWithoutParentInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   eleve?: Prisma.EleveUncheckedCreateNestedOneWithoutUserInput
   professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutParentInput = {
@@ -788,6 +903,7 @@ export type UserUpdateWithoutParentInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   eleve?: Prisma.EleveUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutParentInput = {
@@ -803,6 +919,7 @@ export type UserUncheckedUpdateWithoutParentInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   eleve?: Prisma.EleveUncheckedUpdateOneWithoutUserNestedInput
   professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfesseurInput = {
@@ -818,6 +935,7 @@ export type UserCreateWithoutProfesseurInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   eleve?: Prisma.EleveCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfesseurInput = {
@@ -833,6 +951,7 @@ export type UserUncheckedCreateWithoutProfesseurInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   eleve?: Prisma.EleveUncheckedCreateNestedOneWithoutUserInput
   parent?: Prisma.ParentUncheckedCreateNestedOneWithoutUserInput
+  ecole?: Prisma.EcoleUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfesseurInput = {
@@ -864,6 +983,7 @@ export type UserUpdateWithoutProfesseurInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   eleve?: Prisma.EleveUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfesseurInput = {
@@ -879,6 +999,7 @@ export type UserUncheckedUpdateWithoutProfesseurInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   eleve?: Prisma.EleveUncheckedUpdateOneWithoutUserNestedInput
   parent?: Prisma.ParentUncheckedUpdateOneWithoutUserNestedInput
+  ecole?: Prisma.EcoleUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -935,6 +1056,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   eleve?: boolean | Prisma.User$eleveArgs<ExtArgs>
   professeur?: boolean | Prisma.User$professeurArgs<ExtArgs>
   parent?: boolean | Prisma.User$parentArgs<ExtArgs>
+  ecole?: boolean | Prisma.User$ecoleArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -978,6 +1100,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   eleve?: boolean | Prisma.User$eleveArgs<ExtArgs>
   professeur?: boolean | Prisma.User$professeurArgs<ExtArgs>
   parent?: boolean | Prisma.User$parentArgs<ExtArgs>
+  ecole?: boolean | Prisma.User$ecoleArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -991,6 +1114,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     eleve: Prisma.$ElevePayload<ExtArgs> | null
     professeur: Prisma.$ProfesseurPayload<ExtArgs> | null
     parent: Prisma.$ParentPayload<ExtArgs> | null
+    ecole: Prisma.$EcolePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1400,6 +1524,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   eleve<T extends Prisma.User$eleveArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eleveArgs<ExtArgs>>): Prisma.Prisma__EleveClient<runtime.Types.Result.GetResult<Prisma.$ElevePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   professeur<T extends Prisma.User$professeurArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$professeurArgs<ExtArgs>>): Prisma.Prisma__ProfesseurClient<runtime.Types.Result.GetResult<Prisma.$ProfesseurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   parent<T extends Prisma.User$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$parentArgs<ExtArgs>>): Prisma.Prisma__ParentClient<runtime.Types.Result.GetResult<Prisma.$ParentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ecole<T extends Prisma.User$ecoleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ecoleArgs<ExtArgs>>): Prisma.Prisma__EcoleClient<runtime.Types.Result.GetResult<Prisma.$EcolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1930,6 +2055,25 @@ export type User$parentArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.ParentInclude<ExtArgs> | null
   where?: Prisma.ParentWhereInput
+}
+
+/**
+ * User.ecole
+ */
+export type User$ecoleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Ecole
+   */
+  select?: Prisma.EcoleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Ecole
+   */
+  omit?: Prisma.EcoleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EcoleInclude<ExtArgs> | null
+  where?: Prisma.EcoleWhereInput
 }
 
 /**

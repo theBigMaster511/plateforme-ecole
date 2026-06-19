@@ -21,6 +21,8 @@ export declare class ProfesseursService {
                     createdAt: Date;
                     updatedAt: Date;
                     nom: string;
+                    ecoleId: string;
+                    profId: string;
                     niveau: string;
                     annee: string;
                 };
@@ -52,6 +54,7 @@ export declare class ProfesseursService {
         updatedAt: Date;
         userId: string;
         telephone: string | null;
+        ecoleId: string;
         specialite: string | null;
     })[]>;
     findOne(id: string): Promise<{
@@ -72,6 +75,8 @@ export declare class ProfesseursService {
                     createdAt: Date;
                     updatedAt: Date;
                     nom: string;
+                    ecoleId: string;
+                    profId: string;
                     niveau: string;
                     annee: string;
                 };
@@ -103,6 +108,7 @@ export declare class ProfesseursService {
         updatedAt: Date;
         userId: string;
         telephone: string | null;
+        ecoleId: string;
         specialite: string | null;
     }>;
     update(id: string, dto: UpdateProfesseurDto): Promise<({
@@ -122,6 +128,7 @@ export declare class ProfesseursService {
         updatedAt: Date;
         userId: string;
         telephone: string | null;
+        ecoleId: string;
         specialite: string | null;
     }) | null>;
     assignMatiere(professeurId: string, matiereId: string): Promise<{

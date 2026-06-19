@@ -19,6 +19,7 @@ export type EcoleMinAggregateOutputType = {
     pays: string | null;
     codePostal: string | null;
     description: string | null;
+    userId: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -35,6 +36,7 @@ export type EcoleMaxAggregateOutputType = {
     pays: string | null;
     codePostal: string | null;
     description: string | null;
+    userId: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -51,6 +53,7 @@ export type EcoleCountAggregateOutputType = {
     pays: number;
     codePostal: number;
     description: number;
+    userId: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -68,6 +71,7 @@ export type EcoleMinAggregateInputType = {
     pays?: true;
     codePostal?: true;
     description?: true;
+    userId?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -84,6 +88,7 @@ export type EcoleMaxAggregateInputType = {
     pays?: true;
     codePostal?: true;
     description?: true;
+    userId?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -100,6 +105,7 @@ export type EcoleCountAggregateInputType = {
     pays?: true;
     codePostal?: true;
     description?: true;
+    userId?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -141,6 +147,7 @@ export type EcoleGroupByOutputType = {
     pays: string;
     codePostal: string | null;
     description: string | null;
+    userId: string;
     createdAt: Date;
     updatedAt: Date;
     _count: EcoleCountAggregateOutputType | null;
@@ -166,8 +173,12 @@ export type EcoleWhereInput = {
     pays?: Prisma.StringFilter<"Ecole"> | string;
     codePostal?: Prisma.StringNullableFilter<"Ecole"> | string | null;
     description?: Prisma.StringNullableFilter<"Ecole"> | string | null;
+    userId?: Prisma.StringFilter<"Ecole"> | string;
     createdAt?: Prisma.DateTimeFilter<"Ecole"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Ecole"> | Date | string;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    professeur?: Prisma.XOR<Prisma.ProfesseurNullableScalarRelationFilter, Prisma.ProfesseurWhereInput> | null;
+    classes?: Prisma.XOR<Prisma.ClasseNullableScalarRelationFilter, Prisma.ClasseWhereInput> | null;
 };
 export type EcoleOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -182,13 +193,18 @@ export type EcoleOrderByWithRelationInput = {
     pays?: Prisma.SortOrder;
     codePostal?: Prisma.SortOrderInput | Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    user?: Prisma.UserOrderByWithRelationInput;
+    professeur?: Prisma.ProfesseurOrderByWithRelationInput;
+    classes?: Prisma.ClasseOrderByWithRelationInput;
 };
 export type EcoleWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
     nom?: string;
     email?: string;
+    userId?: string;
     AND?: Prisma.EcoleWhereInput | Prisma.EcoleWhereInput[];
     OR?: Prisma.EcoleWhereInput[];
     NOT?: Prisma.EcoleWhereInput | Prisma.EcoleWhereInput[];
@@ -203,7 +219,10 @@ export type EcoleWhereUniqueInput = Prisma.AtLeast<{
     description?: Prisma.StringNullableFilter<"Ecole"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Ecole"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Ecole"> | Date | string;
-}, "id" | "nom" | "email">;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    professeur?: Prisma.XOR<Prisma.ProfesseurNullableScalarRelationFilter, Prisma.ProfesseurWhereInput> | null;
+    classes?: Prisma.XOR<Prisma.ClasseNullableScalarRelationFilter, Prisma.ClasseWhereInput> | null;
+}, "id" | "nom" | "email" | "userId">;
 export type EcoleOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
@@ -217,6 +236,7 @@ export type EcoleOrderByWithAggregationInput = {
     pays?: Prisma.SortOrder;
     codePostal?: Prisma.SortOrderInput | Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.EcoleCountOrderByAggregateInput;
@@ -239,6 +259,7 @@ export type EcoleScalarWhereWithAggregatesInput = {
     pays?: Prisma.StringWithAggregatesFilter<"Ecole"> | string;
     codePostal?: Prisma.StringNullableWithAggregatesFilter<"Ecole"> | string | null;
     description?: Prisma.StringNullableWithAggregatesFilter<"Ecole"> | string | null;
+    userId?: Prisma.StringWithAggregatesFilter<"Ecole"> | string;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Ecole"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Ecole"> | Date | string;
 };
@@ -257,6 +278,9 @@ export type EcoleCreateInput = {
     description?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutEcoleInput;
+    professeur?: Prisma.ProfesseurCreateNestedOneWithoutEcoleInput;
+    classes?: Prisma.ClasseCreateNestedOneWithoutEcoleInput;
 };
 export type EcoleUncheckedCreateInput = {
     id?: string;
@@ -271,8 +295,11 @@ export type EcoleUncheckedCreateInput = {
     pays?: string;
     codePostal?: string | null;
     description?: string | null;
+    userId: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutEcoleInput;
+    classes?: Prisma.ClasseUncheckedCreateNestedOneWithoutEcoleInput;
 };
 export type EcoleUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -289,6 +316,9 @@ export type EcoleUpdateInput = {
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutEcoleNestedInput;
+    professeur?: Prisma.ProfesseurUpdateOneWithoutEcoleNestedInput;
+    classes?: Prisma.ClasseUpdateOneWithoutEcoleNestedInput;
 };
 export type EcoleUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -303,8 +333,11 @@ export type EcoleUncheckedUpdateInput = {
     pays?: Prisma.StringFieldUpdateOperationsInput | string;
     codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutEcoleNestedInput;
+    classes?: Prisma.ClasseUncheckedUpdateOneWithoutEcoleNestedInput;
 };
 export type EcoleCreateManyInput = {
     id?: string;
@@ -319,6 +352,7 @@ export type EcoleCreateManyInput = {
     pays?: string;
     codePostal?: string | null;
     description?: string | null;
+    userId: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -351,8 +385,13 @@ export type EcoleUncheckedUpdateManyInput = {
     pays?: Prisma.StringFieldUpdateOperationsInput | string;
     codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type EcoleNullableScalarRelationFilter = {
+    is?: Prisma.EcoleWhereInput | null;
+    isNot?: Prisma.EcoleWhereInput | null;
 };
 export type EcoleCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -367,6 +406,7 @@ export type EcoleCountOrderByAggregateInput = {
     pays?: Prisma.SortOrder;
     codePostal?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -383,6 +423,7 @@ export type EcoleMaxOrderByAggregateInput = {
     pays?: Prisma.SortOrder;
     codePostal?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -399,8 +440,320 @@ export type EcoleMinOrderByAggregateInput = {
     pays?: Prisma.SortOrder;
     codePostal?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+};
+export type EcoleScalarRelationFilter = {
+    is?: Prisma.EcoleWhereInput;
+    isNot?: Prisma.EcoleWhereInput;
+};
+export type EcoleCreateNestedOneWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutUserInput, Prisma.EcoleUncheckedCreateWithoutUserInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutUserInput;
+    connect?: Prisma.EcoleWhereUniqueInput;
+};
+export type EcoleUncheckedCreateNestedOneWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutUserInput, Prisma.EcoleUncheckedCreateWithoutUserInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutUserInput;
+    connect?: Prisma.EcoleWhereUniqueInput;
+};
+export type EcoleUpdateOneWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutUserInput, Prisma.EcoleUncheckedCreateWithoutUserInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutUserInput;
+    upsert?: Prisma.EcoleUpsertWithoutUserInput;
+    disconnect?: Prisma.EcoleWhereInput | boolean;
+    delete?: Prisma.EcoleWhereInput | boolean;
+    connect?: Prisma.EcoleWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EcoleUpdateToOneWithWhereWithoutUserInput, Prisma.EcoleUpdateWithoutUserInput>, Prisma.EcoleUncheckedUpdateWithoutUserInput>;
+};
+export type EcoleUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutUserInput, Prisma.EcoleUncheckedCreateWithoutUserInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutUserInput;
+    upsert?: Prisma.EcoleUpsertWithoutUserInput;
+    disconnect?: Prisma.EcoleWhereInput | boolean;
+    delete?: Prisma.EcoleWhereInput | boolean;
+    connect?: Prisma.EcoleWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EcoleUpdateToOneWithWhereWithoutUserInput, Prisma.EcoleUpdateWithoutUserInput>, Prisma.EcoleUncheckedUpdateWithoutUserInput>;
+};
+export type EcoleCreateNestedOneWithoutProfesseurInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutProfesseurInput, Prisma.EcoleUncheckedCreateWithoutProfesseurInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutProfesseurInput;
+    connect?: Prisma.EcoleWhereUniqueInput;
+};
+export type EcoleUpdateOneRequiredWithoutProfesseurNestedInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutProfesseurInput, Prisma.EcoleUncheckedCreateWithoutProfesseurInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutProfesseurInput;
+    upsert?: Prisma.EcoleUpsertWithoutProfesseurInput;
+    connect?: Prisma.EcoleWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EcoleUpdateToOneWithWhereWithoutProfesseurInput, Prisma.EcoleUpdateWithoutProfesseurInput>, Prisma.EcoleUncheckedUpdateWithoutProfesseurInput>;
+};
+export type EcoleCreateNestedOneWithoutClassesInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutClassesInput, Prisma.EcoleUncheckedCreateWithoutClassesInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutClassesInput;
+    connect?: Prisma.EcoleWhereUniqueInput;
+};
+export type EcoleUpdateOneRequiredWithoutClassesNestedInput = {
+    create?: Prisma.XOR<Prisma.EcoleCreateWithoutClassesInput, Prisma.EcoleUncheckedCreateWithoutClassesInput>;
+    connectOrCreate?: Prisma.EcoleCreateOrConnectWithoutClassesInput;
+    upsert?: Prisma.EcoleUpsertWithoutClassesInput;
+    connect?: Prisma.EcoleWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EcoleUpdateToOneWithWhereWithoutClassesInput, Prisma.EcoleUpdateWithoutClassesInput>, Prisma.EcoleUncheckedUpdateWithoutClassesInput>;
+};
+export type EcoleCreateWithoutUserInput = {
+    id?: string;
+    nom: string;
+    adresse?: string | null;
+    telephone?: string | null;
+    email?: string | null;
+    siteWeb?: string | null;
+    logo?: string | null;
+    directeur?: string | null;
+    ville?: string | null;
+    pays?: string;
+    codePostal?: string | null;
+    description?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    professeur?: Prisma.ProfesseurCreateNestedOneWithoutEcoleInput;
+    classes?: Prisma.ClasseCreateNestedOneWithoutEcoleInput;
+};
+export type EcoleUncheckedCreateWithoutUserInput = {
+    id?: string;
+    nom: string;
+    adresse?: string | null;
+    telephone?: string | null;
+    email?: string | null;
+    siteWeb?: string | null;
+    logo?: string | null;
+    directeur?: string | null;
+    ville?: string | null;
+    pays?: string;
+    codePostal?: string | null;
+    description?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutEcoleInput;
+    classes?: Prisma.ClasseUncheckedCreateNestedOneWithoutEcoleInput;
+};
+export type EcoleCreateOrConnectWithoutUserInput = {
+    where: Prisma.EcoleWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EcoleCreateWithoutUserInput, Prisma.EcoleUncheckedCreateWithoutUserInput>;
+};
+export type EcoleUpsertWithoutUserInput = {
+    update: Prisma.XOR<Prisma.EcoleUpdateWithoutUserInput, Prisma.EcoleUncheckedUpdateWithoutUserInput>;
+    create: Prisma.XOR<Prisma.EcoleCreateWithoutUserInput, Prisma.EcoleUncheckedCreateWithoutUserInput>;
+    where?: Prisma.EcoleWhereInput;
+};
+export type EcoleUpdateToOneWithWhereWithoutUserInput = {
+    where?: Prisma.EcoleWhereInput;
+    data: Prisma.XOR<Prisma.EcoleUpdateWithoutUserInput, Prisma.EcoleUncheckedUpdateWithoutUserInput>;
+};
+export type EcoleUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    directeur?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    pays?: Prisma.StringFieldUpdateOperationsInput | string;
+    codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    professeur?: Prisma.ProfesseurUpdateOneWithoutEcoleNestedInput;
+    classes?: Prisma.ClasseUpdateOneWithoutEcoleNestedInput;
+};
+export type EcoleUncheckedUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    directeur?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    pays?: Prisma.StringFieldUpdateOperationsInput | string;
+    codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutEcoleNestedInput;
+    classes?: Prisma.ClasseUncheckedUpdateOneWithoutEcoleNestedInput;
+};
+export type EcoleCreateWithoutProfesseurInput = {
+    id?: string;
+    nom: string;
+    adresse?: string | null;
+    telephone?: string | null;
+    email?: string | null;
+    siteWeb?: string | null;
+    logo?: string | null;
+    directeur?: string | null;
+    ville?: string | null;
+    pays?: string;
+    codePostal?: string | null;
+    description?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutEcoleInput;
+    classes?: Prisma.ClasseCreateNestedOneWithoutEcoleInput;
+};
+export type EcoleUncheckedCreateWithoutProfesseurInput = {
+    id?: string;
+    nom: string;
+    adresse?: string | null;
+    telephone?: string | null;
+    email?: string | null;
+    siteWeb?: string | null;
+    logo?: string | null;
+    directeur?: string | null;
+    ville?: string | null;
+    pays?: string;
+    codePostal?: string | null;
+    description?: string | null;
+    userId: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    classes?: Prisma.ClasseUncheckedCreateNestedOneWithoutEcoleInput;
+};
+export type EcoleCreateOrConnectWithoutProfesseurInput = {
+    where: Prisma.EcoleWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EcoleCreateWithoutProfesseurInput, Prisma.EcoleUncheckedCreateWithoutProfesseurInput>;
+};
+export type EcoleUpsertWithoutProfesseurInput = {
+    update: Prisma.XOR<Prisma.EcoleUpdateWithoutProfesseurInput, Prisma.EcoleUncheckedUpdateWithoutProfesseurInput>;
+    create: Prisma.XOR<Prisma.EcoleCreateWithoutProfesseurInput, Prisma.EcoleUncheckedCreateWithoutProfesseurInput>;
+    where?: Prisma.EcoleWhereInput;
+};
+export type EcoleUpdateToOneWithWhereWithoutProfesseurInput = {
+    where?: Prisma.EcoleWhereInput;
+    data: Prisma.XOR<Prisma.EcoleUpdateWithoutProfesseurInput, Prisma.EcoleUncheckedUpdateWithoutProfesseurInput>;
+};
+export type EcoleUpdateWithoutProfesseurInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    directeur?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    pays?: Prisma.StringFieldUpdateOperationsInput | string;
+    codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutEcoleNestedInput;
+    classes?: Prisma.ClasseUpdateOneWithoutEcoleNestedInput;
+};
+export type EcoleUncheckedUpdateWithoutProfesseurInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    directeur?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    pays?: Prisma.StringFieldUpdateOperationsInput | string;
+    codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    classes?: Prisma.ClasseUncheckedUpdateOneWithoutEcoleNestedInput;
+};
+export type EcoleCreateWithoutClassesInput = {
+    id?: string;
+    nom: string;
+    adresse?: string | null;
+    telephone?: string | null;
+    email?: string | null;
+    siteWeb?: string | null;
+    logo?: string | null;
+    directeur?: string | null;
+    ville?: string | null;
+    pays?: string;
+    codePostal?: string | null;
+    description?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutEcoleInput;
+    professeur?: Prisma.ProfesseurCreateNestedOneWithoutEcoleInput;
+};
+export type EcoleUncheckedCreateWithoutClassesInput = {
+    id?: string;
+    nom: string;
+    adresse?: string | null;
+    telephone?: string | null;
+    email?: string | null;
+    siteWeb?: string | null;
+    logo?: string | null;
+    directeur?: string | null;
+    ville?: string | null;
+    pays?: string;
+    codePostal?: string | null;
+    description?: string | null;
+    userId: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    professeur?: Prisma.ProfesseurUncheckedCreateNestedOneWithoutEcoleInput;
+};
+export type EcoleCreateOrConnectWithoutClassesInput = {
+    where: Prisma.EcoleWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EcoleCreateWithoutClassesInput, Prisma.EcoleUncheckedCreateWithoutClassesInput>;
+};
+export type EcoleUpsertWithoutClassesInput = {
+    update: Prisma.XOR<Prisma.EcoleUpdateWithoutClassesInput, Prisma.EcoleUncheckedUpdateWithoutClassesInput>;
+    create: Prisma.XOR<Prisma.EcoleCreateWithoutClassesInput, Prisma.EcoleUncheckedCreateWithoutClassesInput>;
+    where?: Prisma.EcoleWhereInput;
+};
+export type EcoleUpdateToOneWithWhereWithoutClassesInput = {
+    where?: Prisma.EcoleWhereInput;
+    data: Prisma.XOR<Prisma.EcoleUpdateWithoutClassesInput, Prisma.EcoleUncheckedUpdateWithoutClassesInput>;
+};
+export type EcoleUpdateWithoutClassesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    directeur?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    pays?: Prisma.StringFieldUpdateOperationsInput | string;
+    codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutEcoleNestedInput;
+    professeur?: Prisma.ProfesseurUpdateOneWithoutEcoleNestedInput;
+};
+export type EcoleUncheckedUpdateWithoutClassesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    directeur?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    pays?: Prisma.StringFieldUpdateOperationsInput | string;
+    codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    professeur?: Prisma.ProfesseurUncheckedUpdateOneWithoutEcoleNestedInput;
 };
 export type EcoleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -415,8 +768,12 @@ export type EcoleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     pays?: boolean;
     codePostal?: boolean;
     description?: boolean;
+    userId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    professeur?: boolean | Prisma.Ecole$professeurArgs<ExtArgs>;
+    classes?: boolean | Prisma.Ecole$classesArgs<ExtArgs>;
 }, ExtArgs["result"]["ecole"]>;
 export type EcoleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -431,8 +788,10 @@ export type EcoleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     pays?: boolean;
     codePostal?: boolean;
     description?: boolean;
+    userId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["ecole"]>;
 export type EcoleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -447,8 +806,10 @@ export type EcoleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     pays?: boolean;
     codePostal?: boolean;
     description?: boolean;
+    userId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["ecole"]>;
 export type EcoleSelectScalar = {
     id?: boolean;
@@ -463,13 +824,29 @@ export type EcoleSelectScalar = {
     pays?: boolean;
     codePostal?: boolean;
     description?: boolean;
+    userId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type EcoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "adresse" | "telephone" | "email" | "siteWeb" | "logo" | "directeur" | "ville" | "pays" | "codePostal" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["ecole"]>;
+export type EcoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "adresse" | "telephone" | "email" | "siteWeb" | "logo" | "directeur" | "ville" | "pays" | "codePostal" | "description" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["ecole"]>;
+export type EcoleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    professeur?: boolean | Prisma.Ecole$professeurArgs<ExtArgs>;
+    classes?: boolean | Prisma.Ecole$classesArgs<ExtArgs>;
+};
+export type EcoleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+};
+export type EcoleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+};
 export type $EcolePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Ecole";
-    objects: {};
+    objects: {
+        user: Prisma.$UserPayload<ExtArgs>;
+        professeur: Prisma.$ProfesseurPayload<ExtArgs> | null;
+        classes: Prisma.$ClassePayload<ExtArgs> | null;
+    };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         nom: string;
@@ -483,6 +860,7 @@ export type $EcolePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         pays: string;
         codePostal: string | null;
         description: string | null;
+        userId: string;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["ecole"]>;
@@ -537,6 +915,9 @@ export interface EcoleDelegate<ExtArgs extends runtime.Types.Extensions.Internal
 }
 export interface Prisma__EcoleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    professeur<T extends Prisma.Ecole$professeurArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ecole$professeurArgs<ExtArgs>>): Prisma.Prisma__ProfesseurClient<runtime.Types.Result.GetResult<Prisma.$ProfesseurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    classes<T extends Prisma.Ecole$classesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ecole$classesArgs<ExtArgs>>): Prisma.Prisma__ClasseClient<runtime.Types.Result.GetResult<Prisma.$ClassePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -554,22 +935,26 @@ export interface EcoleFieldRefs {
     readonly pays: Prisma.FieldRef<"Ecole", 'String'>;
     readonly codePostal: Prisma.FieldRef<"Ecole", 'String'>;
     readonly description: Prisma.FieldRef<"Ecole", 'String'>;
+    readonly userId: Prisma.FieldRef<"Ecole", 'String'>;
     readonly createdAt: Prisma.FieldRef<"Ecole", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Ecole", 'DateTime'>;
 }
 export type EcoleFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where: Prisma.EcoleWhereUniqueInput;
 };
 export type EcoleFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where: Prisma.EcoleWhereUniqueInput;
 };
 export type EcoleFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where?: Prisma.EcoleWhereInput;
     orderBy?: Prisma.EcoleOrderByWithRelationInput | Prisma.EcoleOrderByWithRelationInput[];
     cursor?: Prisma.EcoleWhereUniqueInput;
@@ -580,6 +965,7 @@ export type EcoleFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type EcoleFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where?: Prisma.EcoleWhereInput;
     orderBy?: Prisma.EcoleOrderByWithRelationInput | Prisma.EcoleOrderByWithRelationInput[];
     cursor?: Prisma.EcoleWhereUniqueInput;
@@ -590,6 +976,7 @@ export type EcoleFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
 export type EcoleFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where?: Prisma.EcoleWhereInput;
     orderBy?: Prisma.EcoleOrderByWithRelationInput | Prisma.EcoleOrderByWithRelationInput[];
     cursor?: Prisma.EcoleWhereUniqueInput;
@@ -600,6 +987,7 @@ export type EcoleFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type EcoleCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     data: Prisma.XOR<Prisma.EcoleCreateInput, Prisma.EcoleUncheckedCreateInput>;
 };
 export type EcoleCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -609,10 +997,12 @@ export type EcoleCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
     select?: Prisma.EcoleSelectCreateManyAndReturn<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
     data: Prisma.EcoleCreateManyInput | Prisma.EcoleCreateManyInput[];
+    include?: Prisma.EcoleIncludeCreateManyAndReturn<ExtArgs> | null;
 };
 export type EcoleUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     data: Prisma.XOR<Prisma.EcoleUpdateInput, Prisma.EcoleUncheckedUpdateInput>;
     where: Prisma.EcoleWhereUniqueInput;
 };
@@ -627,10 +1017,12 @@ export type EcoleUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
     data: Prisma.XOR<Prisma.EcoleUpdateManyMutationInput, Prisma.EcoleUncheckedUpdateManyInput>;
     where?: Prisma.EcoleWhereInput;
     limit?: number;
+    include?: Prisma.EcoleIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 export type EcoleUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where: Prisma.EcoleWhereUniqueInput;
     create: Prisma.XOR<Prisma.EcoleCreateInput, Prisma.EcoleUncheckedCreateInput>;
     update: Prisma.XOR<Prisma.EcoleUpdateInput, Prisma.EcoleUncheckedUpdateInput>;
@@ -638,13 +1030,27 @@ export type EcoleUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type EcoleDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
     where: Prisma.EcoleWhereUniqueInput;
 };
 export type EcoleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.EcoleWhereInput;
     limit?: number;
 };
+export type Ecole$professeurArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ProfesseurSelect<ExtArgs> | null;
+    omit?: Prisma.ProfesseurOmit<ExtArgs> | null;
+    include?: Prisma.ProfesseurInclude<ExtArgs> | null;
+    where?: Prisma.ProfesseurWhereInput;
+};
+export type Ecole$classesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ClasseSelect<ExtArgs> | null;
+    omit?: Prisma.ClasseOmit<ExtArgs> | null;
+    include?: Prisma.ClasseInclude<ExtArgs> | null;
+    where?: Prisma.ClasseWhereInput;
+};
 export type EcoleDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.EcoleSelect<ExtArgs> | null;
     omit?: Prisma.EcoleOmit<ExtArgs> | null;
+    include?: Prisma.EcoleInclude<ExtArgs> | null;
 };

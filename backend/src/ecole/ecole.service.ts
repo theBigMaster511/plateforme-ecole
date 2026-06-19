@@ -11,9 +11,13 @@ import { UpdateEcoleDto } from './dto/update-ecole.dto';
 export class EcoleService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateEcoleDto) {
+  async create(dto: CreateEcoleDto, userId: string) {
     // Vérifier s'il existe déjà une école
-    const exists = await this.prisma.ecole.findFirst();
+    const exists = await this.prisma.ecole.findFirst({
+      where: {
+        userId,
+      },
+    });
     if (exists) {
       throw new ConflictException(
         'Une école existe déjà. Une seule école est autorisée.',
@@ -43,6 +47,7 @@ export class EcoleService {
         pays: dto.pays || 'Sénégal',
         codePostal: dto.codePostal,
         description: dto.description,
+        userId: userId,
       },
     });
   }
@@ -51,8 +56,12 @@ export class EcoleService {
     return this.prisma.ecole.findMany();
   }
 
-  async findOne() {
-    const ecole = await this.prisma.ecole.findFirst();
+  async findOne(userId: string) {
+    const ecole = await this.prisma.ecole.findFirst({
+      where: {
+        userId,
+      },
+    });
     if (!ecole) {
       throw new NotFoundException('Aucune école configurée.');
     }

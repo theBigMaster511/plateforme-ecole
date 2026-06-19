@@ -32,6 +32,7 @@ export declare class EvaluationsController {
             updatedAt: Date;
             userId: string;
             telephone: string | null;
+            ecoleId: string;
             specialite: string | null;
         };
         matiere: {
@@ -40,6 +41,8 @@ export declare class EvaluationsController {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
+                ecoleId: string;
+                profId: string;
                 niveau: string;
                 annee: string;
             };
@@ -88,6 +91,7 @@ export declare class EvaluationsController {
             updatedAt: Date;
             userId: string;
             telephone: string | null;
+            ecoleId: string;
             specialite: string | null;
         };
         matiere: {
@@ -96,6 +100,8 @@ export declare class EvaluationsController {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
+                ecoleId: string;
+                profId: string;
                 niveau: string;
                 annee: string;
             };

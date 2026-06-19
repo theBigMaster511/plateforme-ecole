@@ -1,8 +1,13 @@
 import { ProfesseursService } from './professeurs.service';
 import { UpdateProfesseurDto } from './dto/update-professeur.dto';
+import type { Request } from 'express';
+import { AuthService } from '@thallesp/nestjs-better-auth';
+import { CreateProfesseurDto } from './dto/create-professeur.dto';
 export declare class ProfesseursController {
     private readonly professeursService;
-    constructor(professeursService: ProfesseursService);
+    private authService;
+    constructor(professeursService: ProfesseursService, authService: AuthService);
+    CreateProfesseur(req: Request, body: CreateProfesseurDto): Promise<import("resend").CreateEmailResponse>;
     findAll(): Promise<({
         user: {
             id: string;
@@ -21,6 +26,8 @@ export declare class ProfesseursController {
                     createdAt: Date;
                     updatedAt: Date;
                     nom: string;
+                    ecoleId: string;
+                    profId: string;
                     niveau: string;
                     annee: string;
                 };
@@ -52,6 +59,7 @@ export declare class ProfesseursController {
         updatedAt: Date;
         userId: string;
         telephone: string | null;
+        ecoleId: string;
         specialite: string | null;
     })[]>;
     findOne(id: string): Promise<{
@@ -72,6 +80,8 @@ export declare class ProfesseursController {
                     createdAt: Date;
                     updatedAt: Date;
                     nom: string;
+                    ecoleId: string;
+                    profId: string;
                     niveau: string;
                     annee: string;
                 };
@@ -103,6 +113,7 @@ export declare class ProfesseursController {
         updatedAt: Date;
         userId: string;
         telephone: string | null;
+        ecoleId: string;
         specialite: string | null;
     }>;
     update(id: string, dto: UpdateProfesseurDto): Promise<({
@@ -122,6 +133,7 @@ export declare class ProfesseursController {
         updatedAt: Date;
         userId: string;
         telephone: string | null;
+        ecoleId: string;
         specialite: string | null;
     }) | null>;
     assignMatiere(professeurId: string, matiereId: string): Promise<{

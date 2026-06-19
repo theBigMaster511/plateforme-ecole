@@ -1,6 +1,8 @@
+import { NotFoundException } from '@nestjs/common';
 import { ClasseService } from './classe.service';
 import { CreateClasseDto } from './dto/create-classe.dto';
 import { UpdateClassDto } from './dto/update-classe.dto';
+import type { Request } from 'express';
 export declare class ClasseController {
     private readonly classeService;
     constructor(classeService: ClasseService);
@@ -9,10 +11,12 @@ export declare class ClasseController {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;
-    findAll(): Promise<({
+    findAll(req: Request): Promise<NotFoundException | ({
         _count: {
             eleves: number;
             matieres: number;
@@ -22,9 +26,11 @@ export declare class ClasseController {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
-    })[]>;
+    })[] | undefined>;
     findOne(id: string): Promise<{
         _count: {
             eleves: number;
@@ -63,6 +69,8 @@ export declare class ClasseController {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;
@@ -71,6 +79,8 @@ export declare class ClasseController {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;
@@ -79,6 +89,8 @@ export declare class ClasseController {
         createdAt: Date;
         updatedAt: Date;
         nom: string;
+        ecoleId: string;
+        profId: string;
         niveau: string;
         annee: string;
     }>;

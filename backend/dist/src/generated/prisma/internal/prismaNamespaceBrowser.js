@@ -120,6 +120,7 @@ exports.EcoleScalarFieldEnum = {
     pays: 'pays',
     codePostal: 'codePostal',
     description: 'description',
+    userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -146,6 +147,7 @@ exports.ParentEleveScalarFieldEnum = {
 exports.ProfesseurScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
+    ecoleId: 'ecoleId',
     specialite: 'specialite',
     telephone: 'telephone',
     createdAt: 'createdAt',
@@ -153,6 +155,8 @@ exports.ProfesseurScalarFieldEnum = {
 };
 exports.ClasseScalarFieldEnum = {
     id: 'id',
+    ecoleId: 'ecoleId',
+    profId: 'profId',
     nom: 'nom',
     niveau: 'niveau',
     annee: 'annee',

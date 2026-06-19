@@ -34,6 +34,7 @@ export declare class NotesService {
                 updatedAt: Date;
                 userId: string;
                 telephone: string | null;
+                ecoleId: string;
                 specialite: string | null;
             };
             matiere: {
@@ -80,6 +81,8 @@ export declare class NotesService {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
+                ecoleId: string;
+                profId: string;
                 niveau: string;
                 annee: string;
             } | null;
@@ -110,6 +113,7 @@ export declare class NotesService {
                 updatedAt: Date;
                 userId: string;
                 telephone: string | null;
+                ecoleId: string;
                 specialite: string | null;
             };
             matiere: {
@@ -156,6 +160,8 @@ export declare class NotesService {
                 createdAt: Date;
                 updatedAt: Date;
                 nom: string;
+                ecoleId: string;
+                profId: string;
                 niveau: string;
                 annee: string;
             } | null;
@@ -186,6 +192,7 @@ export declare class NotesService {
                 updatedAt: Date;
                 userId: string;
                 telephone: string | null;
+                ecoleId: string;
                 specialite: string | null;
             };
             matiere: {

@@ -92,6 +92,7 @@ export declare const EcoleScalarFieldEnum: {
     readonly pays: "pays";
     readonly codePostal: "codePostal";
     readonly description: "description";
+    readonly userId: "userId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -122,6 +123,7 @@ export type ParentEleveScalarFieldEnum = (typeof ParentEleveScalarFieldEnum)[key
 export declare const ProfesseurScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
+    readonly ecoleId: "ecoleId";
     readonly specialite: "specialite";
     readonly telephone: "telephone";
     readonly createdAt: "createdAt";
@@ -130,6 +132,8 @@ export declare const ProfesseurScalarFieldEnum: {
 export type ProfesseurScalarFieldEnum = (typeof ProfesseurScalarFieldEnum)[keyof typeof ProfesseurScalarFieldEnum];
 export declare const ClasseScalarFieldEnum: {
     readonly id: "id";
+    readonly ecoleId: "ecoleId";
+    readonly profId: "profId";
     readonly nom: "nom";
     readonly niveau: "niveau";
     readonly annee: "annee";

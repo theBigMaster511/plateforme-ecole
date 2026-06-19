@@ -1562,6 +1562,7 @@ export const EcoleScalarFieldEnum = {
   pays: 'pays',
   codePostal: 'codePostal',
   description: 'description',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1604,6 +1605,7 @@ export type ParentEleveScalarFieldEnum = (typeof ParentEleveScalarFieldEnum)[key
 export const ProfesseurScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  ecoleId: 'ecoleId',
   specialite: 'specialite',
   telephone: 'telephone',
   createdAt: 'createdAt',
@@ -1615,6 +1617,8 @@ export type ProfesseurScalarFieldEnum = (typeof ProfesseurScalarFieldEnum)[keyof
 
 export const ClasseScalarFieldEnum = {
   id: 'id',
+  ecoleId: 'ecoleId',
+  profId: 'profId',
   nom: 'nom',
   niveau: 'niveau',
   annee: 'annee',

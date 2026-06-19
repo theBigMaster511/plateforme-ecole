@@ -35,6 +35,7 @@ model User {
   eleve      Eleve?
   professeur Professeur?
   parent     Parent?
+  ecole      Ecole?
 
   @@map("user")
 }
@@ -106,20 +107,24 @@ enum Role {
 // ─────────────────────────────────────────
 
 model Ecole {
-  id          String   @id @default(cuid())
-  nom         String   @unique
+  id          String      @id @default(cuid())
+  nom         String      @unique
   adresse     String?
   telephone   String?
-  email       String?  @unique
+  email       String?     @unique
   siteWeb     String?
   logo        String? // URL
   directeur   String?
   ville       String?
-  pays        String   @default("Sénégal")
+  pays        String      @default("Sénégal")
   codePostal  String?
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  userId      String      @unique
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  professeur  Professeur?
+  classes     Classe?
 
   @@map("ecole")
 }
@@ -171,25 +176,32 @@ model ParentEleve {
 model Professeur {
   id         String   @id @default(cuid())
   userId     String   @unique
+  ecoleId    String   @unique
   specialite String?
   telephone  String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ecole       Ecole               @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
   matieres    ProfesseurMatiere[]
   evaluations Evaluation[]
+  classe      Classe[]
 
   @@map("professeur")
 }
 
 model Classe {
-  id        String   @id @default(cuid())
-  nom       String // ex: "6ème A", "Terminale S"
-  niveau    String // ex: "6ème", "Terminale"
-  annee     String // ex: "2024-2025"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String     @id @default(cuid())
+  ecoleId    String     @unique
+  profId     String     @unique
+  nom        String // ex: "6ème A", "Terminale S"
+  niveau     String // ex: "6ème", "Terminale"
+  annee      String // ex: "2024-2025"
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  ecole      Ecole      @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
+  professeur Professeur @relation(fields: [profId], references: [id], onDelete: Cascade)
 
   eleves   Eleve[]
   matieres Matiere[]

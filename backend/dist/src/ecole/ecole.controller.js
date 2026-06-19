@@ -25,11 +25,20 @@ let EcoleController = class EcoleController {
     constructor(ecoleService) {
         this.ecoleService = ecoleService;
     }
-    create(dto) {
-        return this.ecoleService.create(dto);
+    create(dto, req) {
+        const user = req.user;
+        console.log('user:', user);
+        if (user.role !== 'ADMIN') {
+            return new common_1.UnauthorizedException();
+        }
+        return this.ecoleService.create(dto, user.id);
     }
-    findOne() {
-        return this.ecoleService.findOne();
+    findOne(req) {
+        const user = req.user;
+        if (!user) {
+            return new common_1.UnauthorizedException('Request non autorisé');
+        }
+        return this.ecoleService.findOne(user.id);
     }
     update(id, dto) {
         return this.ecoleService.update(id, dto);
@@ -42,36 +51,59 @@ exports.EcoleController = EcoleController;
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: "Créer l'école (une seule autorisée)", description: 'Créer une nouvelle école. Une seule école est autorisée en base (ADMIN uniquement)' }),
-    (0, swagger_1.ApiBody)({ type: create_ecole_dto_1.CreateEcoleDto, description: 'Données de l\'école à créer' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'École créée avec succès', type: create_ecole_dto_1.CreateEcoleDto }),
+    (0, swagger_1.ApiOperation)({
+        summary: "Créer l'école (une seule autorisée)",
+        description: 'Créer une nouvelle école. Une seule école est autorisée en base (ADMIN uniquement)',
+    }),
+    (0, swagger_1.ApiBody)({ type: create_ecole_dto_1.CreateEcoleDto, description: "Données de l'école à créer" }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'École créée avec succès',
+        type: create_ecole_dto_1.CreateEcoleDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 409, description: 'Une école existe déjà' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_ecole_dto_1.CreateEcoleDto]),
+    __metadata("design:paramtypes", [create_ecole_dto_1.CreateEcoleDto, Object]),
     __metadata("design:returntype", void 0)
 ], EcoleController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN, roles_enum_1.Role.PROFESSEUR, roles_enum_1.Role.ELEVE, roles_enum_1.Role.PARENT),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
     (0, swagger_1.ApiOperation)({ summary: "Récupérer les infos de l'école" }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: "Informations de l'école récupérées",
     }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Aucune école configurée' }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], EcoleController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Modifier les infos de l\'école', description: 'Modifier les informations de l\'école (ADMIN uniquement)' }),
-    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID unique de l\'école', example: 'cl1234567890' }),
-    (0, swagger_1.ApiBody)({ type: update_ecole_dto_1.UpdateEcoleDto, description: 'Champs à mettre à jour (tous optionnels)' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'École mise à jour avec succès', type: create_ecole_dto_1.CreateEcoleDto }),
+    (0, swagger_1.ApiOperation)({
+        summary: "Modifier les infos de l'école",
+        description: "Modifier les informations de l'école (ADMIN uniquement)",
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: "ID unique de l'école",
+        example: 'cl1234567890',
+    }),
+    (0, swagger_1.ApiBody)({
+        type: update_ecole_dto_1.UpdateEcoleDto,
+        description: 'Champs à mettre à jour (tous optionnels)',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'École mise à jour avec succès',
+        type: create_ecole_dto_1.CreateEcoleDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'École introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
@@ -83,8 +115,15 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Supprimer l\'école', description: 'Supprimer l\'école (ADMIN uniquement)' }),
-    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID unique de l\'école', example: 'cl1234567890' }),
+    (0, swagger_1.ApiOperation)({
+        summary: "Supprimer l'école",
+        description: "Supprimer l'école (ADMIN uniquement)",
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: "ID unique de l'école",
+        example: 'cl1234567890',
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'École supprimée avec succès' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'École introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
