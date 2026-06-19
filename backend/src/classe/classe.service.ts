@@ -17,6 +17,7 @@ export class ClasseService {
       where: {
         nom: dto.name,
         annee: dto.years,
+        ecoleId: dto.schoolId,
       },
     });
 
@@ -31,12 +32,30 @@ export class ClasseService {
         nom: dto.name,
         annee: dto.years,
         niveau: dto.level,
+        ecoleId: dto.schoolId,
+        profId: dto.profId || '',
       },
     });
   }
 
-  async findAll() {
+  async schoolId(userId: string) {
+    return await this.prisma.ecole.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+  }
+
+  async findAll(schoolId: string | null) {
+    if (schoolId === null) return;
+
     return this.prisma.classe.findMany({
+      where: {
+        ecoleId: schoolId,
+      },
       include: {
         _count: {
           select: {

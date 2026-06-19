@@ -11,6 +11,17 @@ export class CreateClasseDto {
   @IsNotEmpty()
   @ApiProperty({ example: '6ème', description: 'Niveau scolaire' })
   level: string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: 'id ecole', description: "L'identifiant de l'ecole" })
+  schoolId: string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'id professeurs',
+    description: "L'identifiant professeurs",
+  })
+  profId: string;
 
   @IsString()
   @IsNotEmpty()

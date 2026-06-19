@@ -35,6 +35,10 @@ CREATE TABLE "account" (
     "password" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
+    "idToken" TEXT,
+    "accessTokenExpiresAt" DATETIME,
+    "refreshTokenExpiresAt" DATETIME,
+    "scope" TEXT,
     CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -46,6 +50,26 @@ CREATE TABLE "verification" (
     "expiresAt" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "ecole" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "nom" TEXT NOT NULL,
+    "adresse" TEXT,
+    "telephone" TEXT,
+    "email" TEXT,
+    "siteWeb" TEXT,
+    "logo" TEXT,
+    "directeur" TEXT,
+    "ville" TEXT,
+    "pays" TEXT NOT NULL DEFAULT 'Sénégal',
+    "codePostal" TEXT,
+    "description" TEXT,
+    "userId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "ecole_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -85,20 +109,27 @@ CREATE TABLE "parent_eleve" (
 CREATE TABLE "professeur" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
+    "ecoleId" TEXT NOT NULL,
     "specialite" TEXT,
+    "telephone" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "professeur_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "professeur_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "professeur_ecoleId_fkey" FOREIGN KEY ("ecoleId") REFERENCES "ecole" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "classe" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "ecoleId" TEXT NOT NULL,
+    "profId" TEXT NOT NULL,
     "nom" TEXT NOT NULL,
     "niveau" TEXT NOT NULL,
     "annee" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "classe_ecoleId_fkey" FOREIGN KEY ("ecoleId") REFERENCES "ecole" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "classe_profId_fkey" FOREIGN KEY ("profId") REFERENCES "professeur" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -156,6 +187,24 @@ CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 CREATE UNIQUE INDEX "session_token_key" ON "session"("token");
 
 -- CreateIndex
+CREATE INDEX "session_userId_idx" ON "session"("userId");
+
+-- CreateIndex
+CREATE INDEX "account_userId_idx" ON "account"("userId");
+
+-- CreateIndex
+CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ecole_nom_key" ON "ecole"("nom");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ecole_email_key" ON "ecole"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ecole_userId_key" ON "ecole"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "eleve_userId_key" ON "eleve"("userId");
 
 -- CreateIndex
@@ -166,6 +215,15 @@ CREATE UNIQUE INDEX "parent_userId_key" ON "parent"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "professeur_userId_key" ON "professeur"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "professeur_ecoleId_key" ON "professeur"("ecoleId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "classe_ecoleId_key" ON "classe"("ecoleId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "classe_profId_key" ON "classe"("profId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "note_eleveId_evaluationId_key" ON "note"("eleveId", "evaluationId");

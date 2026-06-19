@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ProfesseursController } from './professeurs.controller';
 import { ProfesseursService } from './professeurs.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { resend } from 'src/lib/resend';
 
 @Module({
   imports: [PrismaModule],
