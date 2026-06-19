@@ -17,9 +17,9 @@ export declare class MatieresController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            nom: string;
             ecoleId: string;
             profId: string;
+            nom: string;
             niveau: string;
             annee: string;
         };
@@ -40,9 +40,9 @@ export declare class MatieresController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
         } & {
             professeurId: string;
@@ -61,9 +61,9 @@ export declare class MatieresController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            nom: string;
             ecoleId: string;
             profId: string;
+            nom: string;
             niveau: string;
             annee: string;
         };
@@ -84,9 +84,9 @@ export declare class MatieresController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
         } & {
             professeurId: string;
@@ -96,11 +96,11 @@ export declare class MatieresController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         }[];
     } & {
         id: string;

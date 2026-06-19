@@ -12,16 +12,16 @@ export declare class EcoleController {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        description: string | null;
         nom: string;
-        adresse: string | null;
         telephone: string | null;
+        adresse: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }> | UnauthorizedException;
     findOne(req: Request): Promise<{
         id: string;
@@ -29,16 +29,16 @@ export declare class EcoleController {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        description: string | null;
         nom: string;
-        adresse: string | null;
         telephone: string | null;
+        adresse: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }> | UnauthorizedException;
     update(id: string, dto: UpdateEcoleDto): Promise<{
         id: string;
@@ -46,16 +46,16 @@ export declare class EcoleController {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        description: string | null;
         nom: string;
-        adresse: string | null;
         telephone: string | null;
+        adresse: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -63,15 +63,15 @@ export declare class EcoleController {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        description: string | null;
         nom: string;
-        adresse: string | null;
         telephone: string | null;
+        adresse: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
-        description: string | null;
     }>;
 }

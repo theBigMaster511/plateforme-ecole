@@ -39,8 +39,13 @@ let ProfesseursController = class ProfesseursController {
             html: '<h1>Hello</h1>',
         });
     }
-    findAll() {
-        return this.professeursService.findAll();
+    findAll(req) {
+        const user = req.user;
+        if (!user) {
+            return new common_1.UnauthorizedException('non connecte');
+        }
+        console.log(user);
+        return this.professeursService.findAll(user.id);
     }
     findOne(id) {
         return this.professeursService.findOne(id);
@@ -87,8 +92,9 @@ __decorate([
         isArray: true,
     }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "findAll", null);
 __decorate([

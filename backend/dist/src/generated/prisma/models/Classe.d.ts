@@ -157,12 +157,8 @@ export type ClasseWhereUniqueInput = Prisma.AtLeast<{
     professeur?: Prisma.XOR<Prisma.ProfesseurScalarRelationFilter, Prisma.ProfesseurWhereInput>;
     eleves?: Prisma.EleveListRelationFilter;
     matieres?: Prisma.MatiereListRelationFilter;
-<<<<<<< HEAD
-}, "id" | "ecoleId" | "profId">;
-=======
     professeurs?: Prisma.ProfesseurClasseListRelationFilter;
-}, "id">;
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
+}, "id" | "ecoleId" | "profId">;
 export type ClasseOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     ecoleId?: Prisma.SortOrder;
@@ -407,7 +403,18 @@ export type ClasseUpdateOneRequiredWithoutMatieresNestedInput = {
     connect?: Prisma.ClasseWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ClasseUpdateToOneWithWhereWithoutMatieresInput, Prisma.ClasseUpdateWithoutMatieresInput>, Prisma.ClasseUncheckedUpdateWithoutMatieresInput>;
 };
-<<<<<<< HEAD
+export type ClasseCreateNestedOneWithoutProfesseursInput = {
+    create?: Prisma.XOR<Prisma.ClasseCreateWithoutProfesseursInput, Prisma.ClasseUncheckedCreateWithoutProfesseursInput>;
+    connectOrCreate?: Prisma.ClasseCreateOrConnectWithoutProfesseursInput;
+    connect?: Prisma.ClasseWhereUniqueInput;
+};
+export type ClasseUpdateOneRequiredWithoutProfesseursNestedInput = {
+    create?: Prisma.XOR<Prisma.ClasseCreateWithoutProfesseursInput, Prisma.ClasseUncheckedCreateWithoutProfesseursInput>;
+    connectOrCreate?: Prisma.ClasseCreateOrConnectWithoutProfesseursInput;
+    upsert?: Prisma.ClasseUpsertWithoutProfesseursInput;
+    connect?: Prisma.ClasseWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ClasseUpdateToOneWithWhereWithoutProfesseursInput, Prisma.ClasseUpdateWithoutProfesseursInput>, Prisma.ClasseUncheckedUpdateWithoutProfesseursInput>;
+};
 export type ClasseCreateWithoutEcoleInput = {
     id?: string;
     nom: string;
@@ -418,6 +425,7 @@ export type ClasseCreateWithoutEcoleInput = {
     professeur: Prisma.ProfesseurCreateNestedOneWithoutClasseInput;
     eleves?: Prisma.EleveCreateNestedManyWithoutClasseInput;
     matieres?: Prisma.MatiereCreateNestedManyWithoutClasseInput;
+    professeurs?: Prisma.ProfesseurClasseCreateNestedManyWithoutClasseInput;
 };
 export type ClasseUncheckedCreateWithoutEcoleInput = {
     id?: string;
@@ -429,6 +437,7 @@ export type ClasseUncheckedCreateWithoutEcoleInput = {
     updatedAt?: Date | string;
     eleves?: Prisma.EleveUncheckedCreateNestedManyWithoutClasseInput;
     matieres?: Prisma.MatiereUncheckedCreateNestedManyWithoutClasseInput;
+    professeurs?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutClasseInput;
 };
 export type ClasseCreateOrConnectWithoutEcoleInput = {
     where: Prisma.ClasseWhereUniqueInput;
@@ -453,6 +462,7 @@ export type ClasseUpdateWithoutEcoleInput = {
     professeur?: Prisma.ProfesseurUpdateOneRequiredWithoutClasseNestedInput;
     eleves?: Prisma.EleveUpdateManyWithoutClasseNestedInput;
     matieres?: Prisma.MatiereUpdateManyWithoutClasseNestedInput;
+    professeurs?: Prisma.ProfesseurClasseUpdateManyWithoutClasseNestedInput;
 };
 export type ClasseUncheckedUpdateWithoutEcoleInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -464,19 +474,7 @@ export type ClasseUncheckedUpdateWithoutEcoleInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     eleves?: Prisma.EleveUncheckedUpdateManyWithoutClasseNestedInput;
     matieres?: Prisma.MatiereUncheckedUpdateManyWithoutClasseNestedInput;
-=======
-export type ClasseCreateNestedOneWithoutProfesseursInput = {
-    create?: Prisma.XOR<Prisma.ClasseCreateWithoutProfesseursInput, Prisma.ClasseUncheckedCreateWithoutProfesseursInput>;
-    connectOrCreate?: Prisma.ClasseCreateOrConnectWithoutProfesseursInput;
-    connect?: Prisma.ClasseWhereUniqueInput;
-};
-export type ClasseUpdateOneRequiredWithoutProfesseursNestedInput = {
-    create?: Prisma.XOR<Prisma.ClasseCreateWithoutProfesseursInput, Prisma.ClasseUncheckedCreateWithoutProfesseursInput>;
-    connectOrCreate?: Prisma.ClasseCreateOrConnectWithoutProfesseursInput;
-    upsert?: Prisma.ClasseUpsertWithoutProfesseursInput;
-    connect?: Prisma.ClasseWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ClasseUpdateToOneWithWhereWithoutProfesseursInput, Prisma.ClasseUpdateWithoutProfesseursInput>, Prisma.ClasseUncheckedUpdateWithoutProfesseursInput>;
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
+    professeurs?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutClasseNestedInput;
 };
 export type ClasseCreateWithoutElevesInput = {
     id?: string;
@@ -549,6 +547,7 @@ export type ClasseCreateWithoutProfesseurInput = {
     ecole: Prisma.EcoleCreateNestedOneWithoutClassesInput;
     eleves?: Prisma.EleveCreateNestedManyWithoutClasseInput;
     matieres?: Prisma.MatiereCreateNestedManyWithoutClasseInput;
+    professeurs?: Prisma.ProfesseurClasseCreateNestedManyWithoutClasseInput;
 };
 export type ClasseUncheckedCreateWithoutProfesseurInput = {
     id?: string;
@@ -560,6 +559,7 @@ export type ClasseUncheckedCreateWithoutProfesseurInput = {
     updatedAt?: Date | string;
     eleves?: Prisma.EleveUncheckedCreateNestedManyWithoutClasseInput;
     matieres?: Prisma.MatiereUncheckedCreateNestedManyWithoutClasseInput;
+    professeurs?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutClasseInput;
 };
 export type ClasseCreateOrConnectWithoutProfesseurInput = {
     where: Prisma.ClasseWhereUniqueInput;
@@ -662,11 +662,15 @@ export type ClasseCreateWithoutProfesseursInput = {
     annee: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    ecole: Prisma.EcoleCreateNestedOneWithoutClassesInput;
+    professeur: Prisma.ProfesseurCreateNestedOneWithoutClasseInput;
     eleves?: Prisma.EleveCreateNestedManyWithoutClasseInput;
     matieres?: Prisma.MatiereCreateNestedManyWithoutClasseInput;
 };
 export type ClasseUncheckedCreateWithoutProfesseursInput = {
     id?: string;
+    ecoleId: string;
+    profId: string;
     nom: string;
     niveau: string;
     annee: string;
@@ -695,11 +699,15 @@ export type ClasseUpdateWithoutProfesseursInput = {
     annee?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    ecole?: Prisma.EcoleUpdateOneRequiredWithoutClassesNestedInput;
+    professeur?: Prisma.ProfesseurUpdateOneRequiredWithoutClasseNestedInput;
     eleves?: Prisma.EleveUpdateManyWithoutClasseNestedInput;
     matieres?: Prisma.MatiereUpdateManyWithoutClasseNestedInput;
 };
 export type ClasseUncheckedUpdateWithoutProfesseursInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    ecoleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    profId?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
     niveau?: Prisma.StringFieldUpdateOperationsInput | string;
     annee?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -727,6 +735,7 @@ export type ClasseUpdateWithoutProfesseurInput = {
     ecole?: Prisma.EcoleUpdateOneRequiredWithoutClassesNestedInput;
     eleves?: Prisma.EleveUpdateManyWithoutClasseNestedInput;
     matieres?: Prisma.MatiereUpdateManyWithoutClasseNestedInput;
+    professeurs?: Prisma.ProfesseurClasseUpdateManyWithoutClasseNestedInput;
 };
 export type ClasseUncheckedUpdateWithoutProfesseurInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -738,6 +747,7 @@ export type ClasseUncheckedUpdateWithoutProfesseurInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     eleves?: Prisma.EleveUncheckedUpdateManyWithoutClasseNestedInput;
     matieres?: Prisma.MatiereUncheckedUpdateManyWithoutClasseNestedInput;
+    professeurs?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutClasseNestedInput;
 };
 export type ClasseUncheckedUpdateManyWithoutProfesseurInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;

@@ -23,9 +23,9 @@ export declare class ElevesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            nom: string;
             ecoleId: string;
             profId: string;
+            nom: string;
             niveau: string;
             annee: string;
         } | null;
@@ -43,11 +43,11 @@ export declare class ElevesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                date: Date;
+                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
-                type: import("../generated/prisma/enums").EvalType;
-                date: Date;
             };
         } & {
             id: string;
@@ -105,9 +105,9 @@ export declare class ElevesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            nom: string;
             ecoleId: string;
             profId: string;
+            nom: string;
             niveau: string;
             annee: string;
         } | null;
@@ -125,11 +125,11 @@ export declare class ElevesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                date: Date;
+                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
-                type: import("../generated/prisma/enums").EvalType;
-                date: Date;
             };
         } & {
             id: string;

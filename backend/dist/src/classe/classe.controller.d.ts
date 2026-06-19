@@ -10,9 +10,9 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;
@@ -25,9 +25,9 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     })[] | undefined>;
@@ -68,9 +68,9 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;
@@ -78,9 +78,9 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;
@@ -88,9 +88,9 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;

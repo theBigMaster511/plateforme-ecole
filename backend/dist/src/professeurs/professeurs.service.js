@@ -17,28 +17,19 @@ let ProfesseursService = class ProfesseursService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll() {
-        return this.prisma.professeur.findMany({
-            include: {
-                user: true,
-                matieres: {
-                    include: {
-                        matiere: {
-                            include: {
-                                classe: true,
-                            },
-                        },
-                    },
-                },
-                classes: {
-                    include: {
-                        classe: true,
-                    },
-                },
-                evaluations: true,
+    async findAll(userId) {
+        const school = await this.prisma.ecole.findFirst({
+            where: {
+                userId,
             },
-            orderBy: {
-                createdAt: 'desc',
+        });
+        if (!school) {
+            console.log('School: ', school);
+            throw new Error("school does'nt exist");
+        }
+        return this.prisma.professeur.findMany({
+            where: {
+                ecoleId: school.id,
             },
         });
     }

@@ -574,6 +574,7 @@ export type ProfesseurUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
+  classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
   classe?: Prisma.ClasseUncheckedUpdateManyWithoutProfesseurNestedInput
 }
@@ -586,6 +587,7 @@ export type ProfesseurCreateWithoutEcoleInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
+  classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
   classe?: Prisma.ClasseCreateNestedManyWithoutProfesseurInput
 }
@@ -598,6 +600,7 @@ export type ProfesseurUncheckedCreateWithoutEcoleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
+  classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
   classe?: Prisma.ClasseUncheckedCreateNestedManyWithoutProfesseurInput
 }
@@ -626,6 +629,7 @@ export type ProfesseurUpdateWithoutEcoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
+  classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
   classe?: Prisma.ClasseUpdateManyWithoutProfesseurNestedInput
 }
@@ -638,6 +642,7 @@ export type ProfesseurUncheckedUpdateWithoutEcoleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
+  classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
   classe?: Prisma.ClasseUncheckedUpdateManyWithoutProfesseurNestedInput
 }
@@ -651,6 +656,7 @@ export type ProfesseurCreateWithoutClasseInput = {
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
   ecole: Prisma.EcoleCreateNestedOneWithoutProfesseurInput
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
+  classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
 }
 
@@ -663,6 +669,7 @@ export type ProfesseurUncheckedCreateWithoutClasseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
+  classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
@@ -691,6 +698,7 @@ export type ProfesseurUpdateWithoutClasseInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
   ecole?: Prisma.EcoleUpdateOneRequiredWithoutProfesseurNestedInput
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
+  classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
 }
 
@@ -714,11 +722,8 @@ export type ProfesseurCreateWithoutMatieresInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
-<<<<<<< HEAD
   ecole: Prisma.EcoleCreateNestedOneWithoutProfesseurInput
-=======
   classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
   classe?: Prisma.ClasseCreateNestedManyWithoutProfesseurInput
 }
@@ -759,11 +764,8 @@ export type ProfesseurUpdateWithoutMatieresInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
-<<<<<<< HEAD
   ecole?: Prisma.EcoleUpdateOneRequiredWithoutProfesseurNestedInput
-=======
   classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
   classe?: Prisma.ClasseUpdateManyWithoutProfesseurNestedInput
 }
@@ -778,6 +780,7 @@ export type ProfesseurUncheckedUpdateWithoutMatieresInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
+  classe?: Prisma.ClasseUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurCreateWithoutClassesInput = {
@@ -787,19 +790,23 @@ export type ProfesseurCreateWithoutClassesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
+  ecole: Prisma.EcoleCreateNestedOneWithoutProfesseurInput
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
+  classe?: Prisma.ClasseCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateWithoutClassesInput = {
   id?: string
   userId: string
+  ecoleId: string
   specialite?: string | null
   telephone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
+  classe?: Prisma.ClasseUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurCreateOrConnectWithoutClassesInput = {
@@ -825,13 +832,16 @@ export type ProfesseurUpdateWithoutClassesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
+  ecole?: Prisma.EcoleUpdateOneRequiredWithoutProfesseurNestedInput
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
+  classe?: Prisma.ClasseUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateWithoutClassesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  ecoleId?: Prisma.StringFieldUpdateOperationsInput | string
   specialite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -850,11 +860,8 @@ export type ProfesseurCreateWithoutEvaluationsInput = {
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
   ecole: Prisma.EcoleCreateNestedOneWithoutProfesseurInput
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
-<<<<<<< HEAD
-  classe?: Prisma.ClasseCreateNestedManyWithoutProfesseurInput
-=======
   classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
+  classe?: Prisma.ClasseCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateWithoutEvaluationsInput = {
@@ -866,11 +873,8 @@ export type ProfesseurUncheckedCreateWithoutEvaluationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
-<<<<<<< HEAD
-  classe?: Prisma.ClasseUncheckedCreateNestedManyWithoutProfesseurInput
-=======
   classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
+  classe?: Prisma.ClasseUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurCreateOrConnectWithoutEvaluationsInput = {
@@ -898,11 +902,8 @@ export type ProfesseurUpdateWithoutEvaluationsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
   ecole?: Prisma.EcoleUpdateOneRequiredWithoutProfesseurNestedInput
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
-<<<<<<< HEAD
-  classe?: Prisma.ClasseUpdateManyWithoutProfesseurNestedInput
-=======
   classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
+  classe?: Prisma.ClasseUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateWithoutEvaluationsInput = {
@@ -914,11 +915,8 @@ export type ProfesseurUncheckedUpdateWithoutEvaluationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
-<<<<<<< HEAD
-  classe?: Prisma.ClasseUncheckedUpdateManyWithoutProfesseurNestedInput
-=======
   classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
->>>>>>> 4486f58456f57853ca5ac3ac40cd97c3223006d5
+  classe?: Prisma.ClasseUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
 

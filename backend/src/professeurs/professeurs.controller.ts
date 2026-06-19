@@ -9,6 +9,7 @@ import {
   Post,
   Req,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -63,8 +64,13 @@ export class ProfesseursController {
     isArray: true,
   })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.professeursService.findAll();
+  findAll(@Req() req: Request) {
+    const user = (req as any).user;
+    if (!user) {
+      return new UnauthorizedException('non connecte');
+    }
+    console.log(user);
+    return this.professeursService.findAll(user.id);
   }
 
   @Get(':id')

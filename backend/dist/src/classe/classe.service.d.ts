@@ -8,9 +8,9 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;
@@ -26,9 +26,9 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     })[] | undefined>;
@@ -69,9 +69,9 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;
@@ -79,9 +79,9 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;
@@ -89,9 +89,9 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        nom: string;
         ecoleId: string;
         profId: string;
+        nom: string;
         niveau: string;
         annee: string;
     }>;

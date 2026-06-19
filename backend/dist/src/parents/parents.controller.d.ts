@@ -30,9 +30,9 @@ export declare class ParentsController {
                     id: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    nom: string;
                     ecoleId: string;
                     profId: string;
+                    nom: string;
                     niveau: string;
                     annee: string;
                 } | null;
@@ -83,9 +83,9 @@ export declare class ParentsController {
                     id: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    nom: string;
                     ecoleId: string;
                     profId: string;
+                    nom: string;
                     niveau: string;
                     annee: string;
                 } | null;

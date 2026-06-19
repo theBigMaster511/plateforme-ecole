@@ -33,9 +33,9 @@ export declare class NotesService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -49,11 +49,11 @@ export declare class NotesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;
@@ -80,9 +80,9 @@ export declare class NotesService {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                nom: string;
                 ecoleId: string;
                 profId: string;
+                nom: string;
                 niveau: string;
                 annee: string;
             } | null;
@@ -112,9 +112,9 @@ export declare class NotesService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -128,11 +128,11 @@ export declare class NotesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;
@@ -159,9 +159,9 @@ export declare class NotesService {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                nom: string;
                 ecoleId: string;
                 profId: string;
+                nom: string;
                 niveau: string;
                 annee: string;
             } | null;
@@ -191,9 +191,9 @@ export declare class NotesService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -207,11 +207,11 @@ export declare class NotesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;

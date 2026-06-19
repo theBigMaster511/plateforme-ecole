@@ -33,9 +33,9 @@ export declare class NotesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                nom: string;
                 ecoleId: string;
                 profId: string;
+                nom: string;
                 niveau: string;
                 annee: string;
             } | null;
@@ -65,9 +65,9 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -81,11 +81,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;
@@ -114,9 +114,9 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
-                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
+                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -130,11 +130,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
         };
     } & {
         id: string;
