@@ -76,7 +76,7 @@ export default function AdminSignupPage() {
             <button type="submit" className="btn btn-primary btn-full">Créer le compte</button>
           </form>
           <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-            <a href="/" style={{ color: 'var(--color-info)' }}>Retour à l'accueil</a>
+            <a href="/admin-login" style={{ color: 'var(--color-info)' }}>← Retour à la connexion</a>
           </div>
         </div>
       </div>

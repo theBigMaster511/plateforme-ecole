@@ -152,6 +152,10 @@ export default function AdminLoginPage() {
             <a href="/" style={{ color: '#a13d63' }}>
               Retour à l&apos;accueil
             </a>
+            <span style={{ color: '#ccc', margin: '0 8px' }}>•</span>
+            <a href="/admin-signup" style={{ color: '#a13d63', fontWeight: 500 }}>
+              Créer un compte
+            </a>
           </div>
         </div>
       </div>

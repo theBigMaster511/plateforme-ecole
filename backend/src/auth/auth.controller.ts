@@ -78,21 +78,22 @@ export class AuthController {
   @ApiOperation({ summary: "Connexion pour l'administration de l'école" })
   @ApiResponse({ status: 200, description: 'Connexion réussie' })
   async SignIn(@Body() body: any, @Res() res: Response) {
-    const { email, password } = body;
+    try {
+      const { email, password } = body;
 
-    const account = await this.authService.api.signInEmail({
-      body: {
-        email,
-        password,
-      },
-    });
+      const account = await this.authService.api.signInEmail({
+        body: { email, password },
+      });
 
-    res.cookie('better-auth.session_token', account.token, {
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+      res.cookie('better-auth.session_token', account.token, {
+        httpOnly: true,
+        sameSite: 'lax',
+      });
 
-    return res.json(account);
+      return res.json(account);
+    } catch {
+      return res.status(401).json({ error: 'Email ou mot de passe invalide' });
+    }
   }
 
   /*
@@ -350,21 +351,22 @@ export class AuthController {
   @ApiOperation({ summary: 'Connexion pour les professeurs' })
   @ApiResponse({ status: 200, description: 'Connexion réussie' })
   async SignInTeacher(@Body() body: any, @Res() res: Response) {
-    const { email, password } = body;
+    try {
+      const { email, password } = body;
 
-    const account = await this.authService.api.signInEmail({
-      body: {
-        email,
-        password,
-      },
-    });
+      const account = await this.authService.api.signInEmail({
+        body: { email, password },
+      });
 
-    res.cookie('better-auth.session_token', account.token, {
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+      res.cookie('better-auth.session_token', account.token, {
+        httpOnly: true,
+        sameSite: 'lax',
+      });
 
-    return res.json(account);
+      return res.json(account);
+    } catch {
+      return res.status(401).json({ error: 'Email ou mot de passe invalide' });
+    }
   }
 
   @AllowAnonymous()
@@ -409,13 +411,13 @@ export class AuthController {
 
     // Inclure les profils liés (eleve/professeur/parent) pour éviter des appels supplémentaires
     const [eleve, professeur, parent, ecole] = await Promise.all([
-      this.prisma.eleve.findUnique({ where: { userId: session.userId } }),
+      this.prisma.eleve.findUnique({ where: { userId: session.userId } }).catch(() => null),
       this.prisma.professeur.findUnique({
         where: { userId: session.userId },
         include: {
           classes: { include: { classe: true } },
         },
-      }),
+      }).catch(() => null),
       this.prisma.parent.findUnique({
         where: { userId: session.userId },
         include: {
@@ -427,8 +429,8 @@ export class AuthController {
             },
           },
         },
-      }),
-      this.prisma.ecole.findUnique({ where: { userId: session.userId } }),
+      }).catch(() => null),
+      this.prisma.ecole.findUnique({ where: { userId: session.userId } }).catch(() => null),
     ]);
 
     return res.json({ ...session, eleve, professeur, parent, ecole });

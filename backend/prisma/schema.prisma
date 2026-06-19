@@ -125,6 +125,7 @@ model Ecole {
   updatedAt   DateTime    @updatedAt
   professeurs Professeur[]
   classes     Classe[]
+  frais       FraisScolaire[]
 
   @@map("ecole")
 }
@@ -143,6 +144,7 @@ model Eleve {
 
   notes   Note[]
   parents ParentEleve[]
+  frais   FraisScolaire[]
 
   @@map("eleve")
 }
@@ -326,4 +328,41 @@ model Note {
   // un élève a une seule note par évaluation
   @@unique([eleveId, evaluationId])
   @@map("note")
+}
+
+// ─────────────────────────────────────────
+// FRAIS SCOLAIRES & PAIEMENTS
+// ─────────────────────────────────────────
+
+model FraisScolaire {
+  id          String   @id @default(cuid())
+  eleveId     String
+  libelle     String   // ex: "Inscription 2024-25", "Mensualité Octobre"
+  montant     Float    // Montant total dû
+  montantPaye Float    @default(0)
+  echeance    DateTime // Date d'échéance
+  statut      String   @default("impayé") // "impayé", "partiel", "payé", "en_retard"
+  ecoleId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  eleve     Eleve      @relation(fields: [eleveId], references: [id], onDelete: Cascade)
+  ecole     Ecole      @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
+  paiements Paiement[]
+
+  @@map("frais_scolaire")
+}
+
+model Paiement {
+  id          String   @id @default(cuid())
+  fraisId     String
+  montant     Float
+  methode     String   // "especes", "virement", "mobile_money", "cheque"
+  reference   String?
+  datePaiement DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  frais FraisScolaire @relation(fields: [fraisId], references: [id], onDelete: Cascade)
+
+  @@map("paiement")
 }

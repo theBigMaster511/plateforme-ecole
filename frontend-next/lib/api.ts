@@ -109,4 +109,14 @@ export const api = {
     // Communication endpoints
     getCommunications: () => api.get('/communications'),
     sendCommunication: (data: any) => api.post('/communications', data),
+
+    // Frais scolaires endpoints
+    getFrais: () => api.get('/frais-scolaire'),
+    getFraisEleve: (eleveId: string) => api.get(`/frais-scolaire/eleve/${eleveId}`),
+    getFraisStats: () => api.get('/frais-scolaire/stats'),
+    createFrais: (data: any) => api.post('/frais-scolaire', data),
+    updateFrais: (id: string, data: any) => api.patch(`/frais-scolaire/${id}`, data),
+    deleteFrais: (id: string) => api.delete(`/frais-scolaire/${id}`),
+    addPaiement: (fraisId: string, data: any) => api.post(`/frais-scolaire/${fraisId}/paiement`, data),
+    deletePaiement: (id: string) => api.delete(`/paiement/${id}`),
 };
