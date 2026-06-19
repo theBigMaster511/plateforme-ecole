@@ -35,9 +35,10 @@ describe('MatieresController', () => {
             const dto: CreateMatiereDto = { nom: 'Test Matiere', classeId: '1' };
             mockMatieresService.create.mockResolvedValue({ id: '1', ...dto });
 
-            const result = await controller.create(dto);
+            const req = { user: { ecoleId: 'ecole-1' } };
+            const result = await controller.create(dto, req);
             expect(result).toHaveProperty('id');
-            expect(service.create).toHaveBeenCalledWith(dto);
+            expect(service.create).toHaveBeenCalledWith(dto, 'ecole-1');
         });
     });
 
@@ -45,9 +46,10 @@ describe('MatieresController', () => {
         it('should call service.findAll', async () => {
             mockMatieresService.findAll.mockResolvedValue([]);
 
-            const result = await controller.findAll();
+            const req = { user: { ecoleId: 'ecole-1' } };
+            const result = await controller.findAll(req);
             expect(result).toEqual([]);
-            expect(service.findAll).toHaveBeenCalled();
+            expect(service.findAll).toHaveBeenCalledWith('ecole-1');
         });
     });
 });

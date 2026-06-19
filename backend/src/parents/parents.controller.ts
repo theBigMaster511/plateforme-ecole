@@ -6,12 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
 import { ParentsService } from './parents.service';
 import { UpdateParentDto } from './dto/update-parent.dto';
+import type { Request } from 'express';
+import { ForbiddenException } from '@nestjs/common';
 
 @Controller('parents')
 @ApiTags('Gestion des Parents')
@@ -23,8 +26,9 @@ export class ParentsController {
   @ApiOperation({ summary: 'Lister tous les parents', description: 'Récupérer la liste complète des parents (ADMIN uniquement)' })
   @ApiResponse({ status: 200, description: 'Liste des parents récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.parentsService.findAll();
+  findAll(@Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.parentsService.findAll(ecoleId);
   }
 
   @Get(':id')
@@ -34,8 +38,9 @@ export class ParentsController {
   @ApiResponse({ status: 200, description: 'Parent récupéré' })
   @ApiResponse({ status: 404, description: 'Parent introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findOne(@Param('id') id: string) {
-    return this.parentsService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.parentsService.findOne(id, ecoleId);
   }
 
   @Patch(':id')
@@ -46,8 +51,9 @@ export class ParentsController {
   @ApiResponse({ status: 200, description: 'Parent mis à jour' })
   @ApiResponse({ status: 404, description: 'Parent introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateParentDto) {
-    return this.parentsService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateParentDto, @Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.parentsService.update(id, dto, ecoleId);
   }
 
   @Post(':id/enfants/:eleveId')
@@ -59,8 +65,9 @@ export class ParentsController {
   @ApiResponse({ status: 404, description: 'Parent ou élève introuvable' })
   @ApiResponse({ status: 409, description: 'Liaison déjà existante' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  linkEnfant(@Param('id') parentId: string, @Param('eleveId') eleveId: string) {
-    return this.parentsService.linkEnfant(parentId, eleveId);
+  linkEnfant(@Param('id') parentId: string, @Param('eleveId') eleveId: string, @Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.parentsService.linkEnfant(parentId, eleveId, ecoleId);
   }
 
   @Delete(':id/enfants/:eleveId')
@@ -74,7 +81,9 @@ export class ParentsController {
   unlinkEnfant(
     @Param('id') parentId: string,
     @Param('eleveId') eleveId: string,
+    @Req() req: Request,
   ) {
-    return this.parentsService.unlinkEnfant(parentId, eleveId);
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.parentsService.unlinkEnfant(parentId, eleveId, ecoleId);
   }
 }

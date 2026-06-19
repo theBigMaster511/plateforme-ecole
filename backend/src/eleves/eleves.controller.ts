@@ -1,4 +1,5 @@
-import { Body, Controller, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Patch, Post, Req } from '@nestjs/common';
+import type { Request } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/roles.enum';
@@ -18,8 +19,9 @@ export class ElevesController {
   @ApiOperation({ summary: 'Lister tous les élèves', description: 'Récupérer la liste complète des élèves (ADMIN, PROFESSEUR)' })
   @ApiResponse({ status: 200, description: 'Liste des élèves récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.elevesService.findAll();
+  findAll(@Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.elevesService.findAll(ecoleId);
   }
 
   @Get(':id')
@@ -41,8 +43,9 @@ export class ElevesController {
   @ApiResponse({ status: 200, description: 'Élève mis à jour' })
   @ApiResponse({ status: 404, description: 'Élève introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateEleveDto) {
-    return this.elevesService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateEleveDto, @Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.elevesService.update(id, dto, ecoleId);
   }
 
   @Post(':id/classe/:classeId')
@@ -56,8 +59,10 @@ export class ElevesController {
   assignClasse(
     @Param('id') eleveId: string,
     @Param('classeId') classeId: string,
+    @Req() req: Request,
   ) {
-    return this.elevesService.assignClasse(eleveId, classeId);
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.elevesService.assignClasse(eleveId, classeId, ecoleId);
   }
 
 
@@ -69,7 +74,8 @@ export class ElevesController {
   @ApiResponse({ status: 201, description: 'Élève créé avec succès' })
   @ApiResponse({ status: 400, description: 'Données invalides' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  async createEleve(@Body() data: CreateEleveDto) {
+  async createEleve(@Body() data: CreateEleveDto, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
     const account = await this.AuthService.api.signUpEmail({
       body: {
         email: data.email,
@@ -82,6 +88,6 @@ export class ElevesController {
         throw new NotFoundException(`Erreur lors de la création du compte utilisateur pour l'élève ${data.Nom}.`);
       }
       await this.LocalAuthService.ToggleStudentRole(account.user.id);
-    return this.elevesService.createEleve(data, account.user.id);
+    return this.elevesService.createEleve(data, account.user.id, ecoleId);
   }
 }

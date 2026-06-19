@@ -23,7 +23,7 @@ import { ProfesseursService } from './professeurs.service';
 import { UpdateProfesseurDto } from './dto/update-professeur.dto';
 import type { Request, Response } from 'express';
 import { AuthService } from '@thallesp/nestjs-better-auth';
-import { resend } from '../lib/resend';
+import { getResend } from '../lib/resend';
 import { CreateProfesseurDto } from './dto/create-professeur.dto';
 @Controller('professeurs')
 @ApiTags('Gestion des Professeurs')
@@ -39,15 +39,8 @@ export class ProfesseursController {
     @Req() req: Request,
     @Body() body: CreateProfesseurDto,
   ) {
-    const user = (req as any).user; // déjà peuplé par RolesGuard
-    console.log('user:', user);
-    return resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      // Changer apres achat nom de domaine
-      to: ['nouhouprodev@gmail.com'],
-      subject: 'test',
-      html: '<h1>Hello</h1>',
-    });
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.create(body, ecoleId);
   }
 
   @Get()
@@ -63,8 +56,9 @@ export class ProfesseursController {
     isArray: true,
   })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.professeursService.findAll();
+  findAll(@Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.findAll(ecoleId);
   }
 
   @Get(':id')
@@ -81,8 +75,9 @@ export class ProfesseursController {
   @ApiResponse({ status: 200, description: 'Professeur récupéré' })
   @ApiResponse({ status: 404, description: 'Professeur introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findOne(@Param('id') id: string) {
-    return this.professeursService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.findOne(id, ecoleId);
   }
 
   @Patch(':id')
@@ -104,8 +99,9 @@ export class ProfesseursController {
   @ApiResponse({ status: 200, description: 'Professeur mis à jour' })
   @ApiResponse({ status: 404, description: 'Professeur introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateProfesseurDto) {
-    return this.professeursService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateProfesseurDto, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.update(id, dto, ecoleId);
   }
 
   @Post(':id/matieres/:matiereId')
@@ -135,8 +131,10 @@ export class ProfesseursController {
   assignMatiere(
     @Param('id') professeurId: string,
     @Param('matiereId') matiereId: string,
+    @Req() req: Request,
   ) {
-    return this.professeursService.assignMatiere(professeurId, matiereId);
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.assignMatiere(professeurId, matiereId, ecoleId);
   }
 
   @Delete(':id')
@@ -155,8 +153,9 @@ export class ProfesseursController {
   @ApiResponse({ status: 200, description: 'Professeur supprimé' })
   @ApiResponse({ status: 404, description: 'Professeur introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  remove(@Param('id') id: string) {
-    return this.professeursService.remove(id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.remove(id, ecoleId);
   }
 
   @Delete(':id/matieres/:matiereId')
@@ -182,8 +181,10 @@ export class ProfesseursController {
   removeMatiere(
     @Param('id') professeurId: string,
     @Param('matiereId') matiereId: string,
+    @Req() req: Request,
   ) {
-    return this.professeursService.removeMatiere(professeurId, matiereId);
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.removeMatiere(professeurId, matiereId, ecoleId);
   }
 
   @Post(':id/classes/:classeId')
@@ -194,8 +195,10 @@ export class ProfesseursController {
   assignClasse(
     @Param('id') professeurId: string,
     @Param('classeId') classeId: string,
+    @Req() req: Request,
   ) {
-    return this.professeursService.assignClasse(professeurId, classeId);
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.assignClasse(professeurId, classeId, ecoleId);
   }
 
   @Delete(':id/classes/:classeId')
@@ -206,7 +209,9 @@ export class ProfesseursController {
   removeClasse(
     @Param('id') professeurId: string,
     @Param('classeId') classeId: string,
+    @Req() req: Request,
   ) {
-    return this.professeursService.removeClasse(professeurId, classeId);
+    const ecoleId = (req as any).user.ecoleId;
+    return this.professeursService.removeClasse(professeurId, classeId, ecoleId);
   }
 }

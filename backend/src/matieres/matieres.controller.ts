@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
@@ -26,8 +27,9 @@ export class MatieresController {
   @ApiResponse({ status: 201, description: 'Matière créée avec succès', type: CreateMatiereDto })
   @ApiResponse({ status: 409, description: 'La matière existe déjà pour cette classe' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  create(@Body() dto: CreateMatiereDto) {
-    return this.matieresService.create(dto);
+  create(@Body() dto: CreateMatiereDto, @Req() req: any) {
+    const ecoleId = req.user?.ecoleId;
+    return this.matieresService.create(dto, ecoleId);
   }
 
   @Get()
@@ -35,8 +37,9 @@ export class MatieresController {
   @ApiOperation({ summary: 'Lister toutes les matières', description: 'Récupérer la liste de toutes les matières (ADMIN, PROFESSEUR)' })
   @ApiResponse({ status: 200, description: 'Liste des matières récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.matieresService.findAll();
+  findAll(@Req() req: any) {
+    const ecoleId = req.user?.ecoleId;
+    return this.matieresService.findAll(ecoleId);
   }
 
   @Get(':id')
@@ -53,8 +56,9 @@ export class MatieresController {
   @ApiOperation({ summary: 'Modifier une matière' })
   @ApiResponse({ status: 200, description: 'Matière mise à jour' })
   @ApiResponse({ status: 404, description: 'Matière introuvable' })
-  update(@Param('id') id: string, @Body() dto: UpdateMatiereDto) {
-    return this.matieresService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateMatiereDto, @Req() req: any) {
+    const ecoleId = req.user?.ecoleId;
+    return this.matieresService.update(id, dto, ecoleId);
   }
 
   @Delete(':id')
@@ -62,7 +66,8 @@ export class MatieresController {
   @ApiOperation({ summary: 'Supprimer une matière' })
   @ApiResponse({ status: 200, description: 'Matière supprimée' })
   @ApiResponse({ status: 404, description: 'Matière introuvable' })
-  remove(@Param('id') id: string) {
-    return this.matieresService.remove(id);
+  remove(@Param('id') id: string, @Req() req: any) {
+    const ecoleId = req.user?.ecoleId;
+    return this.matieresService.remove(id, ecoleId);
   }
 }

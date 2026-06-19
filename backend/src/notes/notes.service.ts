@@ -12,12 +12,17 @@ import { UpdateNoteDto } from './dto/update-note.dto';
 export class NotesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateNoteDto, professeurId?: string) {
+  async create(dto: CreateNoteDto, professeurId?: string, ecoleId?: string) {
     const eleve = await this.prisma.eleve.findUnique({
       where: { id: dto.eleveId },
       include: { classe: true },
     });
     if (!eleve) {
+      throw new NotFoundException(
+        `Élève avec l'ID ${dto.eleveId} introuvable.`,
+      );
+    }
+    if (ecoleId && eleve.classe?.ecoleId !== ecoleId) {
       throw new NotFoundException(
         `Élève avec l'ID ${dto.eleveId} introuvable.`,
       );
@@ -124,12 +129,16 @@ export class NotesService {
     return results;
   }
 
-  async findByEleve(eleveId: string) {
+  async findByEleve(eleveId: string, ecoleId?: string) {
     // Vérifier que l'élève existe
     const eleve = await this.prisma.eleve.findUnique({
       where: { id: eleveId },
+      include: { classe: true },
     });
     if (!eleve) {
+      throw new NotFoundException(`Élève avec l'ID ${eleveId} introuvable.`);
+    }
+    if (ecoleId && eleve.classe?.ecoleId !== ecoleId) {
       throw new NotFoundException(`Élève avec l'ID ${eleveId} introuvable.`);
     }
 
@@ -153,8 +162,12 @@ export class NotesService {
     });
   }
 
-  async findAll() {
+  async findAll(ecoleId?: string) {
+    const where = ecoleId
+      ? { eleve: { classe: { ecoleId } } }
+      : {};
     return this.prisma.note.findMany({
+      where,
       include: {
         eleve: {
           include: {
@@ -209,9 +222,12 @@ export class NotesService {
     return note;
   }
 
-  async update(id: string, dto: UpdateNoteDto) {
+  async update(id: string, dto: UpdateNoteDto, ecoleId?: string) {
     // Vérifier que la note existe
-    await this.findOne(id);
+    const note = await this.findOne(id);
+    if (ecoleId && note.eleve.classe?.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Note avec l'ID ${id} introuvable.`);
+    }
 
     return this.prisma.note.update({
       where: { id },
@@ -219,9 +235,12 @@ export class NotesService {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, ecoleId?: string) {
     // Vérifier que la note existe
-    await this.findOne(id);
+    const note = await this.findOne(id);
+    if (ecoleId && note.eleve.classe?.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Note avec l'ID ${id} introuvable.`);
+    }
 
     return this.prisma.note.delete({
       where: { id },

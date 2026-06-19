@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
@@ -20,8 +21,8 @@ export class EvaluationsController {
   constructor(private readonly evaluationsService: EvaluationsService) { }
 
   @Post()
-  @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Créer une évaluation', description: 'Créer une nouvelle évaluation pour une matière (PROFESSEUR uniquement)' })
+  @Roles(Role.ADMIN, Role.PROFESSEUR)
+  @ApiOperation({ summary: 'Créer une évaluation', description: 'Créer une nouvelle évaluation pour une matière (ADMIN, PROFESSEUR)' })
   @ApiBody({ type: CreateEvaluationDto, description: 'Données de l\'évaluation' })
   @ApiResponse({ status: 201, description: 'Évaluation créée avec succès', type: CreateEvaluationDto })
   @ApiResponse({
@@ -29,8 +30,9 @@ export class EvaluationsController {
     description: 'Matière ou professeur introuvable',
   })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  create(@Body() dto: CreateEvaluationDto) {
-    return this.evaluationsService.create(dto);
+  create(@Body() dto: CreateEvaluationDto, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.evaluationsService.create(dto, ecoleId);
   }
 
   @Get()
@@ -38,8 +40,9 @@ export class EvaluationsController {
   @ApiOperation({ summary: 'Lister toutes les évaluations', description: 'Récupérer la liste de toutes les évaluations (ADMIN, PROFESSEUR)' })
   @ApiResponse({ status: 200, description: 'Liste des évaluations récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.evaluationsService.findAll();
+  findAll(@Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.evaluationsService.findAll(ecoleId);
   }
 
   @Get(':id')
@@ -49,30 +52,33 @@ export class EvaluationsController {
   @ApiResponse({ status: 200, description: 'Évaluation récupérée' })
   @ApiResponse({ status: 404, description: 'Évaluation introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findOne(@Param('id') id: string) {
-    return this.evaluationsService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.evaluationsService.findOne(id, ecoleId);
   }
 
   @Patch(':id')
-  @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Modifier une évaluation', description: 'Mettre à jour les informations d\'une évaluation (PROFESSEUR uniquement)' })
+  @Roles(Role.ADMIN, Role.PROFESSEUR)
+  @ApiOperation({ summary: 'Modifier une évaluation', description: 'Mettre à jour les informations d\'une évaluation (ADMIN, PROFESSEUR)' })
   @ApiParam({ name: 'id', description: 'ID unique de l\'évaluation', example: 'eval123456789' })
   @ApiBody({ type: UpdateEvaluationDto, description: 'Champs à mettre à jour' })
   @ApiResponse({ status: 200, description: 'Évaluation mise à jour' })
   @ApiResponse({ status: 404, description: 'Évaluation introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateEvaluationDto) {
-    return this.evaluationsService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateEvaluationDto, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.evaluationsService.update(id, dto, ecoleId);
   }
 
   @Delete(':id')
-  @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Supprimer une évaluation', description: 'Supprimer une évaluation (PROFESSEUR uniquement)' })
+  @Roles(Role.ADMIN, Role.PROFESSEUR)
+  @ApiOperation({ summary: 'Supprimer une évaluation', description: 'Supprimer une évaluation (ADMIN, PROFESSEUR)' })
   @ApiParam({ name: 'id', description: 'ID unique de l\'évaluation', example: 'eval123456789' })
   @ApiResponse({ status: 200, description: 'Évaluation supprimée' })
   @ApiResponse({ status: 404, description: 'Évaluation introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  remove(@Param('id') id: string) {
-    return this.evaluationsService.remove(id);
+  remove(@Param('id') id: string, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.evaluationsService.remove(id, ecoleId);
   }
 }

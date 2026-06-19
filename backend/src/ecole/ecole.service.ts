@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEcoleDto } from './dto/create-ecole.dto';
@@ -12,11 +13,8 @@ export class EcoleService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateEcoleDto, userId: string) {
-    // Vérifier s'il existe déjà une école
     const exists = await this.prisma.ecole.findFirst({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
     if (exists) {
       throw new ConflictException(
@@ -24,7 +22,6 @@ export class EcoleService {
       );
     }
 
-    // Vérifier si l'email est unique s'il est fourni
     if (dto.email) {
       const emailExists = await this.prisma.ecole.findUnique({
         where: { email: dto.email },
@@ -47,7 +44,7 @@ export class EcoleService {
         pays: dto.pays || 'Sénégal',
         codePostal: dto.codePostal,
         description: dto.description,
-        userId: userId,
+        userId,
       },
     });
   }
@@ -58,9 +55,7 @@ export class EcoleService {
 
   async findOne(userId: string) {
     const ecole = await this.prisma.ecole.findFirst({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
     if (!ecole) {
       throw new NotFoundException('Aucune école configurée.');
@@ -68,14 +63,16 @@ export class EcoleService {
     return ecole;
   }
 
-  async update(id: string, dto: UpdateEcoleDto) {
-    // Vérifier que l'école existe
+  async update(id: string, dto: UpdateEcoleDto, user?: any) {
     const ecole = await this.prisma.ecole.findUnique({ where: { id } });
     if (!ecole) {
       throw new NotFoundException(`École avec l'ID ${id} introuvable.`);
     }
 
-    // Vérifier que le nouvel email n'existe pas
+    if (user && ecole.userId !== user.id) {
+      throw new ForbiddenException("Vous n'êtes pas autorisé à modifier cette école.");
+    }
+
     if (dto.email && dto.email !== ecole.email) {
       const emailExists = await this.prisma.ecole.findUnique({
         where: { email: dto.email },
@@ -85,7 +82,6 @@ export class EcoleService {
       }
     }
 
-    // Vérifier que le nouveau nom n'existe pas
     if (dto.nom && dto.nom !== ecole.nom) {
       const nomExists = await this.prisma.ecole.findUnique({
         where: { nom: dto.nom },
@@ -101,10 +97,14 @@ export class EcoleService {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, user?: any) {
     const ecole = await this.prisma.ecole.findUnique({ where: { id } });
     if (!ecole) {
       throw new NotFoundException(`École avec l'ID ${id} introuvable.`);
+    }
+
+    if (user && ecole.userId !== user.id) {
+      throw new ForbiddenException("Vous n'êtes pas autorisé à supprimer cette école.");
     }
 
     return this.prisma.ecole.delete({

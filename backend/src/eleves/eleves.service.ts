@@ -8,8 +8,9 @@ import { CreateEleveDto } from './dto/create-eleve.dto';
 export class ElevesService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(ecoleId?: string) {
     return this.prisma.eleve.findMany({
+      where: ecoleId ? { classe: { ecoleId } } : undefined,
       include: {
         user: true,
         classe: true,
@@ -72,9 +73,17 @@ export class ElevesService {
     return eleve;
   }
 
-  async update(id: string, dto: UpdateEleveDto) {
-    // Vérifier que l'élève existe
-    await this.findOne(id);
+  async update(id: string, dto: UpdateEleveDto, ecoleId?: string) {
+    const eleve = await this.findOne(id);
+
+    if (ecoleId) {
+      const classe = await this.prisma.classe.findUnique({
+        where: { id: eleve.classeId ?? undefined },
+      });
+      if (!classe || classe.ecoleId !== ecoleId) {
+        throw new NotFoundException(`Élève avec l'ID ${id} introuvable.`);
+      }
+    }
 
     return this.prisma.eleve.update({
       where: { id },
@@ -86,7 +95,7 @@ export class ElevesService {
     });
   }
 
-  async assignClasse(eleveId: string, classeId: string) {
+  async assignClasse(eleveId: string, classeId: string, ecoleId?: string) {
     // Vérifier que l'élève et la classe existent
     const eleve = await this.prisma.eleve.findUnique({
       where: { id: eleveId },
@@ -102,6 +111,10 @@ export class ElevesService {
       throw new NotFoundException(`Classe avec l'ID ${classeId} introuvable.`);
     }
 
+    if (ecoleId && classe.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Classe avec l'ID ${classeId} introuvable.`);
+    }
+
     return this.prisma.eleve.update({
       where: { id: eleveId },
       data: {
@@ -110,8 +123,16 @@ export class ElevesService {
     });
   }
 
-  async createEleve(data:CreateEleveDto, userId: string) {
+  async createEleve(data:CreateEleveDto, userId: string, ecoleId: string) {
     const { dateNaissance, adresse, Nom, Matricule, MotDePasse, ClasseId, email } = data;
+
+    const classe = await this.prisma.classe.findFirst({
+      where: { id: ClasseId, ecoleId },
+    });
+    if (!classe) {
+      throw new NotFoundException(`Classe avec l'ID ${ClasseId} introuvable.`);
+    }
+
     const existingEleve = await this.prisma.eleve.findUnique({
       where:{
         matricule: Matricule

@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -43,8 +42,9 @@ export class ClasseController {
   })
   @ApiResponse({ status: 409, description: 'La classe existe déjà' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  create(@Body() dto: CreateClasseDto) {
-    return this.classeService.create(dto);
+  create(@Body() dto: CreateClasseDto, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.classeService.create(dto, ecoleId);
   }
 
   // Admin et profs voient toutes les classe
@@ -61,13 +61,8 @@ export class ClasseController {
   })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
   async findAll(@Req() req: Request) {
-    const user = (req as any).user;
-    const schoolId = await this.classeService.schoolId(user.id);
-
-    if (!schoolId) {
-      return new NotFoundException();
-    }
-    return this.classeService.findAll(schoolId.id);
+    const ecoleId = (req as any).user.ecoleId;
+    return this.classeService.findAll(ecoleId);
   }
 
   // Admin, prof et eleve voient une classe
@@ -116,8 +111,9 @@ export class ClasseController {
   })
   @ApiResponse({ status: 404, description: 'Classe introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateClassDto) {
-    return this.classeService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateClassDto, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.classeService.update(id, dto, ecoleId);
   }
 
   // Seul l'admin peut supprimer
@@ -135,7 +131,8 @@ export class ClasseController {
   @ApiResponse({ status: 200, description: 'Classe supprimée avec succès' })
   @ApiResponse({ status: 404, description: 'Classe introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  remove(@Param('id') id: string) {
-    return this.classeService.remove(id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    return this.classeService.remove(id, ecoleId);
   }
 }
