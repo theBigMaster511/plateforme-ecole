@@ -54,6 +54,18 @@ export class AuthController {
 
     await this.localAuthService.ToogleAdminRole(account.user.id);
 
+    // Créer l'école liée au compte admin
+    await this.prisma.ecole.create({
+      data: {
+        nom: body.schoolName || `École de ${body.name || 'admin'}`,
+        email: body.email || undefined,
+        telephone: body.schoolPhone || undefined,
+        adresse: body.schoolAddress || undefined,
+        ville: body.schoolCity || undefined,
+        userId: account.user.id,
+      },
+    });
+
     res.cookie('better-auth.session_token', account.token, {
       httpOnly: true,
       sameSite: 'lax',
