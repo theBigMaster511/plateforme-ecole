@@ -13,6 +13,7 @@ import { AuthService, AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import type { Response, Request as ExpressRequest } from 'express';
 import { AuthService as LocalAuthService } from './auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { fromNodeHeaders } from 'better-auth/node';
 
 @Controller('auth')
 @ApiTags('Authentification')
@@ -393,33 +394,32 @@ export class AuthController {
       return res.json({ error: 'No session token found in cookies' });
     }
 
-    // Récupère la session depuis Prisma
-    const session = await this.prisma.session.findUnique({
-      where: { token: sessionToken },
-      include: { user: true },
+    // Utilise better-auth pour valider et rafraîchir la session automatiquement
+    const session = await this.authService.api.getSession({
+      headers: fromNodeHeaders(req.headers),
     });
 
-    if (!session) {
+    if (!session || !session.user) {
       return res.json({ error: 'Session not found in database' });
     }
 
     await this.localAuthService.AddUserAgent({
       userAgent: req.headers['user-agent'] || '',
-      userToken: session.token,
+      userToken: sessionToken,
       userIpAddress: req.ip || '',
     });
 
     // Inclure les profils liés (eleve/professeur/parent) pour éviter des appels supplémentaires
     const [eleve, professeur, parent, ecole] = await Promise.all([
-      this.prisma.eleve.findUnique({ where: { userId: session.userId } }).catch(() => null),
+      this.prisma.eleve.findUnique({ where: { userId: session.user.id } }).catch(() => null),
       this.prisma.professeur.findUnique({
-        where: { userId: session.userId },
+        where: { userId: session.user.id },
         include: {
           classes: { include: { classe: true } },
         },
       }).catch(() => null),
       this.prisma.parent.findUnique({
-        where: { userId: session.userId },
+        where: { userId: session.user.id },
         include: {
           enfants: {
             include: {
@@ -430,7 +430,7 @@ export class AuthController {
           },
         },
       }).catch(() => null),
-      this.prisma.ecole.findUnique({ where: { userId: session.userId } }).catch(() => null),
+      this.prisma.ecole.findUnique({ where: { userId: session.user.id } }).catch(() => null),
     ]);
 
     return res.json({ ...session, eleve, professeur, parent, ecole });
