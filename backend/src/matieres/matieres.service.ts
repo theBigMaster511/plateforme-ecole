@@ -11,12 +11,18 @@ import { UpdateMatiereDto } from './dto/update-matiere.dto';
 export class MatieresService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateMatiereDto) {
+  async create(dto: CreateMatiereDto, ecoleId?: string) {
     // Vérifier que la classe existe
     const classe = await this.prisma.classe.findUnique({
       where: { id: dto.classeId },
     });
     if (!classe) {
+      throw new NotFoundException(
+        `Classe avec l'ID ${dto.classeId} introuvable.`,
+      );
+    }
+
+    if (ecoleId && classe.ecoleId !== ecoleId) {
       throw new NotFoundException(
         `Classe avec l'ID ${dto.classeId} introuvable.`,
       );
@@ -44,8 +50,9 @@ export class MatieresService {
     });
   }
 
-  async findAll() {
+  async findAll(ecoleId?: string) {
     return this.prisma.matiere.findMany({
+      where: ecoleId ? { classe: { ecoleId } } : undefined,
       include: {
         classe: true,
         professeurs: {
@@ -89,9 +96,12 @@ export class MatieresService {
     return matiere;
   }
 
-  async update(id: string, dto: UpdateMatiereDto) {
-    // Vérifier que la matière existe
-    await this.findOne(id);
+  async update(id: string, dto: UpdateMatiereDto, ecoleId?: string) {
+    const matiere = await this.findOne(id);
+
+    if (ecoleId && matiere.classe.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Matière avec l'ID ${id} introuvable.`);
+    }
 
     return this.prisma.matiere.update({
       where: { id },
@@ -99,9 +109,12 @@ export class MatieresService {
     });
   }
 
-  async remove(id: string) {
-    // Vérifier que la matière existe
-    await this.findOne(id);
+  async remove(id: string, ecoleId?: string) {
+    const matiere = await this.findOne(id);
+
+    if (ecoleId && matiere.classe.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Matière avec l'ID ${id} introuvable.`);
+    }
 
     return this.prisma.matiere.delete({
       where: { id },

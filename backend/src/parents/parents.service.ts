@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateParentDto } from './dto/update-parent.dto';
@@ -10,8 +11,21 @@ import { UpdateParentDto } from './dto/update-parent.dto';
 export class ParentsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(ecoleId?: string) {
+    const where: any = {};
+    if (ecoleId) {
+      where.enfants = {
+        some: {
+          eleve: {
+            classe: {
+              ecoleId,
+            },
+          },
+        },
+      };
+    }
     return this.prisma.parent.findMany({
+      where,
       include: {
         user: true,
         enfants: {
@@ -31,7 +45,7 @@ export class ParentsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, ecoleId?: string) {
     const parent = await this.prisma.parent.findUnique({
       where: { id },
       include: {
@@ -53,12 +67,20 @@ export class ParentsService {
       throw new NotFoundException(`Parent avec l'ID ${id} introuvable.`);
     }
 
+    if (ecoleId) {
+      const belongsToSchool = parent.enfants.some(
+        (pe) => pe.eleve.classe?.ecoleId === ecoleId,
+      );
+      if (!belongsToSchool) {
+        throw new ForbiddenException('Ce parent ne fait pas partie de votre école.');
+      }
+    }
+
     return parent;
   }
 
-  async update(id: string, dto: UpdateParentDto) {
-    // Vérifier que le parent existe
-    await this.findOne(id);
+  async update(id: string, dto: UpdateParentDto, ecoleId?: string) {
+    await this.findOne(id, ecoleId);
 
     return this.prisma.parent.update({
       where: { id },
@@ -66,8 +88,7 @@ export class ParentsService {
     });
   }
 
-  async linkEnfant(parentId: string, eleveId: string) {
-    // Vérifier que le parent et l'élève existent
+  async linkEnfant(parentId: string, eleveId: string, ecoleId?: string) {
     const parent = await this.prisma.parent.findUnique({
       where: { id: parentId },
     });
@@ -77,18 +98,19 @@ export class ParentsService {
 
     const eleve = await this.prisma.eleve.findUnique({
       where: { id: eleveId },
+      include: { classe: true },
     });
     if (!eleve) {
       throw new NotFoundException(`Élève avec l'ID ${eleveId} introuvable.`);
     }
 
-    // Vérifier que la liaison n'existe pas déjà
+    if (ecoleId && eleve.classe?.ecoleId !== ecoleId) {
+      throw new ForbiddenException("Cet élève n'appartient pas à votre école.");
+    }
+
     const exists = await this.prisma.parentEleve.findUnique({
       where: {
-        parentId_eleveId: {
-          parentId,
-          eleveId,
-        },
+        parentId_eleveId: { parentId, eleveId },
       },
     });
     if (exists) {
@@ -96,21 +118,24 @@ export class ParentsService {
     }
 
     return this.prisma.parentEleve.create({
-      data: {
-        parentId,
-        eleveId,
-      },
+      data: { parentId, eleveId },
     });
   }
 
-  async unlinkEnfant(parentId: string, eleveId: string) {
-    // Vérifier que la liaison existe
+  async unlinkEnfant(parentId: string, eleveId: string, ecoleId?: string) {
+    if (ecoleId) {
+      const eleve = await this.prisma.eleve.findUnique({
+        where: { id: eleveId },
+        include: { classe: true },
+      });
+      if (!eleve || eleve.classe?.ecoleId !== ecoleId) {
+        throw new ForbiddenException("Cet élève n'appartient pas à votre école.");
+      }
+    }
+
     const exists = await this.prisma.parentEleve.findUnique({
       where: {
-        parentId_eleveId: {
-          parentId,
-          eleveId,
-        },
+        parentId_eleveId: { parentId, eleveId },
       },
     });
     if (!exists) {
@@ -119,10 +144,7 @@ export class ParentsService {
 
     return this.prisma.parentEleve.delete({
       where: {
-        parentId_eleveId: {
-          parentId,
-          eleveId,
-        },
+        parentId_eleveId: { parentId, eleveId },
       },
     });
   }

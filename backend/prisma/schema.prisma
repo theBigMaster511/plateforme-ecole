@@ -123,8 +123,9 @@ model Ecole {
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  professeur  Professeur?
-  classes     Classe?
+  professeurs Professeur[]
+  classes     Classe[]
+  frais       FraisScolaire[]
 
   @@map("ecole")
 }
@@ -143,6 +144,7 @@ model Eleve {
 
   notes   Note[]
   parents ParentEleve[]
+  frais   FraisScolaire[]
 
   @@map("eleve")
 }
@@ -176,7 +178,7 @@ model ParentEleve {
 model Professeur {
   id         String   @id @default(cuid())
   userId     String   @unique
-  ecoleId    String   @unique
+  ecoleId    String
   specialite String?
   telephone  String?
   createdAt  DateTime @default(now())
@@ -188,14 +190,15 @@ model Professeur {
   classes     ProfesseurClasse[]
   evaluations Evaluation[]
   classe      Classe[]
+  emploisTemps EmploiTemps[]
 
   @@map("professeur")
 }
 
 model Classe {
   id         String     @id @default(cuid())
-  ecoleId    String     @unique
-  profId     String     @unique
+  ecoleId    String
+  profId     String
   nom        String // ex: "6ème A", "Terminale S"
   niveau     String // ex: "6ème", "Terminale"
   annee      String // ex: "2024-2025"
@@ -204,9 +207,10 @@ model Classe {
   ecole      Ecole      @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
   professeur Professeur @relation(fields: [profId], references: [id], onDelete: Cascade)
 
-  eleves      Eleve[]
-  matieres    Matiere[]
-  professeurs ProfesseurClasse[]
+  eleves       Eleve[]
+  matieres     Matiere[]
+  professeurs  ProfesseurClasse[]
+  emploisTemps EmploiTemps[]
 
   @@map("classe")
 }
@@ -223,6 +227,7 @@ model Matiere {
 
   professeurs ProfesseurMatiere[]
   evaluations Evaluation[]
+  emploisTemps EmploiTemps[]
 
   @@map("matiere")
 }
@@ -251,6 +256,34 @@ model ProfesseurClasse {
 
   @@id([professeurId, classeId])
   @@map("professeur_classe")
+}
+
+model EmploiTemps {
+  id        String   @id @default(cuid())
+  jour      Jour     // Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi
+  heureDebut String  // ex: "07:30"
+  heureFin   String  // ex: "08:30"
+  salle     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  classeId     String
+  classe       Classe     @relation(fields: [classeId], references: [id], onDelete: Cascade)
+  matiereId    String
+  matiere      Matiere    @relation(fields: [matiereId], references: [id], onDelete: Cascade)
+  professeurId String?
+  professeur   Professeur? @relation(fields: [professeurId], references: [id])
+
+  @@map("emploi_temps")
+}
+
+enum Jour {
+  LUNDI
+  MARDI
+  MERCREDI
+  JEUDI
+  VENDREDI
+  SAMEDI
 }
 
 model Evaluation {
@@ -295,4 +328,41 @@ model Note {
   // un élève a une seule note par évaluation
   @@unique([eleveId, evaluationId])
   @@map("note")
+}
+
+// ─────────────────────────────────────────
+// FRAIS SCOLAIRES & PAIEMENTS
+// ─────────────────────────────────────────
+
+model FraisScolaire {
+  id          String   @id @default(cuid())
+  eleveId     String
+  libelle     String   // ex: "Inscription 2024-25", "Mensualité Octobre"
+  montant     Float    // Montant total dû
+  montantPaye Float    @default(0)
+  echeance    DateTime // Date d'échéance
+  statut      String   @default("impayé") // "impayé", "partiel", "payé", "en_retard"
+  ecoleId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  eleve     Eleve      @relation(fields: [eleveId], references: [id], onDelete: Cascade)
+  ecole     Ecole      @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
+  paiements Paiement[]
+
+  @@map("frais_scolaire")
+}
+
+model Paiement {
+  id          String   @id @default(cuid())
+  fraisId     String
+  montant     Float
+  methode     String   // "especes", "virement", "mobile_money", "cheque"
+  reference   String?
+  datePaiement DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  frais FraisScolaire @relation(fields: [fraisId], references: [id], onDelete: Cascade)
+
+  @@map("paiement")
 }

@@ -11,13 +11,13 @@ import { UpdateClassDto } from './dto/update-classe.dto';
 export class ClasseService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateClasseDto) {
+  async create(dto: CreateClasseDto, ecoleId: string) {
     // Verfie si la classe existe deja
     const exists = await this.prisma.classe.findFirst({
       where: {
         nom: dto.name,
         annee: dto.years,
-        ecoleId: dto.schoolId,
+        ecoleId,
       },
     });
 
@@ -32,29 +32,18 @@ export class ClasseService {
         nom: dto.name,
         annee: dto.years,
         niveau: dto.level,
-        ecoleId: dto.schoolId,
+        ecoleId,
         profId: dto.profId || '',
       },
     });
   }
 
-  async schoolId(userId: string) {
-    return await this.prisma.ecole.findFirst({
-      where: {
-        userId,
-      },
-      select: {
-        id: true,
-      },
-    });
-  }
-
-  async findAll(schoolId: string | null) {
-    if (schoolId === null) return;
+  async findAll(ecoleId?: string | null) {
+    if (!ecoleId) return;
 
     return this.prisma.classe.findMany({
       where: {
-        ecoleId: schoolId,
+        ecoleId,
       },
       include: {
         _count: {
@@ -98,8 +87,12 @@ export class ClasseService {
     return classe;
   }
 
-  async update(id: string, dto: UpdateClassDto) {
-    await this.findOne(id);
+  async update(id: string, dto: UpdateClassDto, ecoleId?: string) {
+    const classe = await this.findOne(id);
+
+    if (ecoleId && classe.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Classe ${id} introuvable`);
+    }
 
     return this.prisma.classe.update({
       where: {
@@ -113,8 +106,12 @@ export class ClasseService {
     });
   }
 
-  async remove(id: string) {
-    await this.findOne(id);
+  async remove(id: string, ecoleId?: string) {
+    const classe = await this.findOne(id);
+
+    if (ecoleId && classe.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Classe ${id} introuvable`);
+    }
 
     return this.prisma.classe.delete({
       where: { id },

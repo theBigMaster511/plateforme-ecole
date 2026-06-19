@@ -7,12 +7,18 @@ import { UpdateEvaluationDto } from './dto/update-evaluation.dto';
 export class EvaluationsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateEvaluationDto) {
+  async create(dto: CreateEvaluationDto, ecoleId?: string) {
     // Vérifier que la matière et le professeur existent
     const matiere = await this.prisma.matiere.findUnique({
       where: { id: dto.matiereId },
+      include: { classe: true },
     });
     if (!matiere) {
+      throw new NotFoundException(
+        `Matière avec l'ID ${dto.matiereId} introuvable.`,
+      );
+    }
+    if (ecoleId && matiere.classe.ecoleId !== ecoleId) {
       throw new NotFoundException(
         `Matière avec l'ID ${dto.matiereId} introuvable.`,
       );
@@ -38,8 +44,12 @@ export class EvaluationsService {
     });
   }
 
-  async findAll() {
+  async findAll(ecoleId?: string) {
+    const where = ecoleId
+      ? { matiere: { classe: { ecoleId } } }
+      : {};
     return this.prisma.evaluation.findMany({
+      where,
       include: {
         matiere: {
           include: {
@@ -59,7 +69,7 @@ export class EvaluationsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, ecoleId?: string) {
     const evaluation = await this.prisma.evaluation.findUnique({
       where: { id },
       include: {
@@ -88,13 +98,16 @@ export class EvaluationsService {
     if (!evaluation) {
       throw new NotFoundException(`Évaluation avec l'ID ${id} introuvable.`);
     }
+    if (ecoleId && evaluation.matiere.classe.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Évaluation avec l'ID ${id} introuvable.`);
+    }
 
     return evaluation;
   }
 
-  async update(id: string, dto: UpdateEvaluationDto) {
+  async update(id: string, dto: UpdateEvaluationDto, ecoleId?: string) {
     // Vérifier que l'évaluation existe
-    await this.findOne(id);
+    await this.findOne(id, ecoleId);
 
     return this.prisma.evaluation.update({
       where: { id },
@@ -106,9 +119,9 @@ export class EvaluationsService {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, ecoleId?: string) {
     // Vérifier que l'évaluation existe
-    await this.findOne(id);
+    await this.findOne(id, ecoleId);
 
     return this.prisma.evaluation.delete({
       where: { id },

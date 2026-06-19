@@ -91,8 +91,9 @@ export class EcoleController {
   })
   @ApiResponse({ status: 404, description: 'École introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateEcoleDto) {
-    return this.ecoleService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateEcoleDto, @Req() req: Request) {
+    const user = (req as any).user;
+    return this.ecoleService.update(id, dto, user);
   }
 
   @Delete(':id')
@@ -109,7 +110,8 @@ export class EcoleController {
   @ApiResponse({ status: 200, description: 'École supprimée avec succès' })
   @ApiResponse({ status: 404, description: 'École introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  remove(@Param('id') id: string) {
-    return this.ecoleService.remove(id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const user = (req as any).user;
+    return this.ecoleService.remove(id, user);
   }
 }

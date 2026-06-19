@@ -1,19 +1,65 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProfesseurDto } from './dto/create-professeur.dto';
 import { UpdateProfesseurDto } from './dto/update-professeur.dto';
 
 @Injectable()
 export class ProfesseursService {
   constructor(private prisma: PrismaService) {}
 
+<<<<<<< HEAD
   async findAll(userId: string) {
     const school = await this.prisma.ecole.findFirst({
       where: {
         userId,
+=======
+  async create(dto: CreateProfesseurDto, ecoleId: string) {
+    const { email, ...profData } = dto;
+
+    if (!email) {
+      throw new BadRequestException('Email requis pour créer un professeur');
+    }
+
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      throw new BadRequestException(`Aucun utilisateur trouvé avec l'email ${email}`);
+    }
+
+    return this.prisma.professeur.create({
+      data: {
+        ...profData,
+        ecoleId,
+        userId: user.id,
+      },
+    });
+  }
+
+  async findAll(ecoleId?: string) {
+    return this.prisma.professeur.findMany({
+      where: ecoleId ? { ecoleId } : undefined,
+      include: {
+        user: true,
+        matieres: {
+          include: {
+            matiere: {
+              include: {
+                classe: true,
+              },
+            },
+          },
+        },
+        classes: {
+          include: {
+            classe: true,
+          },
+        },
+        evaluations: true,
+>>>>>>> 1a23e1c06fcf591b93a747ce8b56226e22e2ebc1
       },
     });
 
@@ -28,7 +74,7 @@ export class ProfesseursService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, ecoleId?: string) {
     const professeur = await this.prisma.professeur.findUnique({
       where: { id },
       include: {
@@ -55,16 +101,24 @@ export class ProfesseursService {
       throw new NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
     }
 
+    if (ecoleId && professeur.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+    }
+
     return professeur;
   }
 
-  async update(id: string, dto: UpdateProfesseurDto) {
+  async update(id: string, dto: UpdateProfesseurDto, ecoleId?: string) {
     const professeur = await this.prisma.professeur.findUnique({
       where: { id },
       include: { user: true },
     });
 
     if (!professeur) {
+      throw new NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+    }
+
+    if (ecoleId && professeur.ecoleId !== ecoleId) {
       throw new NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
     }
 
@@ -94,12 +148,18 @@ export class ProfesseursService {
     });
   }
 
-  async assignMatiere(professeurId: string, matiereId: string) {
+  async assignMatiere(professeurId: string, matiereId: string, ecoleId?: string) {
     // Vérifier que le professeur et la matière existent
     const professeur = await this.prisma.professeur.findUnique({
       where: { id: professeurId },
     });
     if (!professeur) {
+      throw new NotFoundException(
+        `Professeur avec l'ID ${professeurId} introuvable.`,
+      );
+    }
+
+    if (ecoleId && professeur.ecoleId !== ecoleId) {
       throw new NotFoundException(
         `Professeur avec l'ID ${professeurId} introuvable.`,
       );
@@ -137,13 +197,17 @@ export class ProfesseursService {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, ecoleId?: string) {
     const professeur = await this.prisma.professeur.findUnique({
       where: { id },
       include: { user: true },
     });
 
     if (!professeur) {
+      throw new NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+    }
+
+    if (ecoleId && professeur.ecoleId !== ecoleId) {
       throw new NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
     }
 
@@ -168,7 +232,16 @@ export class ProfesseursService {
     return { message: 'Professeur supprimé avec succès' };
   }
 
-  async removeMatiere(professeurId: string, matiereId: string) {
+  async removeMatiere(professeurId: string, matiereId: string, ecoleId?: string) {
+    if (ecoleId) {
+      const professeur = await this.prisma.professeur.findUnique({
+        where: { id: professeurId },
+      });
+      if (!professeur || professeur.ecoleId !== ecoleId) {
+        throw new NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+      }
+    }
+
     const exists = await this.prisma.professeurMatiere.findUnique({
       where: {
         professeurId_matiereId: {
@@ -191,7 +264,7 @@ export class ProfesseursService {
     });
   }
 
-  async assignClasse(professeurId: string, classeId: string) {
+  async assignClasse(professeurId: string, classeId: string, ecoleId?: string) {
     const professeur = await this.prisma.professeur.findUnique({
       where: { id: professeurId },
     });
@@ -199,6 +272,10 @@ export class ProfesseursService {
       throw new NotFoundException(
         `Professeur avec l'ID ${professeurId} introuvable.`,
       );
+    }
+
+    if (ecoleId && professeur.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
     }
 
     const classe = await this.prisma.classe.findUnique({
@@ -227,7 +304,16 @@ export class ProfesseursService {
     });
   }
 
-  async removeClasse(professeurId: string, classeId: string) {
+  async removeClasse(professeurId: string, classeId: string, ecoleId?: string) {
+    if (ecoleId) {
+      const professeur = await this.prisma.professeur.findUnique({
+        where: { id: professeurId },
+      });
+      if (!professeur || professeur.ecoleId !== ecoleId) {
+        throw new NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+      }
+    }
+
     const exists = await this.prisma.professeurClasse.findUnique({
       where: {
         professeurId_classeId: {

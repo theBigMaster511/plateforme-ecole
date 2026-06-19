@@ -23,6 +23,8 @@ export default function Sidebar() {
             { href: '/eleves', icon: 'ti-users', label: 'Élèves' },
             { href: '/classes', icon: 'ti-building', label: 'Classes' },
             { href: '/professeurs', icon: 'ti-chalkboard', label: 'Professeurs' },
+            { href: '/frais', icon: 'ti-credit-card', label: 'Frais scolaires' },
+            { href: '/emploi-du-temps', icon: 'ti-calendar', label: 'Emploi du temps' },
             { href: '/communication', icon: 'ti-messages', label: 'Communication' },
             { href: '/parametres', icon: 'ti-settings', label: 'Paramètres' },
         ],
@@ -30,6 +32,7 @@ export default function Sidebar() {
             { href: '/dashboard', icon: 'ti-layout-dashboard', label: 'Accueil' },
             { href: '/notes', icon: 'ti-notes', label: 'Notes' },
             { href: '/classes', icon: 'ti-building', label: 'Mes classes' },
+            { href: '/emploi-du-temps', icon: 'ti-calendar', label: 'Emploi du temps' },
             { href: '/communication', icon: 'ti-messages', label: 'Communication' },
             { href: '/parametres', icon: 'ti-settings', label: 'Paramètres' },
         ],
@@ -37,6 +40,16 @@ export default function Sidebar() {
             { href: '/dashboard', icon: 'ti-layout-dashboard', label: 'Mon espace' },
             { href: '/notes', icon: 'ti-notes', label: 'Mes notes' },
             { href: '/bulletins', icon: 'ti-file-text', label: 'Mon bulletin' },
+            { href: '/frais', icon: 'ti-credit-card', label: 'Mes frais' },
+            { href: '/emploi-du-temps', icon: 'ti-calendar', label: 'Emploi du temps' },
+            { href: '/communication', icon: 'ti-messages', label: 'Communication' },
+            { href: '/parametres', icon: 'ti-settings', label: 'Paramètres' },
+        ],
+        parent: [
+            { href: '/dashboard', icon: 'ti-layout-dashboard', label: 'Accueil' },
+            { href: '/notes', icon: 'ti-notes', label: 'Notes des enfants' },
+            { href: '/bulletins', icon: 'ti-file-text', label: 'Bulletins' },
+            { href: '/frais', icon: 'ti-credit-card', label: 'Frais scolaires' },
             { href: '/communication', icon: 'ti-messages', label: 'Communication' },
             { href: '/parametres', icon: 'ti-settings', label: 'Paramètres' },
         ],
@@ -47,17 +60,15 @@ export default function Sidebar() {
 
     const handleLogout = async () => {
         await logout();
-        router.push(role === 'admin' ? '/admin-login' : '/');
+        router.push(role === 'admin' ? '/admin-login' : role === 'parent' ? '/login' : '/');
     };
 
     return (
         <aside className={`sidebar role-${role || 'eleve'}`}>
             <div className="sidebar-brand">
-                <div className="icon">
-                    <i className="ti ti-school"></i>
-                </div>
+                <img src="/jangoo.png" alt="Jangoo.sn" style={{ height: 36, marginRight: 8 }} />
                 <div>
-                    <span>Gestion Scolaire</span>
+                    <span>Jangoo.sn</span>
                     <small>{roleLabels[role || 'eleve']}</small>
                 </div>
             </div>

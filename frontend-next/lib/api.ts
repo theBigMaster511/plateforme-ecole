@@ -98,7 +98,25 @@ export const api = {
     assignClasse: (profId: string, classeId: string) => api.post(`/professeurs/${profId}/classes/${classeId}`),
     removeClasse: (profId: string, classeId: string) => api.delete(`/professeurs/${profId}/classes/${classeId}`),
 
+    // Emploi du temps endpoints
+    getEmploiTemps: () => api.get('/emploi-temps'),
+    getEmploiTempsClasse: (classeId: string) => api.get(`/emploi-temps/classe/${classeId}`),
+    getEmploiTempsProfesseur: (professeurId: string) => api.get(`/emploi-temps/professeur/${professeurId}`),
+    createEmploiTemps: (data: any) => api.post('/emploi-temps', data),
+    updateEmploiTemps: (id: string, data: any) => api.patch(`/emploi-temps/${id}`, data),
+    deleteEmploiTemps: (id: string) => api.delete(`/emploi-temps/${id}`),
+
     // Communication endpoints
     getCommunications: () => api.get('/communications'),
     sendCommunication: (data: any) => api.post('/communications', data),
+
+    // Frais scolaires endpoints
+    getFrais: () => api.get('/frais-scolaire'),
+    getFraisEleve: (eleveId: string) => api.get(`/frais-scolaire/eleve/${eleveId}`),
+    getFraisStats: () => api.get('/frais-scolaire/stats'),
+    createFrais: (data: any) => api.post('/frais-scolaire', data),
+    updateFrais: (id: string, data: any) => api.patch(`/frais-scolaire/${id}`, data),
+    deleteFrais: (id: string) => api.delete(`/frais-scolaire/${id}`),
+    addPaiement: (fraisId: string, data: any) => api.post(`/frais-scolaire/${fraisId}/paiement`, data),
+    deletePaiement: (id: string) => api.delete(`/paiement/${id}`),
 };

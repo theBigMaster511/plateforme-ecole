@@ -26,8 +26,8 @@ export class NotesController {
   ) { }
 
   @Post()
-  @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Saisir une note', description: 'Saisir une note individuelle pour un élève (PROFESSEUR uniquement)' })
+  @Roles(Role.ADMIN, Role.PROFESSEUR)
+  @ApiOperation({ summary: 'Saisir une note', description: 'Saisir une note individuelle pour un élève (ADMIN, PROFESSEUR)' })
   @ApiBody({ type: CreateNoteDto, description: 'Données de la note' })
   @ApiResponse({ status: 201, description: 'Note saisie avec succès', type: CreateNoteDto })
   @ApiResponse({ status: 404, description: 'Élève ou évaluation introuvable' })
@@ -36,11 +36,12 @@ export class NotesController {
   async create(@Body() dto: CreateNoteDto, @Req() req: any) {
     const user = req.user;
     let professeurId: string | undefined;
+    const ecoleId = user?.ecoleId;
     if (user) {
       const prof = await this.prisma.professeur.findUnique({ where: { userId: user.id } });
       professeurId = prof?.id;
     }
-    return this.notesService.create(dto, professeurId);
+    return this.notesService.create(dto, professeurId, ecoleId);
   }
 
   @Post('bulk')
@@ -58,8 +59,9 @@ export class NotesController {
   @ApiOperation({ summary: 'Lister toutes les notes', description: 'Récupérer l\'ensemble des notes de l\'établissement (ADMIN, PROFESSEUR)' })
   @ApiResponse({ status: 200, description: 'Liste des notes récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll() {
-    return this.notesService.findAll();
+  findAll(@Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.notesService.findAll(ecoleId);
   }
 
   @Get('eleve/:eleveId')
@@ -69,30 +71,33 @@ export class NotesController {
   @ApiResponse({ status: 200, description: "Notes de l'élève récupérées", isArray: true })
   @ApiResponse({ status: 404, description: 'Élève introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findByEleve(@Param('eleveId') eleveId: string) {
-    return this.notesService.findByEleve(eleveId);
+  findByEleve(@Param('eleveId') eleveId: string, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.notesService.findByEleve(eleveId, ecoleId);
   }
 
   @Patch(':id')
-  @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Modifier une note', description: 'Mettre à jour la valeur ou l\'appréciation d\'une note (PROFESSEUR uniquement)' })
+  @Roles(Role.ADMIN, Role.PROFESSEUR)
+  @ApiOperation({ summary: 'Modifier une note', description: 'Mettre à jour la valeur ou l\'appréciation d\'une note (ADMIN, PROFESSEUR)' })
   @ApiParam({ name: 'id', description: 'ID unique de la note', example: 'note123456789' })
   @ApiBody({ type: UpdateNoteDto, description: 'Champs à mettre à jour' })
   @ApiResponse({ status: 200, description: 'Note mise à jour' })
   @ApiResponse({ status: 404, description: 'Note introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  update(@Param('id') id: string, @Body() dto: UpdateNoteDto) {
-    return this.notesService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateNoteDto, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.notesService.update(id, dto, ecoleId);
   }
 
   @Delete(':id')
-  @Roles(Role.PROFESSEUR)
-  @ApiOperation({ summary: 'Supprimer une note', description: 'Supprimer définitivement une note (PROFESSEUR uniquement)' })
+  @Roles(Role.ADMIN, Role.PROFESSEUR)
+  @ApiOperation({ summary: 'Supprimer une note', description: 'Supprimer définitivement une note (ADMIN, PROFESSEUR)' })
   @ApiParam({ name: 'id', description: 'ID unique de la note', example: 'note123456789' })
   @ApiResponse({ status: 200, description: 'Note supprimée' })
   @ApiResponse({ status: 404, description: 'Note introuvable' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  remove(@Param('id') id: string) {
-    return this.notesService.remove(id);
+  remove(@Param('id') id: string, @Req() req?: any) {
+    const ecoleId = req?.user?.ecoleId;
+    return this.notesService.remove(id, ecoleId);
   }
 }

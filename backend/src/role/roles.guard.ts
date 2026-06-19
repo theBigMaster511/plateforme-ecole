@@ -49,6 +49,16 @@ export class RolesGuard implements CanActivate {
     // Attache l'user à la requête pour les controllers
     req.user = session.user;
 
+    // Pour les admins, récupère l'ecoleId
+    if (session.user.role === Role.ADMIN) {
+      const ecole = await this.prisma.ecole.findUnique({
+        where: { userId: session.user.id },
+      });
+      if (ecole) {
+        req.user.ecoleId = ecole.id;
+      }
+    }
+
     const hasRole = requiredRoles.some((role) => session.user.role === role);
 
     if (!hasRole) {

@@ -1,14 +1,24 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
 
 export default function LandingPage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const goDashboard = () => router.push('/dashboard');
+  const goLogin = () => router.push('/login');
+  const goAction = isLoggedIn ? goDashboard : goLogin;
+
+  const btnLabel = isLoggedIn ? 'Dashboard' : 'Se connecter';
+  const btnIcon = isLoggedIn ? 'ti-layout-dashboard' : 'ti-login';
 
   const container: React.CSSProperties = {
     fontFamily: "'DM Sans', sans-serif",
@@ -215,7 +225,10 @@ export default function LandingPage() {
           <span onClick={() => scrollTo('features')}>Fonctionnalités</span>
           <span onClick={() => scrollTo('roles')}>Rôles</span>
           <span onClick={() => scrollTo('contact')}>Contact</span>
-          <button style={btnConnecter} onClick={() => router.push('/login')}>Se connecter</button>
+          <button style={btnConnecter} onClick={goAction}>
+            <i className={`ti ${btnIcon}`} style={{ marginRight: 6 }}></i>
+            {btnLabel}
+          </button>
         </div>
       </nav>
 
@@ -227,9 +240,9 @@ export default function LandingPage() {
             en toute simplicité. Une solution moderne adaptée aux écoles africaines.
           </p>
           <div className="landing-cta-row" style={ctaRow}>
-            <button style={ctaPrimary} onClick={() => router.push('/login')}>
-              <i className="ti ti-rocket" style={{ marginRight: 6 }}></i>
-              Commencer
+            <button style={ctaPrimary} onClick={goAction}>
+              <i className={`ti ${btnIcon}`} style={{ marginRight: 6 }}></i>
+              {isLoggedIn ? 'Mon tableau de bord' : 'Commencer'}
             </button>
             <button className="cta-secondary" style={ctaSecondary} onClick={() => scrollTo('features')}>
               En savoir plus
@@ -311,9 +324,9 @@ export default function LandingPage() {
           </div>
         </div>
         <div style={{ marginTop: '2rem' }}>
-          <button style={ctaPrimary} onClick={() => router.push('/login')}>
-            <i className="ti ti-login" style={{ marginRight: 6 }}></i>
-            Accéder à la plateforme
+          <button style={ctaPrimary} onClick={goAction}>
+            <i className={`ti ${btnIcon}`} style={{ marginRight: 6 }}></i>
+            {isLoggedIn ? 'Mon tableau de bord' : 'Accéder à la plateforme'}
           </button>
         </div>
       </section>
