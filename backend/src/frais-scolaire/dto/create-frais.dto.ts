@@ -1,11 +1,16 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateFraisDto {
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ example: 'ele123456', description: 'ID de l\'élève' })
-  eleveId: string;
+  @IsOptional()
+  @ApiProperty({ example: 'ele123456', description: 'ID de l\'élève (optionnel si classeId fourni)' })
+  eleveId?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ example: 'classe123456', description: 'ID de la classe (applique le frais à tous les élèves de la classe)' })
+  classeId?: string;
 
   @IsString()
   @IsNotEmpty()

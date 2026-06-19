@@ -10,16 +10,16 @@ export declare class EcoleService {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
-        telephone: string | null;
         adresse: string | null;
+        telephone: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
     findAll(): Promise<{
         id: string;
@@ -27,16 +27,16 @@ export declare class EcoleService {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
-        telephone: string | null;
         adresse: string | null;
+        telephone: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }[]>;
     findOne(userId: string): Promise<{
         id: string;
@@ -44,49 +44,49 @@ export declare class EcoleService {
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
-        telephone: string | null;
         adresse: string | null;
+        telephone: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
-    update(id: string, dto: UpdateEcoleDto): Promise<{
+    update(id: string, dto: UpdateEcoleDto, user?: any): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
-        telephone: string | null;
         adresse: string | null;
+        telephone: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, user?: any): Promise<{
         id: string;
         email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
-        telephone: string | null;
         adresse: string | null;
+        telephone: string | null;
         siteWeb: string | null;
         logo: string | null;
         directeur: string | null;
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
 }

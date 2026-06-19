@@ -4,7 +4,7 @@ import { UpdateMatiereDto } from './dto/update-matiere.dto';
 export declare class MatieresService {
     private prisma;
     constructor(prisma: PrismaService);
-    create(dto: CreateMatiereDto): Promise<{
+    create(dto: CreateMatiereDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -12,14 +12,14 @@ export declare class MatieresService {
         classeId: string;
         coefficient: number;
     }>;
-    findAll(): Promise<({
+    findAll(ecoleId?: string): Promise<({
         classe: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            ecoleId: string;
-            profId: string;
             nom: string;
+            ecoleId: string;
+            profId: string | null;
             niveau: string;
             annee: string;
         };
@@ -40,9 +40,9 @@ export declare class MatieresService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
-                telephone: string | null;
             };
         } & {
             professeurId: string;
@@ -61,9 +61,9 @@ export declare class MatieresService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            ecoleId: string;
-            profId: string;
             nom: string;
+            ecoleId: string;
+            profId: string | null;
             niveau: string;
             annee: string;
         };
@@ -84,9 +84,9 @@ export declare class MatieresService {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
-                telephone: string | null;
             };
         } & {
             professeurId: string;
@@ -96,11 +96,12 @@ export declare class MatieresService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
+            semestre: number;
         }[];
     } & {
         id: string;
@@ -110,7 +111,7 @@ export declare class MatieresService {
         classeId: string;
         coefficient: number;
     }>;
-    update(id: string, dto: UpdateMatiereDto): Promise<{
+    update(id: string, dto: UpdateMatiereDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -118,7 +119,7 @@ export declare class MatieresService {
         classeId: string;
         coefficient: number;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;

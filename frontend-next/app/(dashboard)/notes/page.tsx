@@ -15,7 +15,7 @@ export default function NotesPage() {
     const [editingNote, setEditingNote] = useState<any>(null);
     const [deleteTarget, setDeleteTarget] = useState<any>(null);
     const [error, setError] = useState('');
-    const [form, setForm] = useState({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '' });
+    const [form, setForm] = useState({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '', coefficient: '' });
 
     const [selectedEleveId, setSelectedEleveId] = useState<string>('');
 
@@ -48,20 +48,14 @@ export default function NotesPage() {
                 setEvaluations([]);
                 setEleves([]);
             } else if (role === 'prof') {
-                const profClasses: any[] = (user as any)?.professeur?.classes || [];
-                const classeIds = profClasses.map((pc: any) => pc.classeId);
                 const [notesRes, evaluationsRes, elevesRes] = await Promise.all([
                     api.getNotes(),
                     api.getEvaluations(),
                     api.getEleves(),
                 ]);
-                let allEleves = Array.isArray(elevesRes) ? elevesRes : [];
-                if (classeIds.length > 0) {
-                    allEleves = allEleves.filter((e: any) => e.classe && classeIds.includes(e.classe.id));
-                }
                 setNotes(Array.isArray(notesRes) ? notesRes : []);
                 setEvaluations(Array.isArray(evaluationsRes) ? evaluationsRes : []);
-                setEleves(allEleves);
+                setEleves(Array.isArray(elevesRes) ? elevesRes : []);
             } else if (role === 'parent') {
                 const enfants = (user as any)?.parent?.enfants || [];
                 const elevesList = enfants.map((pe: any) => pe.eleve);
@@ -95,12 +89,13 @@ export default function NotesPage() {
         setError('');
         const trimmed = form.matiereText.trim();
         if (!trimmed) { setError('Veuillez indiquer une matière.'); return; }
-        const payload = {
+        const payload: any = {
             eleveId: form.eleveId,
             matiereNom: trimmed,
             valeur: parseFloat(form.valeur),
             appreciation: form.appreciation || undefined,
         };
+        if (form.coefficient) payload.coefficient = parseInt(form.coefficient, 10);
         const res = editingNote
             ? await api.updateNote(editingNote.id, { valeur: payload.valeur, appreciation: payload.appreciation })
             : await api.createNote(payload);
@@ -110,7 +105,7 @@ export default function NotesPage() {
         }
         setShowAddModal(false);
         setEditingNote(null);
-        setForm({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '' });
+        setForm({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '', coefficient: '' });
         loadData();
     };
 
@@ -126,7 +121,7 @@ export default function NotesPage() {
             return;
         }
         setEditTarget(null);
-        setForm({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '' });
+        setForm({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '', coefficient: '' });
         loadData();
     };
 
@@ -270,10 +265,10 @@ export default function NotesPage() {
                                                             if (existante) {
                                                                 setEditingNote(existante);
                                                                 const ev = evaluations.find((e: any) => e.id === existante.evaluationId);
-                                                                setForm({ eleveId: eleve.id, evaluationId: existante.evaluationId, valeur: String(existante.valeur), appreciation: existante.appreciation || '', matiereText: ev?.matiere?.nom || '' });
+                                                                setForm({ eleveId: eleve.id, evaluationId: existante.evaluationId, valeur: String(existante.valeur), appreciation: existante.appreciation || '', matiereText: ev?.matiere?.nom || '', coefficient: '' });
                                                             } else {
                                                                 setEditingNote(null);
-                                                                setForm({ eleveId: eleve.id, evaluationId: evaluations[0]?.id || '', valeur: '', appreciation: '', matiereText: '' });
+                                                                setForm({ eleveId: eleve.id, evaluationId: evaluations[0]?.id || '', valeur: '', appreciation: '', matiereText: '', coefficient: '' });
                                                             }
                                                             setEditTarget(eleve);
                                                             setError('');
@@ -312,6 +307,10 @@ export default function NotesPage() {
                                                 <option key={nom} value={nom} />
                                             ))}
                                         </datalist>
+                                    </div>
+                                    <div className="field">
+                                        <label>Coefficient (requis si nouvelle matière)</label>
+                                        <input type="number" min="1" max="20" value={form.coefficient} onChange={(e) => setForm({ ...form, coefficient: e.target.value })} placeholder="ex: 4" />
                                     </div>
                                     <div className="field">
                                         <label>Note (sur 20)</label>
@@ -455,7 +454,7 @@ export default function NotesPage() {
                                 <tr key={note.id}>
                                     <td className="font-bold">{note?.evaluation?.matiere?.nom || '—'}</td>
                                     <td><span className="badge badge-success">{note?.valeur}/20</span></td>
-                                    <td>1</td>
+                                    <td>{note?.evaluation?.matiere?.coefficient ?? 1}</td>
                                     <td>{((note?.valeur || 0) / 20 * 100).toFixed(1)}%</td>
                                     <td>{note?.createdAt ? new Date(note.createdAt).toLocaleDateString('fr-FR') : '—'}</td>
                                 </tr>

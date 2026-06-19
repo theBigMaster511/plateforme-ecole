@@ -35,4 +35,11 @@ export class CreateNoteDto {
   @IsOptional()
   @ApiProperty({ example: 'Mathématiques', description: 'Nom de la matière (utilisé si evaluationId non fourni)' })
   matiereNom?: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Min(1)
+  @Max(20)
+  @ApiProperty({ example: 4, description: 'Coefficient de la matière (requis si création d\'une nouvelle matière)' })
+  coefficient?: number;
 }

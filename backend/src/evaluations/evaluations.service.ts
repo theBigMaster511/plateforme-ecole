@@ -33,6 +33,8 @@ export class EvaluationsService {
       );
     }
 
+    const mois = new Date(dto.date).getMonth() + 1;
+    const semestre = dto.semestre ?? ((mois >= 10 || mois <= 3) ? 1 : 2);
     return this.prisma.evaluation.create({
       data: {
         titre: dto.titre,
@@ -40,14 +42,30 @@ export class EvaluationsService {
         date: new Date(dto.date),
         matiereId: dto.matiereId,
         professeurId: dto.professeurId,
+        semestre,
       },
     });
   }
 
-  async findAll(ecoleId?: string) {
-    const where = ecoleId
+  async findAll(ecoleId?: string, professeurId?: string, semestre?: number) {
+    const where: any = ecoleId
       ? { matiere: { classe: { ecoleId } } }
       : {};
+    if (professeurId) {
+      const matieres = await this.prisma.professeurMatiere.findMany({
+        where: { professeurId },
+        select: { matiereId: true },
+      });
+      const matiereIds = matieres.map((m) => m.matiereId);
+      if (matiereIds.length > 0) {
+        where.matiereId = { in: matiereIds };
+      } else {
+        where.matiereId = null;
+      }
+    }
+    if (semestre) {
+      where.semestre = semestre;
+    }
     return this.prisma.evaluation.findMany({
       where,
       include: {
@@ -109,13 +127,14 @@ export class EvaluationsService {
     // Vérifier que l'évaluation existe
     await this.findOne(id, ecoleId);
 
+    const data: any = {};
+    if (dto.titre !== undefined) data.titre = dto.titre;
+    if (dto.type !== undefined) data.type = dto.type;
+    if (dto.date !== undefined) data.date = new Date(dto.date);
+    if (dto.semestre !== undefined) data.semestre = dto.semestre;
     return this.prisma.evaluation.update({
       where: { id },
-      data: {
-        titre: dto.titre,
-        type: dto.type,
-        date: dto.date ? new Date(dto.date) : undefined,
-      },
+      data,
     });
   }
 

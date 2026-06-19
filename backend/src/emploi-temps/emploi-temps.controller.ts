@@ -25,7 +25,7 @@ export class EmploiTempsController {
   }
 
   @Get('classe/:classeId')
-  @Roles(Role.ADMIN, Role.PROFESSEUR, Role.ELEVE)
+  @Roles(Role.ADMIN, Role.PROFESSEUR, Role.ELEVE, Role.PARENT)
   findByClasse(@Param('classeId') classeId: string, @Req() req: any) {
     const ecoleId = req.user?.ecoleId;
     return this.service.findByClasse(classeId, ecoleId);

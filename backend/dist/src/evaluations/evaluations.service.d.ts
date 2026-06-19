@@ -4,17 +4,18 @@ import { UpdateEvaluationDto } from './dto/update-evaluation.dto';
 export declare class EvaluationsService {
     private prisma;
     constructor(prisma: PrismaService);
-    create(dto: CreateEvaluationDto): Promise<{
+    create(dto: CreateEvaluationDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
-    findAll(): Promise<({
+    findAll(ecoleId?: string, professeurId?: string, semestre?: number): Promise<({
         professeur: {
             user: {
                 id: string;
@@ -31,18 +32,18 @@ export declare class EvaluationsService {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
+            telephone: string | null;
             ecoleId: string;
             specialite: string | null;
-            telephone: string | null;
         };
         matiere: {
             classe: {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                ecoleId: string;
-                profId: string;
                 nom: string;
+                ecoleId: string;
+                profId: string | null;
                 niveau: string;
                 annee: string;
             };
@@ -67,13 +68,14 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     })[]>;
-    findOne(id: string): Promise<{
+    findOne(id: string, ecoleId?: string): Promise<{
         professeur: {
             user: {
                 id: string;
@@ -90,18 +92,18 @@ export declare class EvaluationsService {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
+            telephone: string | null;
             ecoleId: string;
             specialite: string | null;
-            telephone: string | null;
         };
         matiere: {
             classe: {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                ecoleId: string;
-                profId: string;
                 nom: string;
+                ecoleId: string;
+                profId: string | null;
                 niveau: string;
                 annee: string;
             };
@@ -147,30 +149,33 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
-    update(id: string, dto: UpdateEvaluationDto): Promise<{
+    update(id: string, dto: UpdateEvaluationDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
 }

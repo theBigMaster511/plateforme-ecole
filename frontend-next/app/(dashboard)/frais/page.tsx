@@ -41,11 +41,13 @@ export default function FraisPage() {
     const [fraisList, setFraisList] = useState<FraisScolaire[]>([]);
     const [stats, setStats] = useState<FraisStats | null>(null);
     const [eleves, setEleves] = useState<any[]>([]);
+    const [classes, setClasses] = useState<any[]>([]);
+    const [createMode, setCreateMode] = useState<'eleve' | 'classe'>('eleve');
     const [loading, setLoading] = useState(true);
 
     // Create modal
     const [showCreate, setShowCreate] = useState(false);
-    const [createForm, setCreateForm] = useState({ eleveId: '', libelle: '', montant: '', echeance: '' });
+    const [createForm, setCreateForm] = useState({ eleveId: '', classeId: '', libelle: '', montant: '', echeance: '' });
     const [createError, setCreateError] = useState('');
 
     // Edit modal
@@ -89,6 +91,8 @@ export default function FraisPage() {
                 setStats(statsData as FraisStats);
                 const elevesData = await api.getEleves();
                 setEleves(Array.isArray(elevesData) ? elevesData : []);
+                const classesData = await api.getClasses();
+                setClasses(Array.isArray(classesData) ? classesData : []);
             }
         } catch (error) {
             console.error('Error loading frais:', error);
@@ -97,7 +101,7 @@ export default function FraisPage() {
     };
 
     const formatCurrency = (amount: number) =>
-        new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
+        new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF' }).format(amount);
 
     const formatDate = (dateStr: string) =>
         new Date(dateStr).toLocaleDateString('fr-FR');
@@ -130,15 +134,20 @@ export default function FraisPage() {
         e.preventDefault();
         setCreateError('');
         try {
-            const res = await api.createFrais({
-                eleveId: createForm.eleveId,
+            const payload: any = {
                 libelle: createForm.libelle,
                 montant: parseFloat(createForm.montant),
                 echeance: createForm.echeance,
-            });
+            };
+            if (createMode === 'classe') {
+                payload.classeId = createForm.classeId;
+            } else {
+                payload.eleveId = createForm.eleveId;
+            }
+            const res = await api.createFrais(payload);
             if (res?.error) { setCreateError(res.error); return; }
             setShowCreate(false);
-            setCreateForm({ eleveId: '', libelle: '', montant: '', echeance: '' });
+            setCreateForm({ eleveId: '', classeId: '', libelle: '', montant: '', echeance: '' });
             loadData();
         } catch (err: any) {
             setCreateError(err?.message || 'Erreur lors de la création');
@@ -380,13 +389,30 @@ export default function FraisPage() {
                             <div className="modal-body">
                                 {createError && <div className="error-msg">{createError}</div>}
                                 <div className="field">
-                                    <label>Élève</label>
-                                    <select value={createForm.eleveId} onChange={(e) => setCreateForm({ ...createForm, eleveId: e.target.value })} required>
-                                        <option value="">Sélectionner un élève</option>
-                                        {eleves.map((e: any) => (
-                                            <option key={e.id} value={e.id}>{e?.user?.name || 'Élève'} - {e?.matricule || ''}</option>
-                                        ))}
-                                    </select>
+                                    <label>Appliquer à</label>
+                                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                                        <button type="button" className={`btn btn-sm ${createMode === 'eleve' ? 'btn-primary' : 'btn-outline'}`} onClick={() => setCreateMode('eleve')}>
+                                            <i className="ti ti-user"></i> Un élève
+                                        </button>
+                                        <button type="button" className={`btn btn-sm ${createMode === 'classe' ? 'btn-primary' : 'btn-outline'}`} onClick={() => setCreateMode('classe')}>
+                                            <i className="ti ti-users"></i> Toute une classe
+                                        </button>
+                                    </div>
+                                    {createMode === 'eleve' ? (
+                                        <select value={createForm.eleveId} onChange={(e) => setCreateForm({ ...createForm, eleveId: e.target.value })} required>
+                                            <option value="">Sélectionner un élève</option>
+                                            {eleves.map((e: any) => (
+                                                <option key={e.id} value={e.id}>{e?.user?.name || 'Élève'} - {e?.matricule || ''}</option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        <select value={createForm.classeId} onChange={(e) => setCreateForm({ ...createForm, classeId: e.target.value })} required>
+                                            <option value="">Sélectionner une classe</option>
+                                            {classes.map((c: any) => (
+                                                <option key={c.id} value={c.id}>{c.nom} ({c.niveau || ''})</option>
+                                            ))}
+                                        </select>
+                                    )}
                                 </div>
                                 <div className="field">
                                     <label>Libellé</label>

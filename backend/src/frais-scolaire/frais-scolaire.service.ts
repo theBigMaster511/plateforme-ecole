@@ -9,27 +9,42 @@ export class FraisScolaireService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateFraisDto, ecoleId: string) {
-    const eleve = await this.prisma.eleve.findUnique({
-      where: { id: dto.eleveId },
-      include: { classe: true },
-    });
+    let eleveIds: string[] = [];
 
-    if (!eleve) {
-      throw new NotFoundException(`Élève ${dto.eleveId} introuvable`);
+    if (dto.classeId) {
+      const classe = await this.prisma.classe.findUnique({
+        where: { id: dto.classeId },
+        include: { eleves: { select: { id: true } } },
+      });
+      if (!classe) {
+        throw new NotFoundException(`Classe ${dto.classeId} introuvable`);
+      }
+      if (classe.ecoleId !== ecoleId) {
+        throw new NotFoundException(`Classe ${dto.classeId} introuvable`);
+      }
+      eleveIds = classe.eleves.map((e) => e.id);
+    } else if (dto.eleveId) {
+      eleveIds = [dto.eleveId];
+    } else {
+      throw new NotFoundException('Fournissez un eleveId ou un classeId.');
     }
 
-    if (eleve.classe?.ecoleId !== ecoleId) {
-      throw new NotFoundException(`Élève ${dto.eleveId} introuvable`);
+    if (eleveIds.length === 0) {
+      throw new NotFoundException('Aucun élève trouvé.');
     }
 
-    return this.prisma.fraisScolaire.create({
-      data: {
-        eleveId: dto.eleveId,
-        libelle: dto.libelle,
-        montant: dto.montant,
-        echeance: new Date(dto.echeance),
-        ecoleId,
-      },
+    const data = eleveIds.map((id) => ({
+      eleveId: id,
+      libelle: dto.libelle,
+      montant: dto.montant,
+      echeance: new Date(dto.echeance),
+      ecoleId,
+    }));
+
+    await this.prisma.fraisScolaire.createMany({ data });
+
+    return this.prisma.fraisScolaire.findMany({
+      where: { eleveId: { in: eleveIds }, libelle: dto.libelle, echeance: new Date(dto.echeance) },
       include: { eleve: { include: { user: true } }, paiements: true },
     });
   }

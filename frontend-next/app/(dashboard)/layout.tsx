@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { SchoolDataProvider } from '@/lib/school-data-context';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 
@@ -22,6 +23,11 @@ const stepsByRole: Record<string, { icon: string; title: string; desc: string }[
     { icon: 'ti ti-clipboard-list', title: 'Consultez vos notes', desc: 'Allez dans "Mes Notes" pour voir toutes vos notes par matière.' },
     { icon: 'ti ti-file-analytics', title: 'Votre bulletin', desc: 'Allez dans "Mon Bulletin" pour voir le récapitulatif trimestriel.' },
   ],
+  parent: [
+    { icon: 'ti ti-users', title: 'Vos enfants', desc: 'Retrouvez tous vos enfants listés sur le tableau de bord.' },
+    { icon: 'ti ti-notes', title: 'Consultez les notes', desc: 'Allez dans "Notes des enfants" pour voir les notes de chacun.' },
+    { icon: 'ti ti-file-text', title: 'Les bulletins', desc: 'La rubrique "Bulletins" vous donne accès aux relevés de notes.' },
+  ],
 };
 
 export default function DashboardLayout({
@@ -29,7 +35,7 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { user, role, isLoading } = useAuth();
+    const { user, role, isLoading, logout } = useAuth();
     const router = useRouter();
     const [onbStep, setOnbStep] = useState(0);
     const [onbVisible, setOnbVisible] = useState(false);
@@ -65,6 +71,7 @@ export default function DashboardLayout({
     const accent = role === 'admin' ? '#a13d63' : role === 'prof' ? '#1D9E75' : '#B8860B';
 
     return (
+        <SchoolDataProvider>
         <div style={{ display: 'flex', width: '100%' }}>
             <Sidebar />
             <main className="main with-sidebar">
@@ -75,6 +82,18 @@ export default function DashboardLayout({
                 }}>
                     <img src="/jangoo.png" alt="Jangoo.sn" style={{ height: 24 }} />
                     <span style={{ fontSize: 13, color: '#6b7280' }}>Plateforme de gestion scolaire</span>
+                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: 12, color: '#9ca3af' }}>{user?.email}</span>
+                        <button onClick={async () => { const r = role; await logout(); router.replace(r === 'admin' ? '/admin-login' : '/login'); }}
+                            style={{
+                                padding: '6px 12px', border: '1px solid #e5e7eb', borderRadius: 6,
+                                background: '#fff', color: '#374151', fontSize: 12, cursor: 'pointer',
+                                fontFamily: "'DM Sans', sans-serif", display: 'inline-flex', alignItems: 'center', gap: 4,
+                            }}
+                            title="Déconnexion">
+                            <i className="ti ti-logout" style={{ fontSize: 14 }}></i> Déconnexion
+                        </button>
+                    </div>
                 </div>
                 {children}
             </main>
@@ -155,5 +174,6 @@ export default function DashboardLayout({
                 </div>
             )}
         </div>
+        </SchoolDataProvider>
     );
 }

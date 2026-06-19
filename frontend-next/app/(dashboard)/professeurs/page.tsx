@@ -15,6 +15,7 @@ export default function ProfesseursPage() {
     const [toAssign, setToAssign] = useState<string[]>([]);
     const [toAssignClasses, setToAssignClasses] = useState<string[]>([]);
     const [matiereInput, setMatiereInput] = useState('');
+    const [matiereCoef, setMatiereCoef] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -95,7 +96,16 @@ export default function ProfesseursPage() {
                 setError('Aucune classe disponible pour créer la matière.');
                 return;
             }
-            const created = await api.createMatiere({ nom: trimmed, coefficient: 1, classeId: firstClasse.id });
+            if (!matiereCoef) {
+                setError('Veuillez indiquer un coefficient pour la nouvelle matière.');
+                return;
+            }
+            const coef = parseInt(matiereCoef, 10);
+            if (coef < 1 || coef > 20) {
+                setError('Le coefficient doit être entre 1 et 20.');
+                return;
+            }
+            const created = await api.createMatiere({ nom: trimmed, coefficient: coef, classeId: firstClasse.id });
             if (created?.error) { setError(created.error); return; }
             setMatieres((prev) => [...prev, created]);
             match = created;
@@ -108,6 +118,7 @@ export default function ProfesseursPage() {
         if (res?.error) { setError(res.error); return; }
         setToAssign((prev) => [...prev, match.id]);
         setMatiereInput('');
+        setMatiereCoef('');
     };
 
     const handleRemoveMatiere = async (matiereId: string) => {
@@ -183,7 +194,7 @@ export default function ProfesseursPage() {
                 </div>
                 <div className="stat-card">
                     <span className="stat-label">Matières</span>
-                    <span className="stat-value">8</span>
+                    <span className="stat-value">{matieres.length}</span>
                 </div>
             </div>
 
@@ -302,12 +313,13 @@ export default function ProfesseursPage() {
                                     <label>Téléphone</label>
                                     <input type="text" value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} placeholder="ex: 0612345678" />
                                 </div>
-                                <div className="field">
-                                    <label>Matières enseignées</label>
-                                    <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
-                                        <input type="text" value={matiereInput} onChange={(e) => setMatiereInput(e.target.value)} placeholder="ex: Mathématiques" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAssignMatiere(); } }} style={{ flex: 1 }} />
-                                        <button type="button" className="btn btn-sm btn-outline" onClick={handleAssignMatiere}>Ajouter</button>
-                                    </div>
+                                    <div className="field">
+                                        <label>Matières enseignées</label>
+                                        <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                                            <input type="text" value={matiereInput} onChange={(e) => setMatiereInput(e.target.value)} placeholder="ex: Mathématiques" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAssignMatiere(); } }} style={{ flex: 1 }} />
+                                            <input type="number" min="1" max="20" value={matiereCoef} onChange={(e) => setMatiereCoef(e.target.value)} placeholder="Coef" style={{ width: '80px' }} title="Coefficient" />
+                                            <button type="button" className="btn btn-sm btn-outline" onClick={handleAssignMatiere}>Ajouter</button>
+                                        </div>
                                     {assignedMatieres.length > 0 && (
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
                                             {assignedMatieres.map((m: any) => (

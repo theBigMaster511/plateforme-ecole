@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDateString, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsDateString, IsEnum, IsOptional, IsInt, Min, Max } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 enum EvalType {
@@ -33,4 +33,11 @@ export class CreateEvaluationDto {
   @IsNotEmpty()
   @ApiProperty({ example: 'prof123456789', description: 'ID du professeur créateur' })
   professeurId: string;
+
+  @IsInt()
+  @Min(1)
+  @Max(2)
+  @IsOptional()
+  @ApiProperty({ example: 1, description: 'Semestre (1 ou 2, déduit de la date si non fourni)', required: false })
+  semestre?: number;
 }

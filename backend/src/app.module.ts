@@ -16,6 +16,8 @@ import { EvaluationsModule } from './evaluations/evaluations.module';
 import { NotesModule } from './notes/notes.module';
 import { EmploiTempsModule } from './emploi-temps/emploi-temps.module';
 import { FraisScolaireModule } from './frais-scolaire/frais-scolaire.module';
+import { BulletinsModule } from './bulletins/bulletins.module';
+import { CommunicationModule } from './communication/communication.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { FraisScolaireModule } from './frais-scolaire/frais-scolaire.module';
     NotesModule,
     EmploiTempsModule,
     FraisScolaireModule,
+    BulletinsModule,
+    CommunicationModule,
   ],
   controllers: [],
   providers: [

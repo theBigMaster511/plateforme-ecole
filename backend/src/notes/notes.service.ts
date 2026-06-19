@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -28,36 +29,71 @@ export class NotesService {
       );
     }
 
+    // Si un professeur est spécifié, vérifier qu'il est assigné à cette classe et à cette matière
+    if (professeurId) {
+      const estDansClasse = await this.prisma.professeurClasse.findUnique({
+        where: {
+          professeurId_classeId: {
+            professeurId,
+            classeId: eleve.classeId || '',
+          },
+        },
+      });
+      if (!estDansClasse) {
+        throw new ForbiddenException(
+          'Vous ne pouvez noter que les élèves de vos classes assignées.',
+        );
+      }
+    }
+
     let evaluationId = dto.evaluationId;
 
     if (!evaluationId && dto.matiereNom) {
-      let classeId = eleve.classeId;
+      const classeId = eleve.classeId;
       if (!classeId) {
-        const firstClasse = await this.prisma.classe.findFirst();
-        classeId = firstClasse?.id || null;
-      }
-      let matiere = classeId
-        ? await this.prisma.matiere.findFirst({
-            where: { nom: dto.matiereNom, classeId },
-          })
-        : null;
-      if (!matiere && classeId) {
-        matiere = await this.prisma.matiere.create({
-          data: { nom: dto.matiereNom, coefficient: 1, classeId },
-        });
-      }
-      if (!matiere) {
         throw new NotFoundException(
-          `Aucune classe trouvée pour créer la matière "${dto.matiereNom}".`,
+          `L'élève "${eleve.id}" n'a pas de classe assignée.`,
         );
       }
-      const pid = professeurId || (await this.prisma.professeur.findFirst())?.id;
+      let matiere = await this.prisma.matiere.findFirst({
+        where: { nom: dto.matiereNom, classeId },
+      });
+      if (!matiere) {
+        if (!dto.coefficient) {
+          throw new NotFoundException(
+            `Le coefficient est requis pour créer la matière "${dto.matiereNom}".`,
+          );
+        }
+        matiere = await this.prisma.matiere.create({
+          data: { nom: dto.matiereNom, coefficient: dto.coefficient, classeId },
+        });
+      }
+      // Vérifier que le professeur est assigné à cette matière
+      if (professeurId) {
+        const estAssignMatiere = await this.prisma.professeurMatiere.findUnique({
+          where: {
+            professeurId_matiereId: {
+              professeurId,
+              matiereId: matiere.id,
+            },
+          },
+        });
+        if (!estAssignMatiere) {
+          throw new ForbiddenException(
+            `Vous n'êtes pas assigné à la matière "${dto.matiereNom}".`,
+          );
+        }
+      }
+      const ecoleId = eleve.classe?.ecoleId;
+      const pid = professeurId || (ecoleId ? (await this.prisma.professeur.findFirst({ where: { ecoleId } }))?.id : undefined);
       const existingEval = await this.prisma.evaluation.findFirst({
         where: { matiereId: matiere.id, professeurId: pid || undefined },
       });
       if (existingEval) {
         evaluationId = existingEval.id;
       } else if (pid) {
+        const mois = new Date().getMonth() + 1;
+        const semestre = (mois >= 10 || mois <= 3) ? 1 : 2;
         const created = await this.prisma.evaluation.create({
           data: {
             titre: dto.matiereNom,
@@ -65,6 +101,7 @@ export class NotesService {
             date: new Date(),
             matiereId: matiere.id,
             professeurId: pid,
+            semestre,
           },
         });
         evaluationId = created.id;
@@ -110,12 +147,12 @@ export class NotesService {
     });
   }
 
-  async createBulk(dto: CreateNotesBulkDto) {
+  async createBulk(dto: CreateNotesBulkDto, professeurId?: string, ecoleId?: string) {
     const results: any[] = [];
 
     for (const note of dto.notes) {
       try {
-        const created = await this.create(note);
+        const created = await this.create(note, professeurId, ecoleId);
         results.push({ success: true, data: created });
       } catch (error) {
         results.push({
@@ -162,10 +199,20 @@ export class NotesService {
     });
   }
 
-  async findAll(ecoleId?: string) {
-    const where = ecoleId
+  async findAll(ecoleId?: string, professeurId?: string) {
+    const where: any = ecoleId
       ? { eleve: { classe: { ecoleId } } }
       : {};
+
+    if (professeurId) {
+      const classes = await this.prisma.professeurClasse.findMany({
+        where: { professeurId },
+        select: { classeId: true },
+      });
+      const classeIds = classes.map((c) => c.classeId);
+      where.eleve = { ...(where.eleve || {}), classeId: { in: classeIds } };
+    }
+
     return this.prisma.note.findMany({
       where,
       include: {

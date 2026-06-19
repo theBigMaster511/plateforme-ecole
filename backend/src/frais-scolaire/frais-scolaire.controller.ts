@@ -157,7 +157,7 @@ export class FraisScolaireController {
     return this.fraisScolaireService.addPaiement(id, dto, ecoleId);
   }
 
-  @Delete('paiement/:id')
+  @Delete('frais-scolaire/paiement/:id')
   @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Supprimer un paiement', description: 'Supprimer un paiement et recalculer le statut (ADMIN)' })
   @ApiParam({ name: 'id', description: 'ID du paiement' })

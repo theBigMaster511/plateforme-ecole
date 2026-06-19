@@ -33,13 +33,13 @@ export class ClasseService {
         annee: dto.years,
         niveau: dto.level,
         ecoleId,
-        profId: dto.profId || '',
+        profId: dto.profId || undefined,
       },
     });
   }
 
   async findAll(ecoleId?: string | null) {
-    if (!ecoleId) return;
+    if (!ecoleId) return [];
 
     return this.prisma.classe.findMany({
       where: {
@@ -102,6 +102,7 @@ export class ClasseService {
         nom: dto.name,
         niveau: dto.level,
         annee: dto.years,
+        ...(dto.profId !== undefined ? { profId: dto.profId || null } : {}),
       },
     });
   }

@@ -1,58 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { api } from '@/lib/api';
+import { useSchoolData } from '@/lib/school-data-context';
 
 export default function Dashboard() {
     const { user, role } = useAuth();
-    const [eleves, setEleves] = useState<any[]>([]);
-    const [allEleves, setAllEleves] = useState<any[]>([]);
-    const [classes, setClasses] = useState<any[]>([]);
-    const [notes, setNotes] = useState<any[]>([]);
-    const [professeurs, setProfesseurs] = useState<any[]>([]);
-    const [bulletins, setBulletins] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        loadData();
-    }, [role]);
-
-    const loadData = async () => {
-        setLoading(true);
-        try {
-            if (role === 'admin') {
-                const [elevesRes, classesRes, notesRes, professeursRes] = await Promise.all([
-                    api.getEleves(),
-                    api.getClasses(),
-                    api.getNotes(),
-                    api.getProfesseurs(),
-                ]);
-                setAllEleves(Array.isArray(elevesRes) ? elevesRes : []);
-                setEleves(Array.isArray(elevesRes) ? elevesRes.slice(0, 5) : []);
-                setClasses(Array.isArray(classesRes) ? classesRes : []);
-                setNotes(Array.isArray(notesRes) ? notesRes.slice(0, 5) : []);
-                setProfesseurs(Array.isArray(professeursRes) ? professeursRes : []);
-            } else if (role === 'prof') {
-                const classesRes = await api.getClasses();
-                setClasses(Array.isArray(classesRes) ? classesRes : []);
-            } else if (role === 'eleve') {
-                const notesRes = await api.getNotes();
-                setNotes(Array.isArray(notesRes) ? notesRes : []);
-            } else if (role === 'parent') {
-                const enfants = (user as any)?.parent?.enfants || [];
-                const notesPromises = enfants.map((pe: any) => api.getNotesByEleve(pe.eleve.id));
-                const notesResults = await Promise.all(notesPromises);
-                const allNotes = notesResults.flat().filter(Boolean);
-                setNotes(allNotes);
-                const bulletinsRes = await api.getBulletins();
-                setBulletins(Array.isArray(bulletinsRes) ? bulletinsRes : []);
-            }
-        } catch (error) {
-            console.error('Error loading data:', error);
-        }
-        setLoading(false);
-    };
+    const { eleves, classes, notes, professeurs, bulletins, loading } = useSchoolData();
+    const allEleves = eleves;
 
     if (loading) {
         return <div className="loader">Chargement du tableau de bord...</div>;
@@ -136,12 +91,12 @@ export default function Dashboard() {
                             </tr>
                         </thead>
                         <tbody>
-                            {eleves.length === 0 ? (
+                            {allEleves.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="text-center">Aucun élève</td>
                                 </tr>
                             ) : (
-                                eleves.map((e) => (
+                                allEleves.slice(0, 5).map((e: any) => (
                                     <tr key={e.id}>
                                         <td className="font-bold">{e?.user?.name || 'Élève'}</td>
                                         <td>{e?.classe?.nom || '—'}</td>
@@ -177,11 +132,7 @@ export default function Dashboard() {
                 </div>
                 <div className="stat-card">
                     <span className="stat-label">Élèves</span>
-                    <span className="stat-value">45</span>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-label">Tâches en attente</span>
-                    <span className="stat-value">3</span>
+                    <span className="stat-value">{allEleves.length}</span>
                 </div>
             </div>
 
@@ -207,7 +158,10 @@ export default function Dashboard() {
         </>
     );
 
-    const renderEleveDashboard = () => (
+    const renderEleveDashboard = () => {
+        const notesValues = notes.filter((n: any) => n?.valeur != null).map((n: any) => n.valeur);
+        const moyenne = notesValues.length > 0 ? (notesValues.reduce((a: number, b: number) => a + b, 0) / notesValues.length).toFixed(2) : '—';
+        return (
         <>
             <div className="topbar">
                 <div>
@@ -219,21 +173,11 @@ export default function Dashboard() {
             <div className="stats-grid">
                 <div className="stat-card">
                     <span className="stat-label">Moyenne générale</span>
-                    <span className="stat-value">14.5</span>
-                    <span className="stat-change positive">↑ 0.5pt</span>
+                    <span className="stat-value">{moyenne}</span>
                 </div>
                 <div className="stat-card">
                     <span className="stat-label">Notes de cette année</span>
                     <span className="stat-value">{notes.length}</span>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-label">Rang de la classe</span>
-                    <span className="stat-value">4e</span>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-label">Présence</span>
-                    <span className="stat-value">95%</span>
-                    <span className="stat-change positive">Excellent</span>
                 </div>
             </div>
 
@@ -254,6 +198,7 @@ export default function Dashboard() {
             </div>
         </>
     );
+    };
 
     const renderParentDashboard = () => {
         const enfants = (user as any)?.parent?.enfants || [];

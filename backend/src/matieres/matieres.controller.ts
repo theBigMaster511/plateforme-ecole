@@ -38,7 +38,8 @@ export class MatieresController {
   @ApiResponse({ status: 200, description: 'Liste des matières récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
   findAll(@Req() req: any) {
-    const ecoleId = req.user?.ecoleId;
+    const ecoleId = req.user.ecoleId;
+    if (!ecoleId) return [];
     return this.matieresService.findAll(ecoleId);
   }
 

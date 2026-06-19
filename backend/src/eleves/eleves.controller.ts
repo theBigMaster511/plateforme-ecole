@@ -1,4 +1,5 @@
-import { Body, Controller, Get, NotFoundException, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Req } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import type { Request } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
@@ -12,16 +13,23 @@ import { AuthService as LocalAuthService } from '../auth/auth.service';
 @Controller('eleves')
 @ApiTags('Gestion des Élèves')
 export class ElevesController {
-  constructor(private readonly elevesService: ElevesService, private readonly AuthService: AuthService, private LocalAuthService: LocalAuthService) { }
+  constructor(private readonly elevesService: ElevesService, private readonly AuthService: AuthService, private LocalAuthService: LocalAuthService, private readonly prisma: PrismaService) { }
 
   @Get()
   @Roles(Role.ADMIN, Role.PROFESSEUR)
   @ApiOperation({ summary: 'Lister tous les élèves', description: 'Récupérer la liste complète des élèves (ADMIN, PROFESSEUR)' })
   @ApiResponse({ status: 200, description: 'Liste des élèves récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll(@Req() req: Request) {
-    const ecoleId = (req as any).user?.ecoleId;
-    return this.elevesService.findAll(ecoleId);
+  async findAll(@Req() req: Request) {
+    const ecoleId = (req as any).user.ecoleId;
+    if (!ecoleId) return [];
+    const user = (req as any).user;
+    let professeurId: string | undefined;
+    if (user && user.role === 'PROFESSEUR') {
+      const prof = await this.prisma.professeur.findUnique({ where: { userId: user.id } });
+      professeurId = prof?.id;
+    }
+    return this.elevesService.findAll(ecoleId, professeurId);
   }
 
   @Get(':id')
@@ -67,6 +75,18 @@ export class ElevesController {
 
 
 
+  @Delete(':id')
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Supprimer un élève', description: 'Supprimer un élève et son compte utilisateur (ADMIN uniquement)' })
+  @ApiParam({ name: 'id', description: 'ID unique de l\'élève', example: 'ele123456789' })
+  @ApiResponse({ status: 200, description: 'Élève supprimé' })
+  @ApiResponse({ status: 404, description: 'Élève introuvable' })
+  @ApiResponse({ status: 401, description: 'Non autorisé' })
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const ecoleId = (req as any).user?.ecoleId;
+    return this.elevesService.remove(id, ecoleId);
+  }
+
   @Post("create-student")
   @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Créer un nouvel élève', description: 'Ajouter un nouvel élève à la base de données (ADMIN uniquement)' })
@@ -75,7 +95,7 @@ export class ElevesController {
   @ApiResponse({ status: 400, description: 'Données invalides' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
   async createEleve(@Body() data: CreateEleveDto, @Req() req: Request) {
-    const ecoleId = (req as any).user.ecoleId;
+    const ecoleId = (req as any).user?.ecoleId;
     const account = await this.AuthService.api.signUpEmail({
       body: {
         email: data.email,

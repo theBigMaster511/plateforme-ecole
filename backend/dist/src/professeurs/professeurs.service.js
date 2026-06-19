@@ -17,23 +17,47 @@ let ProfesseursService = class ProfesseursService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll(userId) {
-        const school = await this.prisma.ecole.findFirst({
-            where: {
-                userId,
-            },
-        });
-        if (!school) {
-            console.log('School: ', school);
-            throw new Error("school does'nt exist");
+    async create(dto, ecoleId) {
+        const { email, ...profData } = dto;
+        if (!email) {
+            throw new common_1.BadRequestException('Email requis pour créer un professeur');
         }
-        return this.prisma.professeur.findMany({
-            where: {
-                ecoleId: school.id,
+        const user = await this.prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            throw new common_1.BadRequestException(`Aucun utilisateur trouvé avec l'email ${email}`);
+        }
+        return this.prisma.professeur.create({
+            data: {
+                ...profData,
+                ecoleId,
+                userId: user.id,
             },
         });
     }
-    async findOne(id) {
+    async findAll(ecoleId) {
+        return this.prisma.professeur.findMany({
+            where: ecoleId ? { ecoleId } : undefined,
+            include: {
+                user: true,
+                matieres: {
+                    include: {
+                        matiere: {
+                            include: {
+                                classe: true,
+                            },
+                        },
+                    },
+                },
+                classes: {
+                    include: {
+                        classe: true,
+                    },
+                },
+                evaluations: true,
+            },
+        });
+    }
+    async findOne(id, ecoleId) {
         const professeur = await this.prisma.professeur.findUnique({
             where: { id },
             include: {
@@ -58,14 +82,20 @@ let ProfesseursService = class ProfesseursService {
         if (!professeur) {
             throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
         }
+        if (ecoleId && professeur.ecoleId !== ecoleId) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+        }
         return professeur;
     }
-    async update(id, dto) {
+    async update(id, dto, ecoleId) {
         const professeur = await this.prisma.professeur.findUnique({
             where: { id },
             include: { user: true },
         });
         if (!professeur) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+        }
+        if (ecoleId && professeur.ecoleId !== ecoleId) {
             throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
         }
         const { name, email, ...profData } = dto;
@@ -90,11 +120,14 @@ let ProfesseursService = class ProfesseursService {
             include: { user: true },
         });
     }
-    async assignMatiere(professeurId, matiereId) {
+    async assignMatiere(professeurId, matiereId, ecoleId) {
         const professeur = await this.prisma.professeur.findUnique({
             where: { id: professeurId },
         });
         if (!professeur) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+        }
+        if (ecoleId && professeur.ecoleId !== ecoleId) {
             throw new common_1.NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
         }
         const matiere = await this.prisma.matiere.findUnique({
@@ -121,12 +154,15 @@ let ProfesseursService = class ProfesseursService {
             },
         });
     }
-    async remove(id) {
+    async remove(id, ecoleId) {
         const professeur = await this.prisma.professeur.findUnique({
             where: { id },
             include: { user: true },
         });
         if (!professeur) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
+        }
+        if (ecoleId && professeur.ecoleId !== ecoleId) {
             throw new common_1.NotFoundException(`Professeur avec l'ID ${id} introuvable.`);
         }
         const evaluations = await this.prisma.evaluation.findMany({
@@ -146,7 +182,15 @@ let ProfesseursService = class ProfesseursService {
         await this.prisma.user.delete({ where: { id: professeur.userId } });
         return { message: 'Professeur supprimé avec succès' };
     }
-    async removeMatiere(professeurId, matiereId) {
+    async removeMatiere(professeurId, matiereId, ecoleId) {
+        if (ecoleId) {
+            const professeur = await this.prisma.professeur.findUnique({
+                where: { id: professeurId },
+            });
+            if (!professeur || professeur.ecoleId !== ecoleId) {
+                throw new common_1.NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+            }
+        }
         const exists = await this.prisma.professeurMatiere.findUnique({
             where: {
                 professeurId_matiereId: {
@@ -167,11 +211,14 @@ let ProfesseursService = class ProfesseursService {
             },
         });
     }
-    async assignClasse(professeurId, classeId) {
+    async assignClasse(professeurId, classeId, ecoleId) {
         const professeur = await this.prisma.professeur.findUnique({
             where: { id: professeurId },
         });
         if (!professeur) {
+            throw new common_1.NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+        }
+        if (ecoleId && professeur.ecoleId !== ecoleId) {
             throw new common_1.NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
         }
         const classe = await this.prisma.classe.findUnique({
@@ -195,7 +242,15 @@ let ProfesseursService = class ProfesseursService {
             data: { professeurId, classeId },
         });
     }
-    async removeClasse(professeurId, classeId) {
+    async removeClasse(professeurId, classeId, ecoleId) {
+        if (ecoleId) {
+            const professeur = await this.prisma.professeur.findUnique({
+                where: { id: professeurId },
+            });
+            if (!professeur || professeur.ecoleId !== ecoleId) {
+                throw new common_1.NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+            }
+        }
         const exists = await this.prisma.professeurClasse.findUnique({
             where: {
                 professeurId_classeId: {

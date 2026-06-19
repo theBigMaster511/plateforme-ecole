@@ -1,3 +1,5 @@
+import { PrismaService } from "../prisma/prisma.service";
+import type { Request } from 'express';
 import { ElevesService } from './eleves.service';
 import { UpdateEleveDto } from './dto/update-eleve.dto';
 import { CreateEleveDto } from './dto/create-eleve.dto';
@@ -7,8 +9,9 @@ export declare class ElevesController {
     private readonly elevesService;
     private readonly AuthService;
     private LocalAuthService;
-    constructor(elevesService: ElevesService, AuthService: AuthService, LocalAuthService: LocalAuthService);
-    findAll(): Promise<({
+    private readonly prisma;
+    constructor(elevesService: ElevesService, AuthService: AuthService, LocalAuthService: LocalAuthService, prisma: PrismaService);
+    findAll(req: Request): Promise<({
         user: {
             id: string;
             name: string;
@@ -23,9 +26,9 @@ export declare class ElevesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            ecoleId: string;
-            profId: string;
             nom: string;
+            ecoleId: string;
+            profId: string | null;
             niveau: string;
             annee: string;
         } | null;
@@ -43,11 +46,12 @@ export declare class ElevesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                date: Date;
-                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
+                type: import("../generated/prisma/enums").EvalType;
+                date: Date;
+                semestre: number;
             };
         } & {
             id: string;
@@ -105,9 +109,9 @@ export declare class ElevesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            ecoleId: string;
-            profId: string;
             nom: string;
+            ecoleId: string;
+            profId: string | null;
             niveau: string;
             annee: string;
         } | null;
@@ -125,11 +129,12 @@ export declare class ElevesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                date: Date;
-                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
+                type: import("../generated/prisma/enums").EvalType;
+                date: Date;
+                semestre: number;
             };
         } & {
             id: string;
@@ -172,7 +177,7 @@ export declare class ElevesController {
         dateNaissance: Date | null;
         classeId: string | null;
     }>;
-    update(id: string, dto: UpdateEleveDto): Promise<{
+    update(id: string, dto: UpdateEleveDto, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -181,7 +186,7 @@ export declare class ElevesController {
         dateNaissance: Date | null;
         classeId: string | null;
     }>;
-    assignClasse(eleveId: string, classeId: string): Promise<{
+    assignClasse(eleveId: string, classeId: string, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -190,7 +195,10 @@ export declare class ElevesController {
         dateNaissance: Date | null;
         classeId: string | null;
     }>;
-    createEleve(data: CreateEleveDto): Promise<{
+    remove(id: string, req: Request): Promise<{
+        message: string;
+    }>;
+    createEleve(data: CreateEleveDto, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;

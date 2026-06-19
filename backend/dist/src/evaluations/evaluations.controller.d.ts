@@ -1,20 +1,23 @@
 import { EvaluationsService } from './evaluations.service';
 import { CreateEvaluationDto } from './dto/create-evaluation.dto';
 import { UpdateEvaluationDto } from './dto/update-evaluation.dto';
+import { PrismaService } from "../prisma/prisma.service";
 export declare class EvaluationsController {
     private readonly evaluationsService;
-    constructor(evaluationsService: EvaluationsService);
-    create(dto: CreateEvaluationDto): Promise<{
+    private readonly prisma;
+    constructor(evaluationsService: EvaluationsService, prisma: PrismaService);
+    create(dto: CreateEvaluationDto, req?: any): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
-    findAll(): Promise<({
+    findAll(req: any, semestre?: string): Promise<({
         professeur: {
             user: {
                 id: string;
@@ -31,18 +34,18 @@ export declare class EvaluationsController {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
+            telephone: string | null;
             ecoleId: string;
             specialite: string | null;
-            telephone: string | null;
         };
         matiere: {
             classe: {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                ecoleId: string;
-                profId: string;
                 nom: string;
+                ecoleId: string;
+                profId: string | null;
                 niveau: string;
                 annee: string;
             };
@@ -67,13 +70,14 @@ export declare class EvaluationsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     })[]>;
-    findOne(id: string): Promise<{
+    findOne(id: string, req?: any): Promise<{
         professeur: {
             user: {
                 id: string;
@@ -90,18 +94,18 @@ export declare class EvaluationsController {
             createdAt: Date;
             updatedAt: Date;
             userId: string;
+            telephone: string | null;
             ecoleId: string;
             specialite: string | null;
-            telephone: string | null;
         };
         matiere: {
             classe: {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                ecoleId: string;
-                profId: string;
                 nom: string;
+                ecoleId: string;
+                profId: string | null;
                 niveau: string;
                 annee: string;
             };
@@ -147,30 +151,33 @@ export declare class EvaluationsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
-    update(id: string, dto: UpdateEvaluationDto): Promise<{
+    update(id: string, dto: UpdateEvaluationDto, req?: any): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, req?: any): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
-        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
+        type: import("../generated/prisma/enums").EvalType;
+        date: Date;
+        semestre: number;
     }>;
 }

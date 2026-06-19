@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDateString, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsEnum, IsInt, Min, Max } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 enum EvalType {
@@ -23,4 +23,11 @@ export class UpdateEvaluationDto {
   @IsOptional()
   @ApiProperty({ example: '2024-10-20', description: 'Nouvelle date (YYYY-MM-DD)', required: false })
   date?: string;
+
+  @IsInt()
+  @Min(1)
+  @Max(2)
+  @IsOptional()
+  @ApiProperty({ example: 2, description: 'Semestre (1 ou 2)', required: false })
+  semestre?: number;
 }

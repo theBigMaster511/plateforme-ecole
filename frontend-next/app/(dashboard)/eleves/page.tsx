@@ -8,7 +8,7 @@ export default function ElevesPage() {
     const [classes, setClasses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [form, setForm] = useState({ name: '', email: '', password: '', classeId: '' });
+    const [form, setForm] = useState({ name: '', email: '', password: '', classeId: '', parentEmail: '' });
     const [error, setError] = useState('');
 
     const [selectedEleve, setSelectedEleve] = useState<any>(null);
@@ -53,10 +53,11 @@ export default function ElevesPage() {
             const res = await api.createEleve({
                 name: form.name, email: form.email, password: form.password,
                 classeId: form.classeId || undefined,
+                parentEmail: form.parentEmail || undefined,
             });
             if (res?.error) { setError(res.error); return; }
             setShowModal(false);
-            setForm({ name: '', email: '', password: '', classeId: '' });
+            setForm({ name: '', email: '', password: '', classeId: '', parentEmail: '' });
             if (res?.parentAccount) {
                 setParentCredentials(res.parentAccount);
             }
@@ -223,6 +224,11 @@ export default function ElevesPage() {
                                     <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
                                 </div>
                                 <div className="field">
+                                    <label>Email du parent (optionnel)</label>
+                                    <input type="email" value={form.parentEmail} onChange={(e) => setForm({ ...form, parentEmail: e.target.value })} placeholder="parent@email.com - laissez vide pour générer automatiquement" />
+                                    <small style={{ color: '#9ca3af', fontSize: 11 }}>Si le parent a déjà un compte, ses autres enfants seront liés automatiquement.</small>
+                                </div>
+                                <div className="field">
                                     <label>Classe</label>
                                     <select value={form.classeId} onChange={(e) => setForm({ ...form, classeId: e.target.value })}>
                                         <option value="">Sélectionner une classe</option>
@@ -246,13 +252,19 @@ export default function ElevesPage() {
                 <div className="modal-overlay" onClick={() => setParentCredentials(null)}>
                     <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 480 }}>
                         <div className="modal-header">
-                            <h3><i className="ti ti-users" style={{ marginRight: 8 }}></i>Compte parent créé</h3>
+                            <h3><i className="ti ti-users" style={{ marginRight: 8 }}></i>{parentCredentials.alreadyExisted ? 'Parent lié' : 'Compte parent créé'}</h3>
                             <button className="btn-icon" onClick={() => setParentCredentials(null)}><i className="ti ti-x"></i></button>
                         </div>
                         <div className="modal-body">
-                            <div className="alert alert-success" style={{ padding: '12px', background: '#d4edda', borderRadius: 8, marginBottom: 16, color: '#155724', fontSize: 14 }}>
-                                Un compte parent a été automatiquement créé. Transmettez ces identifiants au parent.
-                            </div>
+                            {parentCredentials.alreadyExisted ? (
+                                <div className="alert alert-success" style={{ padding: '12px', background: '#cce5ff', borderRadius: 8, marginBottom: 16, color: '#004085', fontSize: 14 }}>
+                                    Cet élève a été lié au compte parent existant (<strong>{parentCredentials.email}</strong>). Aucun nouveau compte créé.
+                                </div>
+                            ) : (
+                                <div className="alert alert-success" style={{ padding: '12px', background: '#d4edda', borderRadius: 8, marginBottom: 16, color: '#155724', fontSize: 14 }}>
+                                    Un compte parent a été automatiquement créé. Transmettez ces identifiants au parent.
+                                </div>
+                            )}
                             <div style={{ background: 'var(--color-bg-secondary)', borderRadius: 8, padding: 16 }}>
                                 <div className="field">
                                     <label>Email du parent</label>
@@ -263,15 +275,17 @@ export default function ElevesPage() {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="field" style={{ marginTop: 12 }}>
-                                    <label>Mot de passe</label>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                        <code style={{ flex: 1, padding: '8px 12px', background: '#fff', borderRadius: 6, fontSize: 14 }}>{parentCredentials.password}</code>
-                                        <button className="btn-icon" title="Copier" onClick={() => { navigator.clipboard.writeText(parentCredentials.password); }}>
-                                            <i className="ti ti-copy"></i>
-                                        </button>
+                                {!parentCredentials.alreadyExisted && (
+                                    <div className="field" style={{ marginTop: 12 }}>
+                                        <label>Mot de passe</label>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <code style={{ flex: 1, padding: '8px 12px', background: '#fff', borderRadius: 6, fontSize: 14 }}>{parentCredentials.password}</code>
+                                            <button className="btn-icon" title="Copier" onClick={() => { navigator.clipboard.writeText(parentCredentials.password); }}>
+                                                <i className="ti ti-copy"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                         <div className="modal-footer">

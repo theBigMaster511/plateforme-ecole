@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
-  const { login, user, isLoading } = useAuth();
+  const { login, user, role, isLoading } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -14,10 +14,10 @@ export default function AdminLoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && user && user.role === 'admin') {
+    if (!isLoading && user && role === 'admin') {
       router.replace('/dashboard');
     }
-  }, [isLoading, user, router]);
+  }, [isLoading, user, role, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
     );
   }
 
-  if (user && user.role === 'admin') return null;
+  if (user && role === 'admin') return null;
 
   const roseBg = 'linear-gradient(135deg, #a13d63 0%, #7a2a4a 50%, #5c1f38 100%)';
 

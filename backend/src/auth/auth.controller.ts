@@ -10,6 +10,8 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { AuthService, AllowAnonymous } from '@thallesp/nestjs-better-auth';
+import { Roles } from 'src/role/roles.decorator';
+import { Role } from 'src/role/roles.enum';
 import type { Response, Request as ExpressRequest } from 'express';
 import { AuthService as LocalAuthService } from './auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -150,15 +152,59 @@ export class AuthController {
       },
     });
 
-    // Auto-création du compte parent
-    const parentEmail = `parent_${body.email}`;
-    const parentPassword = Math.random().toString(36).substring(2, 10);
+    // Auto-création du compte parent (avec gestion des doublons)
+    const parentEmail = body.parentEmail || `parent_${body.email}`;
+    let parentPassword = '';
+    let parentCreated = false;
+
+    // Vérifie si un parent existe déjà avec cet email
+    const existingParentUser = await this.prisma.user.findUnique({
+      where: { email: parentEmail },
+    });
+
+    if (existingParentUser && existingParentUser.role === Role.PARENT) {
+      // Parent existant → lier l'élève à ce parent
+      const existingParent = await this.prisma.parent.findUnique({
+        where: { userId: existingParentUser.id },
+      });
+
+      if (existingParent) {
+        const eleve = await this.prisma.eleve.findUnique({
+          where: { userId: account.user.id },
+        });
+
+        if (eleve) {
+          await this.prisma.parentEleve.create({
+            data: {
+              parentId: existingParent.id,
+              eleveId: eleve.id,
+            },
+          });
+        }
+
+        res.cookie('better-auth.session_token', account.token, {
+          httpOnly: true,
+          sameSite: 'lax',
+        });
+        return res.json({
+          ...account,
+          parentAccount: {
+            email: parentEmail,
+            password: 'Compte parent existant',
+            alreadyExisted: true,
+          },
+        });
+      }
+    }
+
+    // Création d'un nouveau compte parent
+    parentPassword = Math.random().toString(36).substring(2, 10);
 
     const parentAccount = await this.authService.api.signUpEmail({
       body: {
         email: parentEmail,
         password: parentPassword,
-        name: `Parent de ${body.name || 'élève'}`,
+        name: body.parentName || `Parent de ${body.name || 'élève'}`,
       },
     });
 
@@ -184,14 +230,17 @@ export class AuthController {
         });
       }
 
-      res.json({
+      res.cookie('better-auth.session_token', account.token, {
+        httpOnly: true,
+        sameSite: 'lax',
+      });
+      return res.json({
         ...account,
         parentAccount: {
           email: parentEmail,
           password: parentPassword,
         },
       });
-      return;
     }
 
     res.cookie('better-auth.session_token', account.token, {
@@ -293,7 +342,7 @@ export class AuthController {
   /*
     Ces fonctions d'authentification sont faites pour les eleves
   */
-  @AllowAnonymous()
+  @Roles(Role.ADMIN)
   @Post('sign-up/teacher')
   @ApiOperation({ summary: 'Inscription pour les professeurs' })
   @ApiResponse({
@@ -306,12 +355,14 @@ export class AuthController {
     @Req() req: ExpressRequest,
     @Res() res: Response,
   ) {
-    console.log(body);
+    const { email, password, name } = body;
+    const ecoleId = (req as any).user?.ecoleId;
 
-    const { email, password, name, ecoleId } = body;
-
-    if (!email && !password && !name && !ecoleId) {
-      return new ForbiddenException('champ manquant');
+    if (!email || !password || !name) {
+      throw new ForbiddenException('champ manquant');
+    }
+    if (!ecoleId) {
+      throw new ForbiddenException('ecoleId manquant');
     }
 
     const account = await this.authService.api.signUpEmail({
@@ -339,10 +390,6 @@ export class AuthController {
       },
     });
 
-    res.cookie('better-auth.session_token', account.token, {
-      httpOnly: true,
-      sameSite: 'lax',
-    });
     return res.json(account);
   }
 

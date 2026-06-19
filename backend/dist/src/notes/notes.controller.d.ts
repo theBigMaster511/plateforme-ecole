@@ -16,8 +16,8 @@ export declare class NotesController {
         appreciation: string | null;
         evaluationId: string;
     }>;
-    createBulk(dto: CreateNotesBulkDto): Promise<any[]>;
-    findAll(): Promise<({
+    createBulk(dto: CreateNotesBulkDto, req?: any): Promise<any[]>;
+    findAll(req: any): Promise<({
         eleve: {
             user: {
                 id: string;
@@ -33,9 +33,9 @@ export declare class NotesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                ecoleId: string;
-                profId: string;
                 nom: string;
+                ecoleId: string;
+                profId: string | null;
                 niveau: string;
                 annee: string;
             } | null;
@@ -65,9 +65,9 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
-                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -81,11 +81,12 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
+            semestre: number;
         };
     } & {
         id: string;
@@ -96,7 +97,7 @@ export declare class NotesController {
         appreciation: string | null;
         evaluationId: string;
     })[]>;
-    findByEleve(eleveId: string): Promise<({
+    findByEleve(eleveId: string, req?: any): Promise<({
         evaluation: {
             professeur: {
                 user: {
@@ -114,9 +115,9 @@ export declare class NotesController {
                 createdAt: Date;
                 updatedAt: Date;
                 userId: string;
+                telephone: string | null;
                 ecoleId: string;
                 specialite: string | null;
-                telephone: string | null;
             };
             matiere: {
                 id: string;
@@ -130,11 +131,12 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
+            semestre: number;
         };
     } & {
         id: string;
@@ -145,7 +147,7 @@ export declare class NotesController {
         appreciation: string | null;
         evaluationId: string;
     })[]>;
-    update(id: string, dto: UpdateNoteDto): Promise<{
+    update(id: string, dto: UpdateNoteDto, req?: any): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -154,7 +156,7 @@ export declare class NotesController {
         appreciation: string | null;
         evaluationId: string;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, req?: any): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;

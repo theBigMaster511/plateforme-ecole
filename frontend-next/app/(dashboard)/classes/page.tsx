@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useSchoolData } from '@/lib/school-data-context';
 import { api } from '@/lib/api';
 
 export default function ClassesPage() {
     const { user, role } = useAuth();
+    const { eleves, professeurs, loading: dataLoading } = useSchoolData();
     const [classes, setClasses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -146,11 +148,11 @@ export default function ClassesPage() {
                 </div>
                 <div className="stat-card">
                     <span className="stat-label">Élèves total</span>
-                    <span className="stat-value">240</span>
+                    <span className="stat-value">{eleves.length}</span>
                 </div>
                 <div className="stat-card">
                     <span className="stat-label">Professeurs</span>
-                    <span className="stat-value">12</span>
+                    <span className="stat-value">{professeurs.length}</span>
                 </div>
             </div>
 

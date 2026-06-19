@@ -47,6 +47,7 @@ export default function Sidebar() {
         ],
         parent: [
             { href: '/dashboard', icon: 'ti-layout-dashboard', label: 'Accueil' },
+            { href: '/emploi-du-temps', icon: 'ti-calendar', label: 'Emploi du temps' },
             { href: '/notes', icon: 'ti-notes', label: 'Notes des enfants' },
             { href: '/bulletins', icon: 'ti-file-text', label: 'Bulletins' },
             { href: '/frais', icon: 'ti-credit-card', label: 'Frais scolaires' },
@@ -59,8 +60,9 @@ export default function Sidebar() {
     const initials = user?.name?.substring(0, 2).toUpperCase() || 'U';
 
     const handleLogout = async () => {
+        const currentRole = role;
         await logout();
-        router.push(role === 'admin' ? '/admin-login' : role === 'parent' ? '/login' : '/');
+        router.push(currentRole === 'admin' ? '/admin-login' : '/login');
     };
 
     return (
@@ -96,6 +98,7 @@ export default function Sidebar() {
                     </div>
                     <button className="logout-btn" onClick={handleLogout} title="Déconnexion">
                         <i className="ti ti-logout"></i>
+                        <span style={{ fontSize: 12, marginLeft: 4 }}>Quitter</span>
                     </button>
                 </div>
             </div>

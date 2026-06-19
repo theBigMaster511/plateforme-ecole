@@ -1,9 +1,10 @@
 import { ParentsService } from './parents.service';
 import { UpdateParentDto } from './dto/update-parent.dto';
+import type { Request } from 'express';
 export declare class ParentsController {
     private readonly parentsService;
     constructor(parentsService: ParentsService);
-    findAll(): Promise<({
+    findAll(req: Request): Promise<({
         user: {
             id: string;
             name: string;
@@ -30,9 +31,9 @@ export declare class ParentsController {
                     id: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    ecoleId: string;
-                    profId: string;
                     nom: string;
+                    ecoleId: string;
+                    profId: string | null;
                     niveau: string;
                     annee: string;
                 } | null;
@@ -56,7 +57,7 @@ export declare class ParentsController {
         userId: string;
         telephone: string | null;
     })[]>;
-    findOne(id: string): Promise<{
+    findOne(id: string, req: Request): Promise<{
         user: {
             id: string;
             name: string;
@@ -83,9 +84,9 @@ export declare class ParentsController {
                     id: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    ecoleId: string;
-                    profId: string;
                     nom: string;
+                    ecoleId: string;
+                    profId: string | null;
                     niveau: string;
                     annee: string;
                 } | null;
@@ -109,18 +110,18 @@ export declare class ParentsController {
         userId: string;
         telephone: string | null;
     }>;
-    update(id: string, dto: UpdateParentDto): Promise<{
+    update(id: string, dto: UpdateParentDto, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
         telephone: string | null;
     }>;
-    linkEnfant(parentId: string, eleveId: string): Promise<{
+    linkEnfant(parentId: string, eleveId: string, req: Request): Promise<{
         parentId: string;
         eleveId: string;
     }>;
-    unlinkEnfant(parentId: string, eleveId: string): Promise<{
+    unlinkEnfant(parentId: string, eleveId: string, req: Request): Promise<{
         parentId: string;
         eleveId: string;
     }>;

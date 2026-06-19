@@ -4,7 +4,7 @@ import { CreateEleveDto } from './dto/create-eleve.dto';
 export declare class ElevesService {
     private prisma;
     constructor(prisma: PrismaService);
-    findAll(): Promise<({
+    findAll(ecoleId: string, professeurId?: string): Promise<({
         user: {
             id: string;
             name: string;
@@ -19,9 +19,9 @@ export declare class ElevesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            ecoleId: string;
-            profId: string;
             nom: string;
+            ecoleId: string;
+            profId: string | null;
             niveau: string;
             annee: string;
         } | null;
@@ -39,11 +39,12 @@ export declare class ElevesService {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                date: Date;
-                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
+                type: import("../generated/prisma/enums").EvalType;
+                date: Date;
+                semestre: number;
             };
         } & {
             id: string;
@@ -101,9 +102,9 @@ export declare class ElevesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            ecoleId: string;
-            profId: string;
             nom: string;
+            ecoleId: string;
+            profId: string | null;
             niveau: string;
             annee: string;
         } | null;
@@ -121,11 +122,12 @@ export declare class ElevesService {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                date: Date;
-                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
+                type: import("../generated/prisma/enums").EvalType;
+                date: Date;
+                semestre: number;
             };
         } & {
             id: string;
@@ -168,7 +170,7 @@ export declare class ElevesService {
         dateNaissance: Date | null;
         classeId: string | null;
     }>;
-    update(id: string, dto: UpdateEleveDto): Promise<{
+    update(id: string, dto: UpdateEleveDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -177,7 +179,7 @@ export declare class ElevesService {
         dateNaissance: Date | null;
         classeId: string | null;
     }>;
-    assignClasse(eleveId: string, classeId: string): Promise<{
+    assignClasse(eleveId: string, classeId: string, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -186,7 +188,7 @@ export declare class ElevesService {
         dateNaissance: Date | null;
         classeId: string | null;
     }>;
-    createEleve(data: CreateEleveDto, userId: string): Promise<{
+    createEleve(data: CreateEleveDto, userId: string, ecoleId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -194,5 +196,8 @@ export declare class ElevesService {
         matricule: string;
         dateNaissance: Date | null;
         classeId: string | null;
+    }>;
+    remove(id: string, ecoleId?: string): Promise<{
+        message: string;
     }>;
 }

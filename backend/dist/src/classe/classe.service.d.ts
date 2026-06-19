@@ -4,20 +4,17 @@ import { UpdateClassDto } from './dto/update-classe.dto';
 export declare class ClasseService {
     private prisma;
     constructor(prisma: PrismaService);
-    create(dto: CreateClasseDto): Promise<{
+    create(dto: CreateClasseDto, ecoleId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;
-    schoolId(userId: string): Promise<{
-        id: string;
-    } | null>;
-    findAll(schoolId: string | null): Promise<({
+    findAll(ecoleId?: string | null): Promise<({
         _count: {
             eleves: number;
             matieres: number;
@@ -26,12 +23,12 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
-    })[] | undefined>;
+    })[]>;
     findOne(id: string): Promise<{
         _count: {
             eleves: number;
@@ -69,29 +66,29 @@ export declare class ClasseService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;
-    update(id: string, dto: UpdateClassDto): Promise<{
+    update(id: string, dto: UpdateClassDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;

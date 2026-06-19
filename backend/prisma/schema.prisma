@@ -126,6 +126,7 @@ model Ecole {
   professeurs Professeur[]
   classes     Classe[]
   frais       FraisScolaire[]
+  communications Communication[]
 
   @@map("ecole")
 }
@@ -198,14 +199,14 @@ model Professeur {
 model Classe {
   id         String     @id @default(cuid())
   ecoleId    String
-  profId     String
+  profId     String?
   nom        String // ex: "6ème A", "Terminale S"
   niveau     String // ex: "6ème", "Terminale"
   annee      String // ex: "2024-2025"
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   ecole      Ecole      @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
-  professeur Professeur @relation(fields: [profId], references: [id], onDelete: Cascade)
+  professeur Professeur? @relation(fields: [profId], references: [id], onDelete: SetNull)
 
   eleves       Eleve[]
   matieres     Matiere[]
@@ -300,6 +301,8 @@ model Evaluation {
   professeurId String
   professeur   Professeur @relation(fields: [professeurId], references: [id])
 
+  semestre Int @default(1)
+
   notes Note[]
 
   @@map("evaluation")
@@ -351,6 +354,19 @@ model FraisScolaire {
   paiements Paiement[]
 
   @@map("frais_scolaire")
+}
+
+model Communication {
+  id        String   @id @default(cuid())
+  ecoleId   String
+  title     String
+  content   String
+  target    String   @default("all") // "all", "eleves", "professeurs"
+  createdAt DateTime @default(now())
+
+  ecole Ecole @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
+
+  @@map("communication")
 }
 
 model Paiement {

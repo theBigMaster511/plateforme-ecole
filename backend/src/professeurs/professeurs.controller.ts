@@ -58,17 +58,8 @@ export class ProfesseursController {
   })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
   findAll(@Req() req: Request) {
-<<<<<<< HEAD
-    const user = (req as any).user;
-    if (!user) {
-      return new UnauthorizedException('non connecte');
-    }
-    console.log(user);
-    return this.professeursService.findAll(user.id);
-=======
     const ecoleId = (req as any).user.ecoleId;
     return this.professeursService.findAll(ecoleId);
->>>>>>> 1a23e1c06fcf591b93a747ce8b56226e22e2ebc1
   }
 
   @Get(':id')

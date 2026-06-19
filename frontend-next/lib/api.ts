@@ -21,9 +21,10 @@ export const api = {
         }
 
         if (!res.ok) {
-            // Ne jamais faire window.location.href ici — ça cause une boucle infinie
-            // Les composants gèrent eux-mêmes les erreurs 401/403
-            return { error: data?.error || data || `Erreur ${res.status}`, status: res.status };
+            const errMsg = typeof data === 'object' && data !== null
+                ? data?.error || data?.message || JSON.stringify(data)
+                : data || `Erreur ${res.status}`;
+            return { error: String(errMsg), status: res.status };
         }
 
         return data;
@@ -85,8 +86,9 @@ export const api = {
     deleteMatiere: (id: string) => api.delete(`/matieres/${id}`),
 
     // Bulletins endpoints
-    getBulletins: () => api.get('/bulletins'),
+    getBulletins: (semestre?: number) => api.get(`/bulletins${semestre ? `?semestre=${semestre}` : ''}`),
     getBulletin: (id: string) => api.get(`/bulletins/${id}`),
+    getBulletinByEleve: (eleveId: string, semestre?: number) => api.get(`/bulletins/${eleveId}${semestre ? `?semestre=${semestre}` : ''}`),
 
     // Professeurs endpoints
     getProfesseurs: () => api.get('/professeurs'),

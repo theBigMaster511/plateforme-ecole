@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Patch,
@@ -35,9 +36,10 @@ export class NotesController {
   @ApiResponse({ status: 401, description: 'Non autorisé' })
   async create(@Body() dto: CreateNoteDto, @Req() req: any) {
     const user = req.user;
+    if (!user) throw new ForbiddenException('Non authentifié');
     let professeurId: string | undefined;
-    const ecoleId = user?.ecoleId;
-    if (user) {
+    const ecoleId = user.ecoleId;
+    if (user.role === 'PROFESSEUR') {
       const prof = await this.prisma.professeur.findUnique({ where: { userId: user.id } });
       professeurId = prof?.id;
     }
@@ -50,8 +52,15 @@ export class NotesController {
   @ApiBody({ type: CreateNotesBulkDto, description: 'Liste de notes à saisir' })
   @ApiResponse({ status: 201, description: 'Notes saisies avec résultats' })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  createBulk(@Body() dto: CreateNotesBulkDto) {
-    return this.notesService.createBulk(dto);
+  async createBulk(@Body() dto: CreateNotesBulkDto, @Req() req?: any) {
+    const user = req?.user;
+    let professeurId: string | undefined;
+    const ecoleId = user?.ecoleId;
+    if (user) {
+      const prof = await this.prisma.professeur.findUnique({ where: { userId: user.id } });
+      professeurId = prof?.id;
+    }
+    return this.notesService.createBulk(dto, professeurId, ecoleId);
   }
 
   @Get()
@@ -59,9 +68,16 @@ export class NotesController {
   @ApiOperation({ summary: 'Lister toutes les notes', description: 'Récupérer l\'ensemble des notes de l\'établissement (ADMIN, PROFESSEUR)' })
   @ApiResponse({ status: 200, description: 'Liste des notes récupérée', isArray: true })
   @ApiResponse({ status: 401, description: 'Non autorisé' })
-  findAll(@Req() req?: any) {
-    const ecoleId = req?.user?.ecoleId;
-    return this.notesService.findAll(ecoleId);
+  async findAll(@Req() req: any) {
+    const ecoleId = req.user.ecoleId;
+    if (!ecoleId) return [];
+    const user = req.user;
+    let professeurId: string | undefined;
+    if (user && user.role === 'PROFESSEUR') {
+      const prof = await this.prisma.professeur.findUnique({ where: { userId: user.id } });
+      professeurId = prof?.id;
+    }
+    return this.notesService.findAll(ecoleId, professeurId);
   }
 
   @Get('eleve/:eleveId')

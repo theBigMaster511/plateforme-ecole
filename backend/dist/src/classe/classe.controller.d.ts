@@ -1,4 +1,3 @@
-import { NotFoundException } from '@nestjs/common';
 import { ClasseService } from './classe.service';
 import { CreateClasseDto } from './dto/create-classe.dto';
 import { UpdateClassDto } from './dto/update-classe.dto';
@@ -6,17 +5,17 @@ import type { Request } from 'express';
 export declare class ClasseController {
     private readonly classeService;
     constructor(classeService: ClasseService);
-    create(dto: CreateClasseDto): Promise<{
+    create(dto: CreateClasseDto, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;
-    findAll(req: Request): Promise<NotFoundException | ({
+    findAll(req: Request): Promise<({
         _count: {
             eleves: number;
             matieres: number;
@@ -25,12 +24,12 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
-    })[] | undefined>;
+    })[]>;
     findOne(id: string): Promise<{
         _count: {
             eleves: number;
@@ -68,29 +67,29 @@ export declare class ClasseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;
-    update(id: string, dto: UpdateClassDto): Promise<{
+    update(id: string, dto: UpdateClassDto, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;
-    remove(id: string): Promise<{
+    remove(id: string, req: Request): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        ecoleId: string;
-        profId: string;
         nom: string;
+        ecoleId: string;
+        profId: string | null;
         niveau: string;
         annee: string;
     }>;

@@ -1,16 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateEleveDto } from './dto/update-eleve.dto';
-import { CreateEcoleDto } from 'src/ecole/dto/create-ecole.dto';
 import { CreateEleveDto } from './dto/create-eleve.dto';
 
 @Injectable()
 export class ElevesService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(ecoleId?: string) {
+  async findAll(ecoleId: string, professeurId?: string) {
+    const where: any = { classe: { ecoleId } };
+
+    if (professeurId) {
+      const classes = await this.prisma.professeurClasse.findMany({
+        where: { professeurId },
+        select: { classeId: true },
+      });
+      const classeIds = classes.map((c) => c.classeId);
+      if (classeIds.length > 0) {
+        where.classeId = { in: classeIds };
+      } else {
+        where.classeId = null; // Aucune classe assignée → aucun résultat
+      }
+    }
+
     return this.prisma.eleve.findMany({
-      where: ecoleId ? { classe: { ecoleId } } : undefined,
+      where,
       include: {
         user: true,
         classe: true,
@@ -76,21 +90,30 @@ export class ElevesService {
   async update(id: string, dto: UpdateEleveDto, ecoleId?: string) {
     const eleve = await this.findOne(id);
 
-    if (ecoleId) {
+    if (ecoleId && eleve.classeId) {
       const classe = await this.prisma.classe.findUnique({
-        where: { id: eleve.classeId ?? undefined },
+        where: { id: eleve.classeId },
       });
       if (!classe || classe.ecoleId !== ecoleId) {
         throw new NotFoundException(`Élève avec l'ID ${id} introuvable.`);
       }
     }
 
+    if (dto.name || dto.email) {
+      await this.prisma.user.update({
+        where: { id: eleve.userId },
+        data: {
+          ...(dto.name && { name: dto.name }),
+          ...(dto.email && { email: dto.email }),
+        },
+      });
+    }
+
     return this.prisma.eleve.update({
       where: { id },
       data: {
-        dateNaissance: dto.dateNaissance
-          ? new Date(dto.dateNaissance)
-          : undefined,
+        ...(dto.dateNaissance && { dateNaissance: new Date(dto.dateNaissance) }),
+        ...(dto.classeId && { classeId: dto.classeId }),
       },
     });
   }
@@ -155,5 +178,20 @@ export class ElevesService {
     });
 
     return user
+  }
+
+  async remove(id: string, ecoleId?: string) {
+    const eleve = await this.findOne(id);
+
+    if (ecoleId && eleve.classe?.ecoleId !== ecoleId) {
+      throw new NotFoundException(`Élève avec l'ID ${id} introuvable.`);
+    }
+
+    await this.prisma.parentEleve.deleteMany({ where: { eleveId: id } });
+    await this.prisma.note.deleteMany({ where: { eleveId: id } });
+    await this.prisma.eleve.delete({ where: { id } });
+    await this.prisma.user.delete({ where: { id: eleve.userId } }).catch(() => {});
+
+    return { message: 'Élève supprimé avec succès' };
   }
 }

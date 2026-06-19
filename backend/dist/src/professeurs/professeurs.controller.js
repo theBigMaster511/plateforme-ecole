@@ -20,7 +20,6 @@ const roles_enum_1 = require("../role/roles.enum");
 const professeurs_service_1 = require("./professeurs.service");
 const update_professeur_dto_1 = require("./dto/update-professeur.dto");
 const nestjs_better_auth_1 = require("@thallesp/nestjs-better-auth");
-const resend_1 = require("../lib/resend");
 const create_professeur_dto_1 = require("./dto/create-professeur.dto");
 let ProfesseursController = class ProfesseursController {
     professeursService;
@@ -30,43 +29,40 @@ let ProfesseursController = class ProfesseursController {
         this.authService = authService;
     }
     async CreateProfesseur(req, body) {
-        const user = req.user;
-        console.log('user:', user);
-        return resend_1.resend.emails.send({
-            from: 'Acme <onboarding@resend.dev>',
-            to: ['nouhouprodev@gmail.com'],
-            subject: 'test',
-            html: '<h1>Hello</h1>',
-        });
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.create(body, ecoleId);
     }
     findAll(req) {
-        const user = req.user;
-        if (!user) {
-            return new common_1.UnauthorizedException('non connecte');
-        }
-        console.log(user);
-        return this.professeursService.findAll(user.id);
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.findAll(ecoleId);
     }
-    findOne(id) {
-        return this.professeursService.findOne(id);
+    findOne(id, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.findOne(id, ecoleId);
     }
-    update(id, dto) {
-        return this.professeursService.update(id, dto);
+    update(id, dto, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.update(id, dto, ecoleId);
     }
-    assignMatiere(professeurId, matiereId) {
-        return this.professeursService.assignMatiere(professeurId, matiereId);
+    assignMatiere(professeurId, matiereId, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.assignMatiere(professeurId, matiereId, ecoleId);
     }
-    remove(id) {
-        return this.professeursService.remove(id);
+    remove(id, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.remove(id, ecoleId);
     }
-    removeMatiere(professeurId, matiereId) {
-        return this.professeursService.removeMatiere(professeurId, matiereId);
+    removeMatiere(professeurId, matiereId, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.removeMatiere(professeurId, matiereId, ecoleId);
     }
-    assignClasse(professeurId, classeId) {
-        return this.professeursService.assignClasse(professeurId, classeId);
+    assignClasse(professeurId, classeId, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.assignClasse(professeurId, classeId, ecoleId);
     }
-    removeClasse(professeurId, classeId) {
-        return this.professeursService.removeClasse(professeurId, classeId);
+    removeClasse(professeurId, classeId, req) {
+        const ecoleId = req.user.ecoleId;
+        return this.professeursService.removeClasse(professeurId, classeId, ecoleId);
     }
 };
 exports.ProfesseursController = ProfesseursController;
@@ -113,8 +109,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Professeur introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "findOne", null);
 __decorate([
@@ -138,8 +135,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_professeur_dto_1.UpdateProfesseurDto]),
+    __metadata("design:paramtypes", [String, update_professeur_dto_1.UpdateProfesseurDto, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "update", null);
 __decorate([
@@ -168,8 +166,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Param)('matiereId')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "assignMatiere", null);
 __decorate([
@@ -189,8 +188,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Professeur introuvable' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "remove", null);
 __decorate([
@@ -215,8 +215,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Non autorisé' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Param)('matiereId')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "removeMatiere", null);
 __decorate([
@@ -227,8 +228,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 409, description: 'Assignation déjà existante' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Param)('classeId')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "assignClasse", null);
 __decorate([
@@ -239,8 +241,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Assignation introuvable' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Param)('classeId')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ProfesseursController.prototype, "removeClasse", null);
 exports.ProfesseursController = ProfesseursController = __decorate([

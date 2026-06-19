@@ -60,9 +60,19 @@ export class EmploiTempsService {
   }
 
   async findByProfesseur(professeurId: string) {
-    return this.prisma.emploiTemps.findMany({
+    const matieres = await this.prisma.professeurMatiere.findMany({
       where: { professeurId },
-      include: { classe: true, matiere: true },
+      select: { matiereId: true },
+    });
+    const matiereIds = matieres.map((m) => m.matiereId);
+    return this.prisma.emploiTemps.findMany({
+      where: {
+        OR: [
+          { professeurId },
+          ...(matiereIds.length > 0 ? [{ matiereId: { in: matiereIds } }] : []),
+        ],
+      },
+      include: { classe: true, matiere: true, professeur: { include: { user: true } } },
       orderBy: [{ jour: 'asc' }, { heureDebut: 'asc' }],
     });
   }

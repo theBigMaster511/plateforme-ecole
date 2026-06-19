@@ -19,9 +19,11 @@ export default function EmploiDuTempsPage() {
   const [selectedClasse, setSelectedClasse] = useState<string>('');
   const [editing, setEditing] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
+  const [editCoef, setEditCoef] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedEnfantId, setSelectedEnfantId] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const coefRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     init();
@@ -91,6 +93,7 @@ export default function EmploiDuTempsPage() {
     const entry = grid[key];
     setEditing(key);
     setEditValue(entry?.matiere?.nom || '');
+    setEditCoef('');
     setTimeout(() => inputRef.current?.focus(), 10);
   };
 
@@ -115,7 +118,8 @@ export default function EmploiDuTempsPage() {
     if (!matiereId) {
       let match = matieres.find((m) => m.nom.toLowerCase() === val.toLowerCase() && m.classeId === selectedClasse);
       if (!match) {
-        const created = await api.createMatiere({ nom: val, coefficient: 1, classeId: selectedClasse });
+        const coef = editCoef ? parseInt(editCoef, 10) : 1;
+        const created = await api.createMatiere({ nom: val, coefficient: coef, classeId: selectedClasse });
         if (created?.error) return;
         match = created;
         setMatieres((prev) => [...prev, match]);
@@ -187,7 +191,7 @@ export default function EmploiDuTempsPage() {
             Aucun enfant lié à votre compte.
           </div>
         )}
-        {(role !== 'parent' || selectedEnfantId) && renderGrid(grid, JOURS, HEURES, null, '', null, null, null)}
+        {(role !== 'parent' || selectedEnfantId) && renderGrid(grid, JOURS, HEURES, null, '', undefined, undefined, undefined, null, null, null)}
       </>
     );
   }
@@ -216,7 +220,7 @@ export default function EmploiDuTempsPage() {
         </div>
       )}
 
-      {selectedClasse && renderGrid(grid, JOURS, HEURES, editing, editValue, setEditValue, startEdit, saveCell, deleteEntry, inputRef)}
+      {selectedClasse && renderGrid(grid, JOURS, HEURES, editing, editValue, setEditValue, editCoef, setEditCoef, startEdit, saveCell, deleteEntry, inputRef, coefRef)}
     </>
   );
 }
@@ -224,10 +228,12 @@ export default function EmploiDuTempsPage() {
 function renderGrid(
   grid: Record<string, any>, JOURS: string[], HEURES: string[],
   editing: string | null, editValue: string, setEditValue?: any,
+  editCoef?: string, setEditCoef?: any,
   startEdit?: ((j: string, h: string) => void) | null,
   saveCell?: (() => void) | null,
   deleteEntry?: ((j: string, h: string) => void) | null,
   inputRef?: React.RefObject<HTMLInputElement | null>,
+  coefRef?: React.RefObject<HTMLInputElement | null>,
 ) {
   const readonly = !startEdit;
 
@@ -265,24 +271,42 @@ function renderGrid(
                     onClick={() => { if (!readonly && !isEditing) startEdit?.(jour, heure); }}
                   >
                     {isEditing ? (
-                      <input
-                        ref={inputRef as any}
-                        type="text"
-                        value={editValue}
-                        onChange={(e) => setEditValue?.(e.target.value)}
-                        onBlur={() => saveCell?.()}
-                        onKeyDown={(e) => { if (e.key === 'Enter') saveCell?.(); if (e.key === 'Escape') saveCell?.(); }}
-                        style={{
-                          width: '100%', height: '100%', border: '2px solid #a13d63',
-                          borderRadius: 4, padding: '2px 6px', fontSize: 12,
-                          background: '#fff', outline: 'none', fontFamily: "'DM Sans', sans-serif",
-                          boxSizing: 'border-box',
-                        }}
-                        placeholder="Matière..."
-                      />
+                      <div style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                        <input
+                          ref={inputRef as any}
+                          type="text"
+                          value={editValue}
+                          onChange={(e) => setEditValue?.(e.target.value)}
+                          onBlur={() => saveCell?.()}
+                          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); coefRef?.current?.focus(); } if (e.key === 'Escape') saveCell?.(); }}
+                          style={{
+                            flex: 1, minWidth: 0, border: '2px solid #a13d63',
+                            borderRadius: 4, padding: '2px 4px', fontSize: 12,
+                            background: '#fff', outline: 'none', fontFamily: "'DM Sans', sans-serif",
+                          }}
+                          placeholder="Matière"
+                        />
+                        <input
+                          ref={coefRef as any}
+                          type="number"
+                          min={1}
+                          max={20}
+                          value={editCoef}
+                          onChange={(e) => setEditCoef?.(e.target.value)}
+                          onBlur={() => saveCell?.()}
+                          onKeyDown={(e) => { if (e.key === 'Enter') saveCell?.(); if (e.key === 'Escape') saveCell?.(); }}
+                          style={{
+                            width: 48, border: '2px solid #a13d63',
+                            borderRadius: 4, padding: '2px 4px', fontSize: 12,
+                            background: '#fff', outline: 'none', fontFamily: "'DM Sans', sans-serif",
+                          }}
+                          placeholder="Coef"
+                        />
+                      </div>
                     ) : entry ? (
                       <div style={{ padding: '2px 6px', fontSize: 12, lineHeight: 1.3, position: 'relative' }}>
                         <div style={{ fontWeight: 600, color: '#a13d63' }}>{entry.matiere?.nom}</div>
+                        {entry.classe?.nom && <div style={{ fontSize: 10, color: '#6b7280' }}>{entry.classe.nom}</div>}
                         {entry.salle && <div style={{ fontSize: 10, color: '#6b7280' }}>{entry.salle}</div>}
                         {!readonly && (
                           <button

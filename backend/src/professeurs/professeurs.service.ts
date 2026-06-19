@@ -12,12 +12,6 @@ import { UpdateProfesseurDto } from './dto/update-professeur.dto';
 export class ProfesseursService {
   constructor(private prisma: PrismaService) {}
 
-<<<<<<< HEAD
-  async findAll(userId: string) {
-    const school = await this.prisma.ecole.findFirst({
-      where: {
-        userId,
-=======
   async create(dto: CreateProfesseurDto, ecoleId: string) {
     const { email, ...profData } = dto;
 
@@ -59,17 +53,6 @@ export class ProfesseursService {
           },
         },
         evaluations: true,
->>>>>>> 1a23e1c06fcf591b93a747ce8b56226e22e2ebc1
-      },
-    });
-
-    if (!school) {
-      console.log('School: ', school);
-      throw new Error("school does'nt exist");
-    }
-    return this.prisma.professeur.findMany({
-      where: {
-        ecoleId: school.id,
       },
     });
   }
