@@ -26,8 +26,8 @@ body {
 :root {
   /* Couleurs principales par rôle */
   --color-admin: #0f2d4a;
-  --color-prof: #1a3a2a;
-  --color-eleve: #2d1b69;
+  --color-prof: #1D9E75;
+  --color-eleve: #B8860B;
 
   /* Couleurs sémantiques */
   --color-success: #1D9E75;
@@ -726,6 +726,92 @@ select {
   .login-left {
     min-height: 300px;
   }
+
+  .main {
+    padding: 1rem !important;
+  }
+
+  .main.with-sidebar {
+    margin-left: 0 !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .notes-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .modal {
+    max-width: 95% !important;
+    margin: 0.5rem;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    min-height: auto !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: 0 !important;
+    flex-direction: row !important;
+    padding: 0 !important;
+    z-index: 200 !important;
+    overflow-x: auto !important;
+    align-items: center !important;
+  }
+
+  .sidebar .sidebar-brand,
+  .sidebar .sidebar-footer {
+    display: none !important;
+  }
+
+  .sidebar nav {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    justify-content: space-around !important;
+    padding: 0.4rem 0 !important;
+  }
+
+  .sidebar .nav-item {
+    flex-direction: column !important;
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+    gap: 2px !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .sidebar .nav-item i {
+    font-size: 18px !important;
+  }
+
+  .main.with-sidebar {
+    padding-bottom: 5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .login-right {
+    padding: 2rem 1.5rem !important;
+  }
+
+  .feat span {
+    font-size: 12px !important;
+  }
 }
 
 .login-header {
@@ -1138,4 +1224,56 @@ select {
   color: var(--color-text-primary);
   text-align: left;
   flex-shrink: 0;
+}
+
+/* Landing page */
+.cta-secondary {
+  transition: all .2s;
+}
+
+.cta-secondary:hover {
+  background: #1D9E75 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 768px) {
+  .landing-nav {
+    padding: 0.75rem 1rem !important;
+  }
+  .landing-nav-links span {
+    display: none !important;
+  }
+  .landing-hero {
+    flex-direction: column !important;
+    padding: 2rem 1rem !important;
+    gap: 2rem !important;
+    text-align: center !important;
+  }
+  .landing-hero h1 {
+    font-size: 28px !important;
+  }
+  .landing-hero p {
+    max-width: 100% !important;
+  }
+  .landing-cta-row {
+    justify-content: center !important;
+  }
+  .landing-hero-img {
+    width: 100% !important;
+    height: 240px !important;
+  }
+  .landing-section {
+    padding: 2rem 1rem !important;
+  }
+  .landing-features {
+    grid-template-columns: 1fr !important;
+  }
+  .landing-roles {
+    grid-template-columns: 1fr !important;
+    margin: 0 1rem 2rem !important;
+  }
+  .landing-contact {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
 }

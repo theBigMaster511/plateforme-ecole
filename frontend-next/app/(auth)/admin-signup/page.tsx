@@ -17,6 +17,7 @@ export default function AdminSignupPage() {
       if (res.error) {
         setError(res.error);
       } else {
+        localStorage.removeItem('onb_admin');
         router.push('/admin-login');
       }
     } catch (err: any) {

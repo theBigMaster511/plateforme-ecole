@@ -34,6 +34,21 @@ export default function NotesPage() {
                 setNotes(mesNotes);
                 setEvaluations([]);
                 setEleves([]);
+            } else if (role === 'prof') {
+                const profClasses: any[] = (user as any)?.professeur?.classes || [];
+                const classeIds = profClasses.map((pc: any) => pc.classeId);
+                const [notesRes, evaluationsRes, elevesRes] = await Promise.all([
+                    api.getNotes(),
+                    api.getEvaluations(),
+                    api.getEleves(),
+                ]);
+                let allEleves = Array.isArray(elevesRes) ? elevesRes : [];
+                if (classeIds.length > 0) {
+                    allEleves = allEleves.filter((e: any) => e.classe && classeIds.includes(e.classe.id));
+                }
+                setNotes(Array.isArray(notesRes) ? notesRes : []);
+                setEvaluations(Array.isArray(evaluationsRes) ? evaluationsRes : []);
+                setEleves(allEleves);
             } else {
                 const [notesRes, evaluationsRes, elevesRes] = await Promise.all([
                     api.getNotes(),

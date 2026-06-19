@@ -23,6 +23,11 @@ export class ProfesseursService {
             },
           },
         },
+        classes: {
+          include: {
+            classe: true,
+          },
+        },
         evaluations: true,
       },
       orderBy: {
@@ -43,6 +48,11 @@ export class ProfesseursService {
                 classe: true,
               },
             },
+          },
+        },
+        classes: {
+          include: {
+            classe: true,
           },
         },
         evaluations: true,
@@ -167,7 +177,6 @@ export class ProfesseursService {
   }
 
   async removeMatiere(professeurId: string, matiereId: string) {
-    // Vérifier que l'assignation existe
     const exists = await this.prisma.professeurMatiere.findUnique({
       where: {
         professeurId_matiereId: {
@@ -185,6 +194,61 @@ export class ProfesseursService {
         professeurId_matiereId: {
           professeurId,
           matiereId,
+        },
+      },
+    });
+  }
+
+  async assignClasse(professeurId: string, classeId: string) {
+    const professeur = await this.prisma.professeur.findUnique({
+      where: { id: professeurId },
+    });
+    if (!professeur) {
+      throw new NotFoundException(`Professeur avec l'ID ${professeurId} introuvable.`);
+    }
+
+    const classe = await this.prisma.classe.findUnique({
+      where: { id: classeId },
+    });
+    if (!classe) {
+      throw new NotFoundException(`Classe avec l'ID ${classeId} introuvable.`);
+    }
+
+    const exists = await this.prisma.professeurClasse.findUnique({
+      where: {
+        professeurId_classeId: {
+          professeurId,
+          classeId,
+        },
+      },
+    });
+    if (exists) {
+      throw new ConflictException('Ce professeur est déjà assigné à cette classe.');
+    }
+
+    return this.prisma.professeurClasse.create({
+      data: { professeurId, classeId },
+    });
+  }
+
+  async removeClasse(professeurId: string, classeId: string) {
+    const exists = await this.prisma.professeurClasse.findUnique({
+      where: {
+        professeurId_classeId: {
+          professeurId,
+          classeId,
+        },
+      },
+    });
+    if (!exists) {
+      throw new NotFoundException('Assignation classe non trouvée.');
+    }
+
+    return this.prisma.professeurClasse.delete({
+      where: {
+        professeurId_classeId: {
+          professeurId,
+          classeId,
         },
       },
     });

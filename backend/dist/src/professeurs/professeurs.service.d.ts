@@ -38,6 +38,19 @@ export declare class ProfesseursService {
             professeurId: string;
             matiereId: string;
         })[];
+        classes: ({
+            classe: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                nom: string;
+                niveau: string;
+                annee: string;
+            };
+        } & {
+            classeId: string;
+            professeurId: string;
+        })[];
         evaluations: {
             id: string;
             createdAt: Date;
@@ -92,6 +105,19 @@ export declare class ProfesseursService {
             professeurId: string;
             matiereId: string;
         })[];
+        classes: ({
+            classe: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                nom: string;
+                niveau: string;
+                annee: string;
+            };
+        } & {
+            classeId: string;
+            professeurId: string;
+        })[];
         evaluations: {
             id: string;
             createdAt: Date;
@@ -141,5 +167,13 @@ export declare class ProfesseursService {
     removeMatiere(professeurId: string, matiereId: string): Promise<{
         professeurId: string;
         matiereId: string;
+    }>;
+    assignClasse(professeurId: string, classeId: string): Promise<{
+        classeId: string;
+        professeurId: string;
+    }>;
+    removeClasse(professeurId: string, classeId: string): Promise<{
+        classeId: string;
+        professeurId: string;
     }>;
 }

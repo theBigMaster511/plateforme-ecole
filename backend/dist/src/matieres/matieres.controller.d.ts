@@ -67,16 +67,6 @@ export declare class MatieresController {
             niveau: string;
             annee: string;
         };
-        evaluations: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            professeurId: string;
-            matiereId: string;
-            titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
-        }[];
         professeurs: ({
             professeur: {
                 user: {
@@ -102,6 +92,16 @@ export declare class MatieresController {
             professeurId: string;
             matiereId: string;
         })[];
+        evaluations: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            professeurId: string;
+            matiereId: string;
+            titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
+        }[];
     } & {
         id: string;
         createdAt: Date;

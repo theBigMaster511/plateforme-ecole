@@ -185,6 +185,7 @@ model Professeur {
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   ecole       Ecole               @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
   matieres    ProfesseurMatiere[]
+  classes     ProfesseurClasse[]
   evaluations Evaluation[]
   classe      Classe[]
 
@@ -203,8 +204,9 @@ model Classe {
   ecole      Ecole      @relation(fields: [ecoleId], references: [id], onDelete: Cascade)
   professeur Professeur @relation(fields: [profId], references: [id], onDelete: Cascade)
 
-  eleves   Eleve[]
-  matieres Matiere[]
+  eleves      Eleve[]
+  matieres    Matiere[]
+  professeurs ProfesseurClasse[]
 
   @@map("classe")
 }
@@ -236,6 +238,19 @@ model ProfesseurMatiere {
 
   @@id([professeurId, matiereId])
   @@map("professeur_matiere")
+}
+
+// Table de jonction Professeur <-> Classe
+
+model ProfesseurClasse {
+  professeurId String
+  classeId     String
+
+  professeur Professeur @relation(fields: [professeurId], references: [id], onDelete: Cascade)
+  classe     Classe     @relation(fields: [classeId], references: [id], onDelete: Cascade)
+
+  @@id([professeurId, classeId])
+  @@map("professeur_classe")
 }
 
 model Evaluation {

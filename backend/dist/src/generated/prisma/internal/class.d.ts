@@ -66,6 +66,9 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get professeurMatiere(): Prisma.ProfesseurMatiereDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get professeurClasse(): Prisma.ProfesseurClasseDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get evaluation(): Prisma.EvaluationDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;

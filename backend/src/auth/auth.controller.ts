@@ -347,7 +347,12 @@ export class AuthController {
     // Inclure les profils liés (eleve/professeur) pour éviter des appels supplémentaires
     const [eleve, professeur] = await Promise.all([
       this.prisma.eleve.findUnique({ where: { userId: session.userId } }),
-      this.prisma.professeur.findUnique({ where: { userId: session.userId } }),
+      this.prisma.professeur.findUnique({
+        where: { userId: session.userId },
+        include: {
+          classes: { include: { classe: true } },
+        },
+      }),
     ]);
 
     return res.json({ ...session, eleve, professeur });

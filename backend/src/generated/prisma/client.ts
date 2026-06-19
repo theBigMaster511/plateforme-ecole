@@ -100,6 +100,11 @@ export type Matiere = Prisma.MatiereModel
  */
 export type ProfesseurMatiere = Prisma.ProfesseurMatiereModel
 /**
+ * Model ProfesseurClasse
+ * 
+ */
+export type ProfesseurClasse = Prisma.ProfesseurClasseModel
+/**
  * Model Evaluation
  * 
  */

@@ -396,6 +396,7 @@ export const ModelName = {
   Classe: 'Classe',
   Matiere: 'Matiere',
   ProfesseurMatiere: 'ProfesseurMatiere',
+  ProfesseurClasse: 'ProfesseurClasse',
   Evaluation: 'Evaluation',
   Note: 'Note'
 } as const
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "ecole" | "eleve" | "parent" | "parentEleve" | "professeur" | "classe" | "matiere" | "professeurMatiere" | "evaluation" | "note"
+    modelProps: "user" | "session" | "account" | "verification" | "ecole" | "eleve" | "parent" | "parentEleve" | "professeur" | "classe" | "matiere" | "professeurMatiere" | "professeurClasse" | "evaluation" | "note"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1305,6 +1306,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProfesseurClasse: {
+      payload: Prisma.$ProfesseurClassePayload<ExtArgs>
+      fields: Prisma.ProfesseurClasseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProfesseurClasseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProfesseurClasseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>
+        }
+        findFirst: {
+          args: Prisma.ProfesseurClasseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProfesseurClasseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>
+        }
+        findMany: {
+          args: Prisma.ProfesseurClasseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>[]
+        }
+        create: {
+          args: Prisma.ProfesseurClasseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>
+        }
+        createMany: {
+          args: Prisma.ProfesseurClasseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProfesseurClasseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>[]
+        }
+        delete: {
+          args: Prisma.ProfesseurClasseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>
+        }
+        update: {
+          args: Prisma.ProfesseurClasseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProfesseurClasseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProfesseurClasseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProfesseurClasseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProfesseurClasseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfesseurClassePayload>
+        }
+        aggregate: {
+          args: Prisma.ProfesseurClasseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProfesseurClasse>
+        }
+        groupBy: {
+          args: Prisma.ProfesseurClasseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfesseurClasseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProfesseurClasseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfesseurClasseCountAggregateOutputType> | number
+        }
+      }
+    }
     Evaluation: {
       payload: Prisma.$EvaluationPayload<ExtArgs>
       fields: Prisma.EvaluationFieldRefs
@@ -1649,6 +1724,14 @@ export const ProfesseurMatiereScalarFieldEnum = {
 export type ProfesseurMatiereScalarFieldEnum = (typeof ProfesseurMatiereScalarFieldEnum)[keyof typeof ProfesseurMatiereScalarFieldEnum]
 
 
+export const ProfesseurClasseScalarFieldEnum = {
+  professeurId: 'professeurId',
+  classeId: 'classeId'
+} as const
+
+export type ProfesseurClasseScalarFieldEnum = (typeof ProfesseurClasseScalarFieldEnum)[keyof typeof ProfesseurClasseScalarFieldEnum]
+
+
 export const EvaluationScalarFieldEnum = {
   id: 'id',
   titre: 'titre',
@@ -1868,6 +1951,7 @@ export type GlobalOmitConfig = {
   classe?: Prisma.ClasseOmit
   matiere?: Prisma.MatiereOmit
   professeurMatiere?: Prisma.ProfesseurMatiereOmit
+  professeurClasse?: Prisma.ProfesseurClasseOmit
   evaluation?: Prisma.EvaluationOmit
   note?: Prisma.NoteOmit
 }

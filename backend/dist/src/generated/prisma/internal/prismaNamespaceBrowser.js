@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NullsOrder = exports.SortOrder = exports.NoteScalarFieldEnum = exports.EvaluationScalarFieldEnum = exports.ProfesseurMatiereScalarFieldEnum = exports.MatiereScalarFieldEnum = exports.ClasseScalarFieldEnum = exports.ProfesseurScalarFieldEnum = exports.ParentEleveScalarFieldEnum = exports.ParentScalarFieldEnum = exports.EleveScalarFieldEnum = exports.EcoleScalarFieldEnum = exports.VerificationScalarFieldEnum = exports.AccountScalarFieldEnum = exports.SessionScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.NullsOrder = exports.SortOrder = exports.NoteScalarFieldEnum = exports.EvaluationScalarFieldEnum = exports.ProfesseurClasseScalarFieldEnum = exports.ProfesseurMatiereScalarFieldEnum = exports.MatiereScalarFieldEnum = exports.ClasseScalarFieldEnum = exports.ProfesseurScalarFieldEnum = exports.ParentEleveScalarFieldEnum = exports.ParentScalarFieldEnum = exports.EleveScalarFieldEnum = exports.EcoleScalarFieldEnum = exports.VerificationScalarFieldEnum = exports.AccountScalarFieldEnum = exports.SessionScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -57,6 +57,7 @@ exports.ModelName = {
     Classe: 'Classe',
     Matiere: 'Matiere',
     ProfesseurMatiere: 'ProfesseurMatiere',
+    ProfesseurClasse: 'ProfesseurClasse',
     Evaluation: 'Evaluation',
     Note: 'Note'
 };
@@ -174,6 +175,10 @@ exports.MatiereScalarFieldEnum = {
 exports.ProfesseurMatiereScalarFieldEnum = {
     professeurId: 'professeurId',
     matiereId: 'matiereId'
+};
+exports.ProfesseurClasseScalarFieldEnum = {
+    professeurId: 'professeurId',
+    classeId: 'classeId'
 };
 exports.EvaluationScalarFieldEnum = {
     id: 'id',
