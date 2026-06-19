@@ -11,6 +11,7 @@ interface User {
     role?: string;
     eleve?: { id: string; userId: string; matricule: string; classeId?: string } | null;
     professeur?: { id: string; userId: string; specialite?: string } | null;
+    parent?: { id: string; userId: string; telephone?: string; enfants?: Array<{ eleve: { id: string; matricule: string; user: { name?: string }; classe?: { id: string; nom: string } | null } }> } | null;
 }
 
 interface AuthContextType {
@@ -49,13 +50,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const userData = data.user || data;
         if (data.eleve) (userData as any).eleve = data.eleve;
         if (data.professeur) (userData as any).professeur = data.professeur;
+        if (data.parent) (userData as any).parent = data.parent;
         return userData;
     };
 
     const login = async (email: string, password: string, explicitRole?: string) => {
         const endpoints = explicitRole
-            ? [explicitRole === 'admin' ? '/auth/sign-in/school' : explicitRole === 'prof' ? '/auth/sign-in/teacher' : '/auth/sign-in/student']
-            : ['/auth/sign-in/teacher', '/auth/sign-in/student', '/auth/sign-in/school'];
+            ? [explicitRole === 'admin' ? '/auth/sign-in/school' : explicitRole === 'prof' ? '/auth/sign-in/teacher' : explicitRole === 'parent' ? '/auth/sign-in/parent' : '/auth/sign-in/student']
+            : ['/auth/sign-in/parent', '/auth/sign-in/teacher', '/auth/sign-in/student', '/auth/sign-in/school'];
 
         let ok = false;
         for (const ep of endpoints) {

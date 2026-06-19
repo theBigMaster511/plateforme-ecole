@@ -14,6 +14,7 @@ import { ElevesModule } from './eleves/eleves.module';
 import { ParentsModule } from './parents/parents.module';
 import { EvaluationsModule } from './evaluations/evaluations.module';
 import { NotesModule } from './notes/notes.module';
+import { EmploiTempsModule } from './emploi-temps/emploi-temps.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { NotesModule } from './notes/notes.module';
     ParentsModule,
     EvaluationsModule,
     NotesModule,
+    EmploiTempsModule,
   ],
   controllers: [],
   providers: [

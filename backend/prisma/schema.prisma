@@ -180,6 +180,7 @@ model Professeur {
   matieres    ProfesseurMatiere[]
   classes     ProfesseurClasse[]
   evaluations Evaluation[]
+  emploisTemps EmploiTemps[]
 
   @@map("professeur")
 }
@@ -192,9 +193,10 @@ model Classe {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  eleves      Eleve[]
-  matieres    Matiere[]
-  professeurs ProfesseurClasse[]
+  eleves       Eleve[]
+  matieres     Matiere[]
+  professeurs  ProfesseurClasse[]
+  emploisTemps EmploiTemps[]
 
   @@map("classe")
 }
@@ -211,6 +213,7 @@ model Matiere {
 
   professeurs ProfesseurMatiere[]
   evaluations Evaluation[]
+  emploisTemps EmploiTemps[]
 
   @@map("matiere")
 }
@@ -239,6 +242,34 @@ model ProfesseurClasse {
 
   @@id([professeurId, classeId])
   @@map("professeur_classe")
+}
+
+model EmploiTemps {
+  id        String   @id @default(cuid())
+  jour      Jour     // Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi
+  heureDebut String  // ex: "07:30"
+  heureFin   String  // ex: "08:30"
+  salle     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  classeId     String
+  classe       Classe     @relation(fields: [classeId], references: [id], onDelete: Cascade)
+  matiereId    String
+  matiere      Matiere    @relation(fields: [matiereId], references: [id], onDelete: Cascade)
+  professeurId String?
+  professeur   Professeur? @relation(fields: [professeurId], references: [id])
+
+  @@map("emploi_temps")
+}
+
+enum Jour {
+  LUNDI
+  MARDI
+  MERCREDI
+  JEUDI
+  VENDREDI
+  SAMEDI
 }
 
 model Evaluation {

@@ -129,6 +129,50 @@ export class AuthController {
       },
     });
 
+    // Auto-création du compte parent
+    const parentEmail = `parent_${body.email}`;
+    const parentPassword = Math.random().toString(36).substring(2, 10);
+
+    const parentAccount = await this.authService.api.signUpEmail({
+      body: {
+        email: parentEmail,
+        password: parentPassword,
+        name: `Parent de ${body.name || 'élève'}`,
+      },
+    });
+
+    if (parentAccount) {
+      await this.localAuthService.ToggleParentRole(parentAccount.user.id);
+
+      const parent = await this.prisma.parent.create({
+        data: {
+          userId: parentAccount.user.id,
+        },
+      });
+
+      const eleve = await this.prisma.eleve.findUnique({
+        where: { userId: account.user.id },
+      });
+
+      if (eleve) {
+        await this.prisma.parentEleve.create({
+          data: {
+            parentId: parent.id,
+            eleveId: eleve.id,
+          },
+        });
+      }
+
+      res.json({
+        ...account,
+        parentAccount: {
+          email: parentEmail,
+          password: parentPassword,
+        },
+      });
+      return;
+    }
+
     res.cookie('better-auth.session_token', account.token, {
       httpOnly: true,
       sameSite: 'lax',
@@ -188,6 +232,13 @@ export class AuthController {
     }
 
     await this.localAuthService.ToggleParentRole(account.user.id);
+
+    await this.prisma.parent.create({
+      data: {
+        userId: account.user.id,
+        telephone: body.telephone || undefined,
+      },
+    });
 
     res.cookie('better-auth.session_token', account.token, {
       httpOnly: true,
@@ -329,8 +380,8 @@ export class AuthController {
       userIpAddress: req.ip || '',
     });
 
-    // Inclure les profils liés (eleve/professeur) pour éviter des appels supplémentaires
-    const [eleve, professeur] = await Promise.all([
+    // Inclure les profils liés (eleve/professeur/parent) pour éviter des appels supplémentaires
+    const [eleve, professeur, parent] = await Promise.all([
       this.prisma.eleve.findUnique({ where: { userId: session.userId } }),
       this.prisma.professeur.findUnique({
         where: { userId: session.userId },
@@ -338,8 +389,20 @@ export class AuthController {
           classes: { include: { classe: true } },
         },
       }),
+      this.prisma.parent.findUnique({
+        where: { userId: session.userId },
+        include: {
+          enfants: {
+            include: {
+              eleve: {
+                include: { user: true, classe: true },
+              },
+            },
+          },
+        },
+      }),
     ]);
 
-    return res.json({ ...session, eleve, professeur });
+    return res.json({ ...session, eleve, professeur, parent });
   }
 }

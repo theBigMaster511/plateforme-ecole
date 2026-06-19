@@ -170,6 +170,7 @@ export declare const ModelName: {
     readonly Matiere: "Matiere";
     readonly ProfesseurMatiere: "ProfesseurMatiere";
     readonly ProfesseurClasse: "ProfesseurClasse";
+    readonly EmploiTemps: "EmploiTemps";
     readonly Evaluation: "Evaluation";
     readonly Note: "Note";
 };
@@ -184,7 +185,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "session" | "account" | "verification" | "ecole" | "eleve" | "parent" | "parentEleve" | "professeur" | "classe" | "matiere" | "professeurMatiere" | "professeurClasse" | "evaluation" | "note";
+        modelProps: "user" | "session" | "account" | "verification" | "ecole" | "eleve" | "parent" | "parentEleve" | "professeur" | "classe" | "matiere" | "professeurMatiere" | "professeurClasse" | "emploiTemps" | "evaluation" | "note";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1150,6 +1151,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        EmploiTemps: {
+            payload: Prisma.$EmploiTempsPayload<ExtArgs>;
+            fields: Prisma.EmploiTempsFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.EmploiTempsFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.EmploiTempsFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>;
+                };
+                findFirst: {
+                    args: Prisma.EmploiTempsFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.EmploiTempsFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>;
+                };
+                findMany: {
+                    args: Prisma.EmploiTempsFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>[];
+                };
+                create: {
+                    args: Prisma.EmploiTempsCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>;
+                };
+                createMany: {
+                    args: Prisma.EmploiTempsCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.EmploiTempsCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>[];
+                };
+                delete: {
+                    args: Prisma.EmploiTempsDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>;
+                };
+                update: {
+                    args: Prisma.EmploiTempsUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.EmploiTempsDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.EmploiTempsUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.EmploiTempsUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>[];
+                };
+                upsert: {
+                    args: Prisma.EmploiTempsUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EmploiTempsPayload>;
+                };
+                aggregate: {
+                    args: Prisma.EmploiTempsAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateEmploiTemps>;
+                };
+                groupBy: {
+                    args: Prisma.EmploiTempsGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EmploiTempsGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.EmploiTempsCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EmploiTempsCountAggregateOutputType> | number;
+                };
+            };
+        };
         Evaluation: {
             payload: Prisma.$EvaluationPayload<ExtArgs>;
             fields: Prisma.EvaluationFieldRefs;
@@ -1451,6 +1526,19 @@ export declare const ProfesseurClasseScalarFieldEnum: {
     readonly classeId: "classeId";
 };
 export type ProfesseurClasseScalarFieldEnum = (typeof ProfesseurClasseScalarFieldEnum)[keyof typeof ProfesseurClasseScalarFieldEnum];
+export declare const EmploiTempsScalarFieldEnum: {
+    readonly id: "id";
+    readonly jour: "jour";
+    readonly heureDebut: "heureDebut";
+    readonly heureFin: "heureFin";
+    readonly salle: "salle";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly classeId: "classeId";
+    readonly matiereId: "matiereId";
+    readonly professeurId: "professeurId";
+};
+export type EmploiTempsScalarFieldEnum = (typeof EmploiTempsScalarFieldEnum)[keyof typeof EmploiTempsScalarFieldEnum];
 export declare const EvaluationScalarFieldEnum: {
     readonly id: "id";
     readonly titre: "titre";
@@ -1487,6 +1575,7 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
+export type EnumJourFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Jour'>;
 export type EnumEvalTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvalType'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type BatchPayload = {
@@ -1527,6 +1616,7 @@ export type GlobalOmitConfig = {
     matiere?: Prisma.MatiereOmit;
     professeurMatiere?: Prisma.ProfesseurMatiereOmit;
     professeurClasse?: Prisma.ProfesseurClasseOmit;
+    emploiTemps?: Prisma.EmploiTempsOmit;
     evaluation?: Prisma.EvaluationOmit;
     note?: Prisma.NoteOmit;
 };

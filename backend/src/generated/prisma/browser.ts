@@ -83,6 +83,11 @@ export type ProfesseurMatiere = Prisma.ProfesseurMatiereModel
  */
 export type ProfesseurClasse = Prisma.ProfesseurClasseModel
 /**
+ * Model EmploiTemps
+ * 
+ */
+export type EmploiTemps = Prisma.EmploiTempsModel
+/**
  * Model Evaluation
  * 
  */

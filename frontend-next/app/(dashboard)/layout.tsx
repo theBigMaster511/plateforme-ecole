@@ -62,12 +62,22 @@ export default function DashboardLayout({
 
     const steps = stepsByRole[role || ''] || [];
     const current = steps[onbStep] || null;
-    const accent = role === 'admin' ? '#0f2d4a' : role === 'prof' ? '#1D9E75' : '#B8860B';
+    const accent = role === 'admin' ? '#a13d63' : role === 'prof' ? '#1D9E75' : '#B8860B';
 
     return (
         <div style={{ display: 'flex', width: '100%' }}>
             <Sidebar />
-            <main className="main with-sidebar">{children}</main>
+            <main className="main with-sidebar">
+                <div style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '8px 24px', borderBottom: '1px solid #e5e7eb',
+                    background: '#fafbfc',
+                }}>
+                    <img src="/jangoo.png" alt="Jangoo.sn" style={{ height: 24 }} />
+                    <span style={{ fontSize: 13, color: '#6b7280' }}>Plateforme de gestion scolaire</span>
+                </div>
+                {children}
+            </main>
 
             {onbVisible && current && (
                 <div style={{

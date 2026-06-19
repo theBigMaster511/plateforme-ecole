@@ -19,6 +19,18 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
+export const Jour = {
+  LUNDI: 'LUNDI',
+  MARDI: 'MARDI',
+  MERCREDI: 'MERCREDI',
+  JEUDI: 'JEUDI',
+  VENDREDI: 'VENDREDI',
+  SAMEDI: 'SAMEDI'
+} as const
+
+export type Jour = (typeof Jour)[keyof typeof Jour]
+
+
 export const EvalType = {
   DEVOIR: 'DEVOIR',
   INTERROGATION: 'INTERROGATION',

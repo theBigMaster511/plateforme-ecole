@@ -19,6 +19,8 @@ export default function ElevesPage() {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [deleteError, setDeleteError] = useState('');
 
+    const [parentCredentials, setParentCredentials] = useState<{ email: string; password: string } | null>(null);
+
     useEffect(() => {
         loadEleves();
         loadClasses();
@@ -55,6 +57,9 @@ export default function ElevesPage() {
             if (res?.error) { setError(res.error); return; }
             setShowModal(false);
             setForm({ name: '', email: '', password: '', classeId: '' });
+            if (res?.parentAccount) {
+                setParentCredentials(res.parentAccount);
+            }
             loadEleves();
         } catch (err: any) {
             setError(err?.message || 'Erreur lors de la création');
@@ -236,6 +241,46 @@ export default function ElevesPage() {
                 </div>
             )}
 
+            {/* Modal Compte Parent */}
+            {parentCredentials && (
+                <div className="modal-overlay" onClick={() => setParentCredentials(null)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 480 }}>
+                        <div className="modal-header">
+                            <h3><i className="ti ti-users" style={{ marginRight: 8 }}></i>Compte parent créé</h3>
+                            <button className="btn-icon" onClick={() => setParentCredentials(null)}><i className="ti ti-x"></i></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="alert alert-success" style={{ padding: '12px', background: '#d4edda', borderRadius: 8, marginBottom: 16, color: '#155724', fontSize: 14 }}>
+                                Un compte parent a été automatiquement créé. Transmettez ces identifiants au parent.
+                            </div>
+                            <div style={{ background: 'var(--color-bg-secondary)', borderRadius: 8, padding: 16 }}>
+                                <div className="field">
+                                    <label>Email du parent</label>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <code style={{ flex: 1, padding: '8px 12px', background: '#fff', borderRadius: 6, fontSize: 14 }}>{parentCredentials.email}</code>
+                                        <button className="btn-icon" title="Copier" onClick={() => { navigator.clipboard.writeText(parentCredentials.email); }}>
+                                            <i className="ti ti-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="field" style={{ marginTop: 12 }}>
+                                    <label>Mot de passe</label>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <code style={{ flex: 1, padding: '8px 12px', background: '#fff', borderRadius: 6, fontSize: 14 }}>{parentCredentials.password}</code>
+                                        <button className="btn-icon" title="Copier" onClick={() => { navigator.clipboard.writeText(parentCredentials.password); }}>
+                                            <i className="ti ti-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={() => setParentCredentials(null)}>Compris</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Modal Détails */}
             {showDetail && selectedEleve && (
                 <div className="modal-overlay" onClick={() => { setShowDetail(false); setSelectedEleve(null); }}>
@@ -250,6 +295,14 @@ export default function ElevesPage() {
                             <div className="field"><label>Matricule</label><p>{selectedEleve?.matricule || '—'}</p></div>
                             <div className="field"><label>Classe</label><p>{selectedEleve?.classe?.nom || '—'}</p></div>
                             <div className="field"><label>Date de naissance</label><p>{selectedEleve?.dateNaissance ? new Date(selectedEleve.dateNaissance).toLocaleDateString('fr-FR') : '—'}</p></div>
+                            {selectedEleve?.parents?.length > 0 && (
+                                <div style={{ marginTop: 16, padding: 12, background: '#d4edda', borderRadius: 8 }}>
+                                    <label style={{ fontSize: 12, color: '#155724', fontWeight: 600, marginBottom: 8, display: 'block' }}>
+                                        <i className="ti ti-users" style={{ marginRight: 4 }}></i> Compte parent lié
+                                    </label>
+                                    <p style={{ fontSize: 14, color: '#155724' }}>Email : <strong>{selectedEleve.parents[0]?.parent?.user?.email || '—'}</strong></p>
+                                </div>
+                            )}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-outline" onClick={() => { setShowDetail(false); setSelectedEleve(null); }}>Fermer</button>

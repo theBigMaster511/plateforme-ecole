@@ -11,6 +11,7 @@ export default function Dashboard() {
     const [classes, setClasses] = useState<any[]>([]);
     const [notes, setNotes] = useState<any[]>([]);
     const [professeurs, setProfesseurs] = useState<any[]>([]);
+    const [bulletins, setBulletins] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -38,6 +39,14 @@ export default function Dashboard() {
             } else if (role === 'eleve') {
                 const notesRes = await api.getNotes();
                 setNotes(Array.isArray(notesRes) ? notesRes : []);
+            } else if (role === 'parent') {
+                const enfants = (user as any)?.parent?.enfants || [];
+                const notesPromises = enfants.map((pe: any) => api.getNotesByEleve(pe.eleve.id));
+                const notesResults = await Promise.all(notesPromises);
+                const allNotes = notesResults.flat().filter(Boolean);
+                setNotes(allNotes);
+                const bulletinsRes = await api.getBulletins();
+                setBulletins(Array.isArray(bulletinsRes) ? bulletinsRes : []);
             }
         } catch (error) {
             console.error('Error loading data:', error);
@@ -246,11 +255,92 @@ export default function Dashboard() {
         </>
     );
 
+    const renderParentDashboard = () => {
+        const enfants = (user as any)?.parent?.enfants || [];
+        return (
+            <>
+                <div className="topbar">
+                    <div>
+                        <h1>Espace Parent</h1>
+                        <p>Suivi de la scolarité de vos enfants</p>
+                    </div>
+                </div>
+
+                <div className="stats-grid">
+                    <div className="stat-card">
+                        <span className="stat-label">Enfants inscrits</span>
+                        <span className="stat-value">{enfants.length}</span>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-label">Notes consultables</span>
+                        <span className="stat-value">{notes.length}</span>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-label">Bulletins</span>
+                        <span className="stat-value">{bulletins.length}</span>
+                    </div>
+                </div>
+
+                {enfants.length === 0 ? (
+                    <div className="card">
+                        <div className="card-header"><h3>Mes enfants</h3></div>
+                        <div className="card-body text-center text-muted">
+                            Aucun enfant lié à votre compte. Contactez l'administration.
+                        </div>
+                    </div>
+                ) : (
+                    enfants.map((pe: any) => {
+                        const e = pe.eleve;
+                        return (
+                            <div key={e.id} className="card" style={{ marginBottom: '1rem' }}>
+                                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div>
+                                        <h3>{e?.user?.name || 'Élève'}</h3>
+                                        <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '4px' }}>
+                                            {e?.matricule || ''} {e?.classe?.nom ? `· ${e.classe.nom}` : ''}
+                                        </p>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <a href="/notes" className="btn btn-sm btn-outline">
+                                            <i className="ti ti-notes"></i> Notes
+                                        </a>
+                                        <a href="/bulletins" className="btn btn-sm btn-outline">
+                                            <i className="ti ti-file-text"></i> Bulletin
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })
+                )}
+
+                <div className="card">
+                    <div className="card-header"><h3>Accès rapides</h3></div>
+                    <div style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                        <a href="/notes" className="quick-link">
+                            <i className="ti ti-notes"></i>
+                            <span>Notes des enfants</span>
+                        </a>
+                        <a href="/bulletins" className="quick-link">
+                            <i className="ti ti-file-text"></i>
+                            <span>Bulletins</span>
+                        </a>
+                        <a href="/communication" className="quick-link">
+                            <i className="ti ti-messages"></i>
+                            <span>Messages</span>
+                        </a>
+                    </div>
+                </div>
+            </>
+        );
+    };
+
     return (
         <main className="main-content">
             {role === 'admin' && renderAdminDashboard()}
             {role === 'prof' && renderProfDashboard()}
             {role === 'eleve' && renderEleveDashboard()}
+            {role === 'parent' && renderParentDashboard()}
         </main>
     );
 }

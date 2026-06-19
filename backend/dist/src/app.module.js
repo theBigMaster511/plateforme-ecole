@@ -23,6 +23,7 @@ const eleves_module_1 = require("./eleves/eleves.module");
 const parents_module_1 = require("./parents/parents.module");
 const evaluations_module_1 = require("./evaluations/evaluations.module");
 const notes_module_1 = require("./notes/notes.module");
+const emploi_temps_module_1 = require("./emploi-temps/emploi-temps.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -48,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             parents_module_1.ParentsModule,
             evaluations_module_1.EvaluationsModule,
             notes_module_1.NotesModule,
+            emploi_temps_module_1.EmploiTempsModule,
         ],
         controllers: [],
         providers: [

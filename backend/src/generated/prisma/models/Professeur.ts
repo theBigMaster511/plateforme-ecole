@@ -194,6 +194,7 @@ export type ProfesseurWhereInput = {
   matieres?: Prisma.ProfesseurMatiereListRelationFilter
   classes?: Prisma.ProfesseurClasseListRelationFilter
   evaluations?: Prisma.EvaluationListRelationFilter
+  emploisTemps?: Prisma.EmploiTempsListRelationFilter
 }
 
 export type ProfesseurOrderByWithRelationInput = {
@@ -207,6 +208,7 @@ export type ProfesseurOrderByWithRelationInput = {
   matieres?: Prisma.ProfesseurMatiereOrderByRelationAggregateInput
   classes?: Prisma.ProfesseurClasseOrderByRelationAggregateInput
   evaluations?: Prisma.EvaluationOrderByRelationAggregateInput
+  emploisTemps?: Prisma.EmploiTempsOrderByRelationAggregateInput
 }
 
 export type ProfesseurWhereUniqueInput = Prisma.AtLeast<{
@@ -223,6 +225,7 @@ export type ProfesseurWhereUniqueInput = Prisma.AtLeast<{
   matieres?: Prisma.ProfesseurMatiereListRelationFilter
   classes?: Prisma.ProfesseurClasseListRelationFilter
   evaluations?: Prisma.EvaluationListRelationFilter
+  emploisTemps?: Prisma.EmploiTempsListRelationFilter
 }, "id" | "userId">
 
 export type ProfesseurOrderByWithAggregationInput = {
@@ -259,6 +262,7 @@ export type ProfesseurCreateInput = {
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateInput = {
@@ -271,6 +275,7 @@ export type ProfesseurUncheckedCreateInput = {
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUpdateInput = {
@@ -283,6 +288,7 @@ export type ProfesseurUpdateInput = {
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateInput = {
@@ -295,6 +301,7 @@ export type ProfesseurUncheckedUpdateInput = {
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurCreateManyInput = {
@@ -420,6 +427,22 @@ export type ProfesseurUpdateOneRequiredWithoutClassesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfesseurUpdateToOneWithWhereWithoutClassesInput, Prisma.ProfesseurUpdateWithoutClassesInput>, Prisma.ProfesseurUncheckedUpdateWithoutClassesInput>
 }
 
+export type ProfesseurCreateNestedOneWithoutEmploisTempsInput = {
+  create?: Prisma.XOR<Prisma.ProfesseurCreateWithoutEmploisTempsInput, Prisma.ProfesseurUncheckedCreateWithoutEmploisTempsInput>
+  connectOrCreate?: Prisma.ProfesseurCreateOrConnectWithoutEmploisTempsInput
+  connect?: Prisma.ProfesseurWhereUniqueInput
+}
+
+export type ProfesseurUpdateOneWithoutEmploisTempsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfesseurCreateWithoutEmploisTempsInput, Prisma.ProfesseurUncheckedCreateWithoutEmploisTempsInput>
+  connectOrCreate?: Prisma.ProfesseurCreateOrConnectWithoutEmploisTempsInput
+  upsert?: Prisma.ProfesseurUpsertWithoutEmploisTempsInput
+  disconnect?: Prisma.ProfesseurWhereInput | boolean
+  delete?: Prisma.ProfesseurWhereInput | boolean
+  connect?: Prisma.ProfesseurWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfesseurUpdateToOneWithWhereWithoutEmploisTempsInput, Prisma.ProfesseurUpdateWithoutEmploisTempsInput>, Prisma.ProfesseurUncheckedUpdateWithoutEmploisTempsInput>
+}
+
 export type ProfesseurCreateNestedOneWithoutEvaluationsInput = {
   create?: Prisma.XOR<Prisma.ProfesseurCreateWithoutEvaluationsInput, Prisma.ProfesseurUncheckedCreateWithoutEvaluationsInput>
   connectOrCreate?: Prisma.ProfesseurCreateOrConnectWithoutEvaluationsInput
@@ -443,6 +466,7 @@ export type ProfesseurCreateWithoutUserInput = {
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateWithoutUserInput = {
@@ -454,6 +478,7 @@ export type ProfesseurUncheckedCreateWithoutUserInput = {
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurCreateOrConnectWithoutUserInput = {
@@ -481,6 +506,7 @@ export type ProfesseurUpdateWithoutUserInput = {
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateWithoutUserInput = {
@@ -492,6 +518,7 @@ export type ProfesseurUncheckedUpdateWithoutUserInput = {
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurCreateWithoutMatieresInput = {
@@ -503,6 +530,7 @@ export type ProfesseurCreateWithoutMatieresInput = {
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateWithoutMatieresInput = {
@@ -514,6 +542,7 @@ export type ProfesseurUncheckedCreateWithoutMatieresInput = {
   updatedAt?: Date | string
   classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurCreateOrConnectWithoutMatieresInput = {
@@ -541,6 +570,7 @@ export type ProfesseurUpdateWithoutMatieresInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateWithoutMatieresInput = {
@@ -552,6 +582,7 @@ export type ProfesseurUncheckedUpdateWithoutMatieresInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurCreateWithoutClassesInput = {
@@ -563,6 +594,7 @@ export type ProfesseurCreateWithoutClassesInput = {
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateWithoutClassesInput = {
@@ -574,6 +606,7 @@ export type ProfesseurUncheckedCreateWithoutClassesInput = {
   updatedAt?: Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurCreateOrConnectWithoutClassesInput = {
@@ -601,6 +634,7 @@ export type ProfesseurUpdateWithoutClassesInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateWithoutClassesInput = {
@@ -611,6 +645,71 @@ export type ProfesseurUncheckedUpdateWithoutClassesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedUpdateManyWithoutProfesseurNestedInput
+}
+
+export type ProfesseurCreateWithoutEmploisTempsInput = {
+  id?: string
+  specialite?: string | null
+  telephone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfesseurInput
+  matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
+  classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutProfesseurInput
+}
+
+export type ProfesseurUncheckedCreateWithoutEmploisTempsInput = {
+  id?: string
+  userId: string
+  specialite?: string | null
+  telephone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
+  classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutProfesseurInput
+}
+
+export type ProfesseurCreateOrConnectWithoutEmploisTempsInput = {
+  where: Prisma.ProfesseurWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfesseurCreateWithoutEmploisTempsInput, Prisma.ProfesseurUncheckedCreateWithoutEmploisTempsInput>
+}
+
+export type ProfesseurUpsertWithoutEmploisTempsInput = {
+  update: Prisma.XOR<Prisma.ProfesseurUpdateWithoutEmploisTempsInput, Prisma.ProfesseurUncheckedUpdateWithoutEmploisTempsInput>
+  create: Prisma.XOR<Prisma.ProfesseurCreateWithoutEmploisTempsInput, Prisma.ProfesseurUncheckedCreateWithoutEmploisTempsInput>
+  where?: Prisma.ProfesseurWhereInput
+}
+
+export type ProfesseurUpdateToOneWithWhereWithoutEmploisTempsInput = {
+  where?: Prisma.ProfesseurWhereInput
+  data: Prisma.XOR<Prisma.ProfesseurUpdateWithoutEmploisTempsInput, Prisma.ProfesseurUncheckedUpdateWithoutEmploisTempsInput>
+}
+
+export type ProfesseurUpdateWithoutEmploisTempsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  specialite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
+  matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
+  classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutProfesseurNestedInput
+}
+
+export type ProfesseurUncheckedUpdateWithoutEmploisTempsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  specialite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
+  classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
@@ -623,6 +722,7 @@ export type ProfesseurCreateWithoutEvaluationsInput = {
   user: Prisma.UserCreateNestedOneWithoutProfesseurInput
   matieres?: Prisma.ProfesseurMatiereCreateNestedManyWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurUncheckedCreateWithoutEvaluationsInput = {
@@ -634,6 +734,7 @@ export type ProfesseurUncheckedCreateWithoutEvaluationsInput = {
   updatedAt?: Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedCreateNestedManyWithoutProfesseurInput
   classes?: Prisma.ProfesseurClasseUncheckedCreateNestedManyWithoutProfesseurInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedCreateNestedManyWithoutProfesseurInput
 }
 
 export type ProfesseurCreateOrConnectWithoutEvaluationsInput = {
@@ -661,6 +762,7 @@ export type ProfesseurUpdateWithoutEvaluationsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfesseurNestedInput
   matieres?: Prisma.ProfesseurMatiereUpdateManyWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUpdateManyWithoutProfesseurNestedInput
 }
 
 export type ProfesseurUncheckedUpdateWithoutEvaluationsInput = {
@@ -672,6 +774,7 @@ export type ProfesseurUncheckedUpdateWithoutEvaluationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matieres?: Prisma.ProfesseurMatiereUncheckedUpdateManyWithoutProfesseurNestedInput
   classes?: Prisma.ProfesseurClasseUncheckedUpdateManyWithoutProfesseurNestedInput
+  emploisTemps?: Prisma.EmploiTempsUncheckedUpdateManyWithoutProfesseurNestedInput
 }
 
 
@@ -683,12 +786,14 @@ export type ProfesseurCountOutputType = {
   matieres: number
   classes: number
   evaluations: number
+  emploisTemps: number
 }
 
 export type ProfesseurCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   matieres?: boolean | ProfesseurCountOutputTypeCountMatieresArgs
   classes?: boolean | ProfesseurCountOutputTypeCountClassesArgs
   evaluations?: boolean | ProfesseurCountOutputTypeCountEvaluationsArgs
+  emploisTemps?: boolean | ProfesseurCountOutputTypeCountEmploisTempsArgs
 }
 
 /**
@@ -722,6 +827,13 @@ export type ProfesseurCountOutputTypeCountEvaluationsArgs<ExtArgs extends runtim
   where?: Prisma.EvaluationWhereInput
 }
 
+/**
+ * ProfesseurCountOutputType without action
+ */
+export type ProfesseurCountOutputTypeCountEmploisTempsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmploiTempsWhereInput
+}
+
 
 export type ProfesseurSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -734,6 +846,7 @@ export type ProfesseurSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   matieres?: boolean | Prisma.Professeur$matieresArgs<ExtArgs>
   classes?: boolean | Prisma.Professeur$classesArgs<ExtArgs>
   evaluations?: boolean | Prisma.Professeur$evaluationsArgs<ExtArgs>
+  emploisTemps?: boolean | Prisma.Professeur$emploisTempsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfesseurCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professeur"]>
 
@@ -772,6 +885,7 @@ export type ProfesseurInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   matieres?: boolean | Prisma.Professeur$matieresArgs<ExtArgs>
   classes?: boolean | Prisma.Professeur$classesArgs<ExtArgs>
   evaluations?: boolean | Prisma.Professeur$evaluationsArgs<ExtArgs>
+  emploisTemps?: boolean | Prisma.Professeur$emploisTempsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfesseurCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfesseurIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -788,6 +902,7 @@ export type $ProfesseurPayload<ExtArgs extends runtime.Types.Extensions.Internal
     matieres: Prisma.$ProfesseurMatierePayload<ExtArgs>[]
     classes: Prisma.$ProfesseurClassePayload<ExtArgs>[]
     evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
+    emploisTemps: Prisma.$EmploiTempsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1194,6 +1309,7 @@ export interface Prisma__ProfesseurClient<T, Null = never, ExtArgs extends runti
   matieres<T extends Prisma.Professeur$matieresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professeur$matieresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfesseurMatierePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classes<T extends Prisma.Professeur$classesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professeur$classesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfesseurClassePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   evaluations<T extends Prisma.Professeur$evaluationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professeur$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  emploisTemps<T extends Prisma.Professeur$emploisTempsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professeur$emploisTempsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmploiTempsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1697,6 +1813,30 @@ export type Professeur$evaluationsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.EvaluationScalarFieldEnum | Prisma.EvaluationScalarFieldEnum[]
+}
+
+/**
+ * Professeur.emploisTemps
+ */
+export type Professeur$emploisTempsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmploiTemps
+   */
+  select?: Prisma.EmploiTempsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmploiTemps
+   */
+  omit?: Prisma.EmploiTempsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmploiTempsInclude<ExtArgs> | null
+  where?: Prisma.EmploiTempsWhereInput
+  orderBy?: Prisma.EmploiTempsOrderByWithRelationInput | Prisma.EmploiTempsOrderByWithRelationInput[]
+  cursor?: Prisma.EmploiTempsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmploiTempsScalarFieldEnum | Prisma.EmploiTempsScalarFieldEnum[]
 }
 
 /**

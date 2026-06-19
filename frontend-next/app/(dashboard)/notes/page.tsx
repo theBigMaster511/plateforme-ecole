@@ -17,9 +17,22 @@ export default function NotesPage() {
     const [error, setError] = useState('');
     const [form, setForm] = useState({ eleveId: '', evaluationId: '', valeur: '', appreciation: '', matiereText: '' });
 
+    const [selectedEleveId, setSelectedEleveId] = useState<string>('');
+
     useEffect(() => {
         loadData();
     }, []);
+
+    useEffect(() => {
+        if (role === 'parent' && selectedEleveId) {
+            loadNotesForChild(selectedEleveId);
+        }
+    }, [selectedEleveId]);
+
+    const loadNotesForChild = async (eleveId: string) => {
+        const notesByEleve = await api.getNotesByEleve(eleveId);
+        setNotes(Array.isArray(notesByEleve) ? notesByEleve : []);
+    };
 
     const loadData = async () => {
         setLoading(true);
@@ -49,6 +62,18 @@ export default function NotesPage() {
                 setNotes(Array.isArray(notesRes) ? notesRes : []);
                 setEvaluations(Array.isArray(evaluationsRes) ? evaluationsRes : []);
                 setEleves(allEleves);
+            } else if (role === 'parent') {
+                const enfants = (user as any)?.parent?.enfants || [];
+                const elevesList = enfants.map((pe: any) => pe.eleve);
+                setEleves(elevesList);
+                const targetId = selectedEleveId || elevesList[0]?.id || '';
+                if (!selectedEleveId && elevesList.length > 0) {
+                    setSelectedEleveId(elevesList[0].id);
+                }
+                if (targetId) {
+                    const notesByEleve = await api.getNotesByEleve(targetId);
+                    setNotes(Array.isArray(notesByEleve) ? notesByEleve : []);
+                }
             } else {
                 const [notesRes, evaluationsRes, elevesRes] = await Promise.all([
                     api.getNotes(),
@@ -303,6 +328,75 @@ export default function NotesPage() {
                                 </div>
                             </form>
                         </div>
+                    </div>
+                )}
+            </>
+        );
+    }
+
+    if (role === 'parent') {
+        const enfants = (user as any)?.parent?.enfants || [];
+        const enfantActuel = enfants.find((pe: any) => pe.eleve.id === selectedEleveId);
+
+        return (
+            <>
+                <div className="topbar">
+                    <div>
+                        <h1>Notes des enfants</h1>
+                        <p>Consultez les résultats scolaires de vos enfants</p>
+                    </div>
+                </div>
+
+                <div className="card" style={{ marginBottom: '2rem' }}>
+                    <div className="card-header"><h3>Sélectionner un enfant</h3></div>
+                    <div className="card-body">
+                        <div className="field">
+                            <select
+                                value={selectedEleveId}
+                                onChange={(e) => setSelectedEleveId(e.target.value)}
+                            >
+                                {enfants.length === 0 && <option value="">Aucun enfant lié</option>}
+                                {enfants.map((pe: any) => (
+                                    <option key={pe.eleve.id} value={pe.eleve.id}>
+                                        {pe.eleve?.user?.name || 'Élève'} {pe.eleve?.classe?.nom ? `(${pe.eleve.classe.nom})` : ''}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {enfantActuel && (
+                    <div className="card">
+                        <div className="card-header">
+                            <h3>Notes de {enfantActuel.eleve?.user?.name || 'l\'élève'}</h3>
+                        </div>
+                        <table className="notes-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Appréciation</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {notes.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={4} className="text-center">Aucune note disponible</td>
+                                    </tr>
+                                ) : (
+                                    notes.map((note) => (
+                                        <tr key={note.id}>
+                                            <td className="font-bold">{note?.evaluation?.matiere?.nom || '—'}</td>
+                                            <td><span className="badge badge-success">{note?.valeur}/20</span></td>
+                                            <td>{note?.appreciation || '—'}</td>
+                                            <td>{note?.createdAt ? new Date(note.createdAt).toLocaleDateString('fr-FR') : '—'}</td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 )}
             </>

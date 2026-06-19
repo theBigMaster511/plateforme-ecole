@@ -159,6 +159,21 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedIntFilter<$PrismaModel>;
     _max?: Prisma.NestedIntFilter<$PrismaModel>;
 };
+export type EnumJourFilter<$PrismaModel = never> = {
+    equals?: $Enums.Jour | Prisma.EnumJourFieldRefInput<$PrismaModel>;
+    in?: $Enums.Jour[];
+    notIn?: $Enums.Jour[];
+    not?: Prisma.NestedEnumJourFilter<$PrismaModel> | $Enums.Jour;
+};
+export type EnumJourWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Jour | Prisma.EnumJourFieldRefInput<$PrismaModel>;
+    in?: $Enums.Jour[];
+    notIn?: $Enums.Jour[];
+    not?: Prisma.NestedEnumJourWithAggregatesFilter<$PrismaModel> | $Enums.Jour;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumJourFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumJourFilter<$PrismaModel>;
+};
 export type EnumEvalTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.EvalType | Prisma.EnumEvalTypeFieldRefInput<$PrismaModel>;
     in?: $Enums.EvalType[];
@@ -373,6 +388,21 @@ export type NestedFloatFilter<$PrismaModel = never> = {
     gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>;
     gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>;
     not?: Prisma.NestedFloatFilter<$PrismaModel> | number;
+};
+export type NestedEnumJourFilter<$PrismaModel = never> = {
+    equals?: $Enums.Jour | Prisma.EnumJourFieldRefInput<$PrismaModel>;
+    in?: $Enums.Jour[];
+    notIn?: $Enums.Jour[];
+    not?: Prisma.NestedEnumJourFilter<$PrismaModel> | $Enums.Jour;
+};
+export type NestedEnumJourWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Jour | Prisma.EnumJourFieldRefInput<$PrismaModel>;
+    in?: $Enums.Jour[];
+    notIn?: $Enums.Jour[];
+    not?: Prisma.NestedEnumJourWithAggregatesFilter<$PrismaModel> | $Enums.Jour;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumJourFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumJourFilter<$PrismaModel>;
 };
 export type NestedEnumEvalTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.EvalType | Prisma.EnumEvalTypeFieldRefInput<$PrismaModel>;

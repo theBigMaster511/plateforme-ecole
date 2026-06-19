@@ -9,7 +9,7 @@ export declare class AuthController {
     constructor(authService: AuthService, localAuthService: LocalAuthService, prisma: PrismaService);
     SignUp(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
     SignIn(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
-    SignUpStudent(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+    SignUpStudent(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
     SignInStudent(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
     SignUpParent(body: any, req: ExpressRequest, res: Response): Promise<Response<any, Record<string, any>>>;
     SignInParent(body: any, res: Response): Promise<Response<any, Record<string, any>>>;
