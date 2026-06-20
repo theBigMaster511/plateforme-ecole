@@ -20,13 +20,13 @@ export declare class NotesController {
     findAll(req: any): Promise<({
         eleve: {
             user: {
-                id: string;
-                name: string;
                 email: string;
-                emailVerified: boolean;
-                image: string | null;
+                id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                name: string;
+                emailVerified: boolean;
+                image: string | null;
                 role: import("../generated/prisma/enums").Role;
             };
             classe: {
@@ -51,13 +51,13 @@ export declare class NotesController {
         evaluation: {
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -81,11 +81,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
             semestre: number;
         };
     } & {
@@ -101,13 +101,13 @@ export declare class NotesController {
         evaluation: {
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -131,11 +131,11 @@ export declare class NotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
             semestre: number;
         };
     } & {

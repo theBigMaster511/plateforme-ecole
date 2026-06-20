@@ -13,13 +13,13 @@ export declare class ElevesController {
     constructor(elevesService: ElevesService, AuthService: AuthService, LocalAuthService: LocalAuthService, prisma: PrismaService);
     findAll(req: Request): Promise<({
         user: {
-            id: string;
-            name: string;
             email: string;
-            emailVerified: boolean;
-            image: string | null;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            name: string;
+            emailVerified: boolean;
+            image: string | null;
             role: import("../generated/prisma/enums").Role;
         };
         classe: {
@@ -46,11 +46,11 @@ export declare class ElevesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                date: Date;
+                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
-                type: import("../generated/prisma/enums").EvalType;
-                date: Date;
                 semestre: number;
             };
         } & {
@@ -65,13 +65,13 @@ export declare class ElevesController {
         parents: ({
             parent: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -96,13 +96,13 @@ export declare class ElevesController {
     })[]>;
     findOne(id: string): Promise<{
         user: {
-            id: string;
-            name: string;
             email: string;
-            emailVerified: boolean;
-            image: string | null;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            name: string;
+            emailVerified: boolean;
+            image: string | null;
             role: import("../generated/prisma/enums").Role;
         };
         classe: {
@@ -129,11 +129,11 @@ export declare class ElevesController {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                date: Date;
+                type: import("../generated/prisma/enums").EvalType;
                 professeurId: string;
                 matiereId: string;
                 titre: string;
-                type: import("../generated/prisma/enums").EvalType;
-                date: Date;
                 semestre: number;
             };
         } & {
@@ -148,13 +148,13 @@ export declare class ElevesController {
         parents: ({
             parent: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {

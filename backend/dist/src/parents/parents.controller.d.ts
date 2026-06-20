@@ -6,25 +6,25 @@ export declare class ParentsController {
     constructor(parentsService: ParentsService);
     findAll(req: Request): Promise<({
         user: {
-            id: string;
-            name: string;
             email: string;
-            emailVerified: boolean;
-            image: string | null;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            name: string;
+            emailVerified: boolean;
+            image: string | null;
             role: import("../generated/prisma/enums").Role;
         };
         enfants: ({
             eleve: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
                 classe: {
@@ -59,25 +59,25 @@ export declare class ParentsController {
     })[]>;
     findOne(id: string, req: Request): Promise<{
         user: {
-            id: string;
-            name: string;
             email: string;
-            emailVerified: boolean;
-            image: string | null;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            name: string;
+            emailVerified: boolean;
+            image: string | null;
             role: import("../generated/prisma/enums").Role;
         };
         enfants: ({
             eleve: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
                 classe: {

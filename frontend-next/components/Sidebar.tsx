@@ -55,7 +55,6 @@ export default function Sidebar() {
             { href: '/parametres', icon: 'ti-settings', label: 'Paramètres' },
         ],
     };
-
     const items = navItems[role || 'eleve'] || [];
     const initials = user?.name?.substring(0, 2).toUpperCase() || 'U';
 

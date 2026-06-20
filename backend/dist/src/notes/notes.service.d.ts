@@ -19,13 +19,13 @@ export declare class NotesService {
         evaluation: {
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -49,11 +49,11 @@ export declare class NotesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
             semestre: number;
         };
     } & {
@@ -68,13 +68,13 @@ export declare class NotesService {
     findAll(ecoleId?: string, professeurId?: string): Promise<({
         eleve: {
             user: {
-                id: string;
-                name: string;
                 email: string;
-                emailVerified: boolean;
-                image: string | null;
+                id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                name: string;
+                emailVerified: boolean;
+                image: string | null;
                 role: import("../generated/prisma/enums").Role;
             };
             classe: {
@@ -99,13 +99,13 @@ export declare class NotesService {
         evaluation: {
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -129,11 +129,11 @@ export declare class NotesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
             semestre: number;
         };
     } & {
@@ -148,13 +148,13 @@ export declare class NotesService {
     findOne(id: string): Promise<{
         eleve: {
             user: {
-                id: string;
-                name: string;
                 email: string;
-                emailVerified: boolean;
-                image: string | null;
+                id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                name: string;
+                emailVerified: boolean;
+                image: string | null;
                 role: import("../generated/prisma/enums").Role;
             };
             classe: {
@@ -179,13 +179,13 @@ export declare class NotesService {
         evaluation: {
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -209,11 +209,11 @@ export declare class NotesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
             semestre: number;
         };
     } & {

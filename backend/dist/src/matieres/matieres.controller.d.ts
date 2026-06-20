@@ -26,13 +26,13 @@ export declare class MatieresController {
         professeurs: ({
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -70,13 +70,13 @@ export declare class MatieresController {
         professeurs: ({
             professeur: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -96,11 +96,11 @@ export declare class MatieresController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
-            type: import("../generated/prisma/enums").EvalType;
-            date: Date;
             semestre: number;
         }[];
     } & {

@@ -36,13 +36,13 @@ export declare class ClasseService {
         };
         eleves: ({
             user: {
-                id: string;
-                name: string;
                 email: string;
-                emailVerified: boolean;
-                image: string | null;
+                id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                name: string;
+                emailVerified: boolean;
+                image: string | null;
                 role: import("../generated/prisma/enums").Role;
             };
         } & {

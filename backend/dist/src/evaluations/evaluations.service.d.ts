@@ -8,23 +8,23 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
         semestre: number;
     }>;
     findAll(ecoleId?: string, professeurId?: string, semestre?: number): Promise<({
         professeur: {
             user: {
-                id: string;
-                name: string;
                 email: string;
-                emailVerified: boolean;
-                image: string | null;
+                id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                name: string;
+                emailVerified: boolean;
+                image: string | null;
                 role: import("../generated/prisma/enums").Role;
             };
         } & {
@@ -68,23 +68,23 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
         semestre: number;
     })[]>;
     findOne(id: string, ecoleId?: string): Promise<{
         professeur: {
             user: {
-                id: string;
-                name: string;
                 email: string;
-                emailVerified: boolean;
-                image: string | null;
+                id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                name: string;
+                emailVerified: boolean;
+                image: string | null;
                 role: import("../generated/prisma/enums").Role;
             };
         } & {
@@ -118,13 +118,13 @@ export declare class EvaluationsService {
         notes: ({
             eleve: {
                 user: {
-                    id: string;
-                    name: string;
                     email: string;
-                    emailVerified: boolean;
-                    image: string | null;
+                    id: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    name: string;
+                    emailVerified: boolean;
+                    image: string | null;
                     role: import("../generated/prisma/enums").Role;
                 };
             } & {
@@ -149,33 +149,33 @@ export declare class EvaluationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
         semestre: number;
     }>;
     update(id: string, dto: UpdateEvaluationDto, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
         semestre: number;
     }>;
     remove(id: string, ecoleId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        date: Date;
+        type: import("../generated/prisma/enums").EvalType;
         professeurId: string;
         matiereId: string;
         titre: string;
-        type: import("../generated/prisma/enums").EvalType;
-        date: Date;
         semestre: number;
     }>;
 }
