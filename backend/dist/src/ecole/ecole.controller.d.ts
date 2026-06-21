@@ -7,12 +7,11 @@ export declare class EcoleController {
     private readonly ecoleService;
     constructor(ecoleService: EcoleService);
     create(dto: CreateEcoleDto, req: Request): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -22,14 +21,14 @@ export declare class EcoleController {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }> | UnauthorizedException;
     findOne(req: Request): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -39,14 +38,14 @@ export declare class EcoleController {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }> | UnauthorizedException;
     update(id: string, dto: UpdateEcoleDto, req: Request): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -56,14 +55,14 @@ export declare class EcoleController {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
     remove(id: string, req: Request): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -73,5 +72,6 @@ export declare class EcoleController {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
 }

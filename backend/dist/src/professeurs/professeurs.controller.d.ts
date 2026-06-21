@@ -18,13 +18,13 @@ export declare class ProfesseursController {
     }>;
     findAll(req: Request): Promise<({
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
         classes: ({
@@ -70,11 +70,11 @@ export declare class ProfesseursController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
             semestre: number;
         }[];
     } & {
@@ -88,13 +88,13 @@ export declare class ProfesseursController {
     })[]>;
     findOne(id: string, req: Request): Promise<{
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
         classes: ({
@@ -140,11 +140,11 @@ export declare class ProfesseursController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
             semestre: number;
         }[];
     } & {
@@ -158,13 +158,13 @@ export declare class ProfesseursController {
     }>;
     update(id: string, dto: UpdateProfesseurDto, req: Request): Promise<({
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
     } & {

@@ -5,12 +5,11 @@ export declare class EcoleService {
     private prisma;
     constructor(prisma: PrismaService);
     create(dto: CreateEcoleDto, userId: string): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -20,14 +19,14 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
     findAll(): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -37,14 +36,14 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }[]>;
     findOne(userId: string): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -54,14 +53,14 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
     update(id: string, dto: UpdateEcoleDto, user?: any): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -71,14 +70,14 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
     remove(id: string, user?: any): Promise<{
-        email: string | null;
         id: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-        description: string | null;
         nom: string;
         adresse: string | null;
         telephone: string | null;
@@ -88,5 +87,6 @@ export declare class EcoleService {
         ville: string | null;
         pays: string;
         codePostal: string | null;
+        description: string | null;
     }>;
 }

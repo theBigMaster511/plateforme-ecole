@@ -15,13 +15,13 @@ export declare class ProfesseursService {
     }>;
     findAll(ecoleId?: string): Promise<({
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
         classes: ({
@@ -67,11 +67,11 @@ export declare class ProfesseursService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
             semestre: number;
         }[];
     } & {
@@ -85,13 +85,13 @@ export declare class ProfesseursService {
     })[]>;
     findOne(id: string, ecoleId?: string): Promise<{
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
         classes: ({
@@ -137,11 +137,11 @@ export declare class ProfesseursService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            type: import("../generated/prisma/enums").EvalType;
             professeurId: string;
             matiereId: string;
             titre: string;
+            type: import("../generated/prisma/enums").EvalType;
+            date: Date;
             semestre: number;
         }[];
     } & {
@@ -155,13 +155,13 @@ export declare class ProfesseursService {
     }>;
     update(id: string, dto: UpdateProfesseurDto, ecoleId?: string): Promise<({
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
     } & {

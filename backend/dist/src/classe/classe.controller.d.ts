@@ -37,13 +37,13 @@ export declare class ClasseController {
         };
         eleves: ({
             user: {
-                email: string;
                 id: string;
-                createdAt: Date;
-                updatedAt: Date;
                 name: string;
+                email: string;
                 emailVerified: boolean;
                 image: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 role: import("../generated/prisma/enums").Role;
             };
         } & {

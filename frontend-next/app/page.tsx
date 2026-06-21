@@ -182,8 +182,8 @@ export default function LandingPage() {
 
   const rolesGrid: React.CSSProperties = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '24px',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '16px',
   };
 
   const roleCard: React.CSSProperties = {
@@ -277,7 +277,7 @@ export default function LandingPage() {
             { icon: 'ti ti-books', bg: '#B8860B', title: 'Matières & Classes', desc: 'Organisation hiérarchique niveaux & classes, attribution des enseignements.' },
             { icon: 'ti ti-file-analytics', bg: '#0f2d4a', title: 'Bulletins', desc: 'Génération automatique des bulletins de notes par trimestre.' },
             { icon: 'ti ti-message', bg: '#1D9E75', title: 'Communication', desc: 'Messages internes entre administration, professeurs et élèves.' },
-            { icon: 'ti ti-shield-lock', bg: '#B8860B', title: 'Sécurité', desc: 'Accès par rôle (admin, professeur, élève) avec session sécurisée.' },
+            { icon: 'ti ti-shield-lock', bg: '#B8860B', title: 'Sécurité', desc: 'Accès par rôle (admin, professeur, élève, parent) avec session sécurisée.' },
           ].map((f, i) => (
             <div key={i} style={featureCard}>
               <div style={{ ...iconBox, background: f.bg }}><i className={f.icon}></i></div>
@@ -288,8 +288,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="roles" className="landing-section" style={{ ...section, background: '#f1f5f9', borderRadius: 24, margin: '0 4rem 3rem' }}>
-        <h2 style={sectionTitle}>Trois rôles, une plateforme</h2>
+      <section id="roles" className="landing-section" style={{ ...section, background: '#f1f5f9', borderRadius: 24, margin: '0 4rem 3rem', maxWidth: 'none' }}>
+        <h2 style={sectionTitle}>Quatre rôles, une plateforme</h2>
         <p style={sectionSub}>
           Chaque utilisateur accède à un espace adapté à ses besoins
         </p>
@@ -298,6 +298,7 @@ export default function LandingPage() {
             { icon: 'ti ti-user-shield', bg: '#0f2d4a', title: 'Administration', desc: 'Gère les classes, les matières, les professeurs, les élèves et la communication.' },
             { icon: 'ti ti-user-check', bg: '#1D9E75', title: 'Professeur', desc: 'Saisit les notes, consulte ses classes et matières, suit ses élèves.' },
             { icon: 'ti ti-user', bg: '#B8860B', title: 'Élève', desc: 'Consulte ses notes, ses bulletins et reçoit les communications.' },
+            { icon: 'ti ti-users', bg: '#8B5CF6', title: 'Parent', desc: 'Suit la scolarité de ses enfants : notes, bulletins, emploi du temps et communications.' },
           ].map((r, i) => (
             <div key={i} style={roleCard}>
               <div style={{ ...roleIcon, background: r.bg }}><i className={r.icon}></i></div>

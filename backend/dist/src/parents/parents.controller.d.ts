@@ -6,25 +6,25 @@ export declare class ParentsController {
     constructor(parentsService: ParentsService);
     findAll(req: Request): Promise<({
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
         enfants: ({
             eleve: {
                 user: {
-                    email: string;
                     id: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     name: string;
+                    email: string;
                     emailVerified: boolean;
                     image: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                     role: import("../generated/prisma/enums").Role;
                 };
                 classe: {
@@ -59,25 +59,25 @@ export declare class ParentsController {
     })[]>;
     findOne(id: string, req: Request): Promise<{
         user: {
-            email: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
+            email: string;
             emailVerified: boolean;
             image: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             role: import("../generated/prisma/enums").Role;
         };
         enfants: ({
             eleve: {
                 user: {
-                    email: string;
                     id: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     name: string;
+                    email: string;
                     emailVerified: boolean;
                     image: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                     role: import("../generated/prisma/enums").Role;
                 };
                 classe: {
