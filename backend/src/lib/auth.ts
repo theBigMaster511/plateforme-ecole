@@ -7,7 +7,7 @@ export function createAuth(prismaClient: PrismaClient) {
     hooks: {},
     emailAndPassword: {
       enabled: true,
-      minPasswordLength: 3,
+      minPasswordLength: 8,
     },
     session: {
       expiresIn: 60 * 60 * 24 * 30, // 30 jours au lieu de 7
