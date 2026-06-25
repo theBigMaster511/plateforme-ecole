@@ -6,8 +6,21 @@ import { useRouter } from 'next/navigation';
 
 export default function AdminSignupPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: '', email: '', password: '', schoolName: '', schoolPhone: '', schoolAddress: '', schoolCity: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', schoolName: '', schoolPhone: '', schoolAddress: '', schoolCity: '', logo: '' });
   const [error, setError] = useState('');
+  const [logoPreview, setLogoPreview] = useState('');
+
+  const handleLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setLogoPreview(dataUrl);
+      setForm({ ...form, logo: dataUrl });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +58,15 @@ export default function AdminSignupPage() {
             <div className="field">
               <label>Nom de l'école</label>
               <input type="text" value={form.schoolName} onChange={(e) => setForm({ ...form, schoolName: e.target.value })} placeholder="Ex: Lycée de Dakar" required />
+            </div>
+            <div className="field">
+              <label>Logo de l'école</label>
+              <input type="file" accept="image/*" onChange={handleLogo} />
+              {logoPreview && (
+                <div style={{ marginTop: 8 }}>
+                  <img src={logoPreview} alt="Logo" style={{ maxHeight: 60, borderRadius: 6 }} />
+                </div>
+              )}
             </div>
             <div className="field">
               <label>Votre nom</label>

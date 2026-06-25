@@ -67,11 +67,14 @@ export default function BulletinsPage() {
 
     const BulletinHeader = ({ bulletin }: { bulletin: any }) => (
         <div className="bulletin-header" style={{ textAlign: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '2px solid var(--color-border)' }}>
+            {(user as any)?.ecole?.logo && (
+                <img src={(user as any).ecole.logo} alt="Logo" style={{ maxHeight: 64, marginBottom: '0.5rem' }} />
+            )}
             <h2 style={{ margin: 0, fontSize: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Bulletin Scolaire — Semestre {bulletin?.semestre || 1}
+                {(user as any)?.ecole?.nom || 'École'} — Bulletin Scolaire
             </h2>
             <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
-                Année scolaire {new Date().getFullYear()} — {new Date().getFullYear() + 1}
+                Semestre {bulletin?.semestre || 1} — Année scolaire {new Date().getFullYear()} — {new Date().getFullYear() + 1}
             </p>
         </div>
     );

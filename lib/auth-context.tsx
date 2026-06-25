@@ -12,6 +12,7 @@ interface User {
     eleve?: { id: string; userId: string; matricule: string; classeId?: string } | null;
     professeur?: { id: string; userId: string; specialite?: string } | null;
     parent?: { id: string; userId: string; telephone?: string; enfants?: Array<{ eleve: { id: string; matricule: string; user: { name?: string }; classe?: { id: string; nom: string } | null } }> } | null;
+    ecole?: { id: string; nom: string; logo?: string; telephone?: string; adresse?: string; ville?: string } | null;
 }
 
 interface AuthContextType {
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (data.eleve) (userData as any).eleve = data.eleve;
         if (data.professeur) (userData as any).professeur = data.professeur;
         if (data.parent) (userData as any).parent = data.parent;
+        if (data.ecole) (userData as any).ecole = data.ecole;
         return userData;
     };
 

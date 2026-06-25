@@ -108,6 +108,10 @@ export const api = {
     updateEmploiTemps: (id: string, data: any) => api.patch(`/emploi-temps/${id}`, data),
     deleteEmploiTemps: (id: string) => api.delete(`/emploi-temps/${id}`),
 
+    // Ecole endpoints
+    getEcole: () => api.get('/ecole'),
+    updateEcole: (id: string, data: any) => api.patch(`/ecole/${id}`, data),
+
     // Communication endpoints
     getCommunications: () => api.get('/communications'),
     sendCommunication: (data: any) => api.post('/communications', data),

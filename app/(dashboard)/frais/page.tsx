@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import jsPDF from 'jspdf';
 
 interface Paiement {
     id: string;
@@ -44,6 +45,11 @@ export default function FraisPage() {
     const [classes, setClasses] = useState<any[]>([]);
     const [createMode, setCreateMode] = useState<'eleve' | 'classe'>('eleve');
     const [loading, setLoading] = useState(true);
+
+    // Filters
+    const [searchQuery, setSearchQuery] = useState('');
+    const [classeFilter, setClasseFilter] = useState('');
+    const [statutFilter, setStatutFilter] = useState('');
 
     // Create modal
     const [showCreate, setShowCreate] = useState(false);
@@ -129,6 +135,20 @@ export default function FraisPage() {
     const isPastDue = (echeance: string, reste: number) =>
         reste > 0 && new Date(echeance) < new Date();
 
+    const eleveClasseMap: Record<string, string> = {};
+    for (const e of eleves) {
+        eleveClasseMap[e.id] = e?.classe?.nom || e?.classeId || '';
+    }
+
+    const filteredFraisList = fraisList.filter((f) => {
+        const name = f.eleve?.user?.name?.toLowerCase() || '';
+        const classe = eleveClasseMap[f.eleveId] || '';
+        const matchSearch = !searchQuery || name.includes(searchQuery.toLowerCase());
+        const matchClasse = !classeFilter || classe === classeFilter;
+        const matchStatut = !statutFilter || f.statut === statutFilter;
+        return matchSearch && matchClasse && matchStatut;
+    });
+
     // Create
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -209,6 +229,7 @@ export default function FraisPage() {
 
     // Voir paiements
     const openPaiements = (f: FraisScolaire) => {
+        setSelectedFrais(f);
         setSelectedPaiements(f.paiements || []);
         setPaiementsFraisLabel(`${f.libelle} - ${f.eleve?.user?.name || 'Élève'}`);
         setShowPaiements(true);
@@ -269,6 +290,39 @@ export default function FraisPage() {
         }
     };
 
+    const generateFacture = (p: Paiement, f: FraisScolaire) => {
+        const pdf = new jsPDF('p', 'mm', 'a5');
+        const ecole = (user as any)?.ecole;
+        const pageW = pdf.internal.pageSize.getWidth();
+
+        pdf.setFontSize(18);
+        pdf.text(ecole?.nom || 'Établissement', pageW / 2, 20, { align: 'center' });
+
+        if (ecole?.logo) {
+            try { pdf.addImage(ecole.logo, 'PNG', pageW / 2 - 15, 25, 30, 30); } catch {}
+        }
+
+        pdf.setFontSize(14);
+        pdf.text('FACTURE ACQUITTÉE', pageW / 2, 55, { align: 'center' });
+
+        pdf.setFontSize(10);
+        const y0 = 65;
+        pdf.text(`Élève : ${f.eleve?.user?.name || '—'}`, 15, y0);
+        pdf.text(`Matricule : ${f.eleve?.matricule || '—'}`, 15, y0 + 6);
+        pdf.text(`Libellé : ${f.libelle}`, 15, y0 + 12);
+        pdf.text(`Montant total : ${formatCurrency(f.montant)}`, 15, y0 + 18);
+        pdf.text(`Montant payé : ${formatCurrency(p.montant)}`, 15, y0 + 24);
+        pdf.text(`Reste : ${formatCurrency(f.montant - f.montantPaye)}`, 15, y0 + 30);
+        pdf.text(`Méthode : ${getMethodeLabel(p.methode)}`, 15, y0 + 36);
+        if (p.reference) pdf.text(`Référence : ${p.reference}`, 15, y0 + 42);
+        pdf.text(`Date : ${formatDate(p.datePaiement)}`, 15, y0 + 48);
+
+        pdf.setFontSize(8);
+        pdf.text('Reçu généré par Jangoo.sn', pageW / 2, pdf.internal.pageSize.getHeight() - 10, { align: 'center' });
+
+        pdf.save(`facture-${f.eleve?.user?.name?.replace(/\s+/g, '_').toLowerCase() || 'eleve'}.pdf`);
+    };
+
     if (loading) return <div className="loader">Chargement des frais...</div>;
 
     return (
@@ -308,9 +362,36 @@ export default function FraisPage() {
                 </div>
             )}
 
+            {isAdmin && (
+                <div style={{ display: 'flex', gap: 12, marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div style={{ flex: 1, minWidth: 200 }}>
+                        <input type="text" placeholder="Rechercher un élève..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                            style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 13 }} />
+                    </div>
+                    <select value={classeFilter} onChange={(e) => setClasseFilter(e.target.value)}
+                        style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 13 }}>
+                        <option value="">Toutes les classes</option>
+                        {classes.map((c: any) => (
+                            <option key={c.id} value={c.nom}>{c.nom} - {c.niveau}</option>
+                        ))}
+                    </select>
+                    <select value={statutFilter} onChange={(e) => setStatutFilter(e.target.value)}
+                        style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 13 }}>
+                        <option value="">Tous les statuts</option>
+                        <option value="impayé">Impayé</option>
+                        <option value="en_retard">En retard</option>
+                        <option value="partiel">Partiel</option>
+                        <option value="payé">Payé</option>
+                    </select>
+                </div>
+            )}
+
             <div className="card">
                 <div className="card-header">
-                    <h3>Liste des frais</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                        <h3>Liste des frais</h3>
+                        {isAdmin && <span style={{ fontSize: 13, color: '#6b7280' }}>{filteredFraisList.length} / {fraisList.length} affichés</span>}
+                    </div>
                 </div>
                 <table className="notes-table">
                     <thead>
@@ -326,12 +407,12 @@ export default function FraisPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {fraisList.length === 0 ? (
+                        {filteredFraisList.length === 0 ? (
                             <tr>
-                                <td colSpan={8} className="text-center">Aucun frais trouvé</td>
+                                <td colSpan={8} className="text-center">{fraisList.length === 0 ? 'Aucun frais trouvé' : 'Aucun résultat avec les filtres actuels'}</td>
                             </tr>
                         ) : (
-                            fraisList.map((f) => {
+                            filteredFraisList.map((f) => {
                                 const reste = f.montant - f.montantPaye;
                                 const pastDue = isPastDue(f.echeance, reste);
                                 return (
@@ -514,7 +595,7 @@ export default function FraisPage() {
                                             <th>Montant</th>
                                             <th>Méthode</th>
                                             <th>Référence</th>
-                                            {isAdmin && <th>Action</th>}
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -524,13 +605,18 @@ export default function FraisPage() {
                                                 <td>{formatCurrency(p.montant)}</td>
                                                 <td>{getMethodeLabel(p.methode)}</td>
                                                 <td>{p.reference || '—'}</td>
-                                                {isAdmin && (
-                                                    <td>
-                                                        <button className="btn-icon" title="Supprimer le paiement" onClick={() => openDeletePaiement(p.id)}>
-                                                            <i className="ti ti-trash"></i>
+                                                <td>
+                                                    <div className="action-buttons">
+                                                        <button className="btn-icon" title="Facture" onClick={() => selectedFrais && generateFacture(p, selectedFrais)}>
+                                                            <i className="ti ti-receipt"></i>
                                                         </button>
-                                                    </td>
-                                                )}
+                                                        {isAdmin && (
+                                                            <button className="btn-icon" title="Supprimer" onClick={() => openDeletePaiement(p.id)}>
+                                                                <i className="ti ti-trash"></i>
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
