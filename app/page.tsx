@@ -321,7 +321,7 @@ export default function LandingPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6b7280' }}>
             <i className="ti ti-phone" style={{ color: '#0f2d4a', fontSize: 18 }}></i>
-            +221 76 013 88 43
+            +221 76 996 00 00
           </div>
         </div>
         <div style={{ marginTop: '2rem' }}>
