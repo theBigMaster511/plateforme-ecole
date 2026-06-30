@@ -16,7 +16,9 @@ export const api = {
 
         try {
             data = await res.json();
-        } catch {
+            console .log(`API ${method} ${endpoint} response:`, data);
+        } catch (e) {
+            throw new Error(`Failed to parse JSON response from ${endpoint}: ${e}`);
             data = await res.text();
         }
 

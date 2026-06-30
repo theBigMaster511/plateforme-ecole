@@ -4,22 +4,61 @@ import { useState } from 'react';
 import { api } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+
+function compressImage(file: File, maxWidth = 400, quality = 0.7): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let w = img.width;
+        let h = img.height;
+        if (w > maxWidth) {
+          h = Math.round(h * (maxWidth / w));
+          w = maxWidth;
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('Canvas context indisponible')); return; }
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('Échec du chargement de l\'image'));
+      img.src = reader.result as string;
+    };
+    reader.onerror = () => reject(new Error('Échec de la lecture du fichier'));
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function AdminSignupPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: '', email: '', password: '', schoolName: '', schoolPhone: '', schoolAddress: '', schoolCity: '', logo: '' });
   const [error, setError] = useState('');
   const [logoPreview, setLogoPreview] = useState('');
+  const [uploading, setUploading] = useState(false);
 
-  const handleLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
+    if (file.size > MAX_FILE_SIZE) {
+      setError('Le fichier est trop volumineux. Taille maximum : 2 Mo.');
+      return;
+    }
+    setError('');
+    setUploading(true);
+    try {
+      const dataUrl = await compressImage(file);
       setLogoPreview(dataUrl);
-      setForm({ ...form, logo: dataUrl });
-    };
-    reader.readAsDataURL(file);
+      setForm((f) => ({ ...f, logo: dataUrl }));
+    } catch {
+      setError('Erreur lors du traitement de l\'image.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -95,7 +134,7 @@ export default function AdminSignupPage() {
                 <input type="text" value={form.schoolCity} onChange={(e) => setForm({ ...form, schoolCity: e.target.value })} placeholder="Dakar" />
               </div>
             </details>
-            <button type="submit" className="btn btn-primary btn-full">Créer le compte</button>
+            <button type="submit" className="btn btn-primary btn-full" disabled={uploading}>{uploading ? 'Traitement en cours…' : 'Créer le compte'}</button>
           </form>
           <div style={{ textAlign: 'center', marginTop: '1rem' }}>
             <a href="/admin-login" style={{ color: 'var(--color-info)' }}>← Retour à la connexion</a>
