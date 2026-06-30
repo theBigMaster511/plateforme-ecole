@@ -24,7 +24,6 @@ export async function handler(req: NextRequest, context: any) {
         const options: RequestInit = {
             method: req.method,
             headers: headersInit,
-            credentials: 'include',
         };
 
         if (req.method !== 'GET' && req.method !== 'HEAD') {
