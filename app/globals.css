@@ -166,6 +166,30 @@ a {
   }
 }
 
+/* Sidebar toggle button (mobile) */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 300;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--color-text-primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
 /* ── 4. NAVIGATION (Sidebar) ── */
 .sidebar-brand {
   display: flex;
@@ -738,13 +762,49 @@ select {
   overflow-y: auto;
 }
 
+@media (max-width: 1024px) {
+  .sidebar-toggle {
+    display: flex !important;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 99;
+  }
+
+  .main.with-sidebar {
+    margin-left: 0 !important;
+  }
+}
+
 @media (max-width: 768px) {
   .login-page {
     flex-direction: column;
   }
 
   .login-left {
-    min-height: 300px;
+    min-height: 250px;
+    padding: 1.5rem !important;
+  }
+
+  .login-right {
+    padding: 1.5rem !important;
+  }
+
+  .login-brand h1 {
+    font-size: 20px !important;
   }
 
   .main {
@@ -753,6 +813,7 @@ select {
 
   .main.with-sidebar {
     margin-left: 0 !important;
+    padding-bottom: 5rem !important;
   }
 
   .stats-grid {
@@ -764,15 +825,55 @@ select {
     align-items: flex-start !important;
   }
 
-  .notes-table {
+  .topbar-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .topbar-actions .btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+  }
+
+  /* Override inline grid styles for quick-links & cards */
+  .card-body > div[style*="grid"],
+  .card-header + div[style*="grid"],
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .quick-link {
+    padding: 1rem !important;
+  }
+
+  .quick-link i {
+    font-size: 24px !important;
+  }
+
+  .quick-link span {
+    font-size: 12px !important;
+  }
+
+  table, .notes-table {
     display: block;
     overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
     white-space: nowrap;
   }
 
   .modal {
     max-width: 95% !important;
     margin: 0.5rem;
+  }
+
+  .modal-body {
+    padding: 1rem !important;
   }
 
   .sidebar {
@@ -787,6 +888,10 @@ select {
     z-index: 200 !important;
     overflow-x: auto !important;
     align-items: center !important;
+  }
+
+  .sidebar .sidebar-toggle {
+    display: none !important;
   }
 
   .sidebar .sidebar-brand,
@@ -815,8 +920,79 @@ select {
     font-size: 18px !important;
   }
 
-  .main.with-sidebar {
-    padding-bottom: 5rem !important;
+  .sidebar-overlay {
+    display: none !important;
+  }
+
+  /* Chart bars responsive */
+  .chart-label {
+    width: 80px !important;
+    font-size: 11px !important;
+  }
+
+  /* Card header actions */
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .card-header > div:last-child {
+    width: 100%;
+  }
+
+  .card-header .btn,
+  .card-header a.btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .login-right {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .login-left {
+    min-height: 200px;
+    padding: 1rem !important;
+  }
+
+  .card-body > div[style*="grid"],
+  .card-header + div[style*="grid"],
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .feat span {
+    font-size: 12px !important;
+  }
+
+  .field input,
+  .field select {
+    font-size: 16px !important;
+  }
+
+  .topbar-actions .btn {
+    font-size: 11px !important;
+    padding: 5px 10px !important;
+  }
+
+  .sidebar nav {
+    gap: 0 !important;
+  }
+
+  .sidebar .nav-item {
+    font-size: 9px !important;
+    padding: 4px 6px !important;
+  }
+
+  .sidebar .nav-item i {
+    font-size: 16px !important;
   }
 }
 

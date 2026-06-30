@@ -9,6 +9,7 @@ export default function Sidebar() {
     const { user, role, logout } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const roleLabels: Record<string, string> = {
         admin: 'Administrateur',
@@ -65,7 +66,7 @@ export default function Sidebar() {
     };
 
     return (
-        <aside className={`sidebar role-${role || 'eleve'}`}>
+        <aside className={`sidebar role-${role || 'eleve'}${mobileOpen ? ' mobile-open' : ''}`}>
             <div className="sidebar-brand">
                 <img src="/jangoo.png" alt="Jangoo.sn" style={{ height: 36, marginRight: 8 }} />
                 <div>
@@ -74,12 +75,17 @@ export default function Sidebar() {
                 </div>
             </div>
 
+            <button className="sidebar-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+                <i className={`ti ${mobileOpen ? 'ti-x' : 'ti-menu-2'}`}></i>
+            </button>
+
             <nav>
                 {items.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
                         className={`nav-item ${pathname === item.href ? 'active' : ''}`}
+                        onClick={() => setMobileOpen(false)}
                     >
                         <i className={`ti ${item.icon}`}></i> {item.label}
                     </Link>
@@ -101,6 +107,9 @@ export default function Sidebar() {
                     </button>
                 </div>
             </div>
+            {mobileOpen && (
+                <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />
+            )}
         </aside>
     );
 }

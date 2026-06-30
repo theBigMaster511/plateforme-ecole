@@ -3,8 +3,11 @@ import type { Metadata } from "next";
 import { AuthProvider } from "@/lib/auth-context";
 
 export const metadata: Metadata = {
-  title: "Gestion Scolaire",
+  title: "Jangoo.sn",
   description: "Plateforme de gestion scolaire",
+  icons: {
+    icon: "/jangoo.png",
+  },
 };
 
 export default function RootLayout({
