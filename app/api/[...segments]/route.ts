@@ -36,10 +36,13 @@ export async function handler(req: NextRequest, context: any) {
 
         const resHeaders = new Headers(response.headers);
         // Bloquer Set-Cookie pour sign-up (préserver la session admin)
-        // delete avant tout car new Headers(response.headers) copie Set-Cookie
         if (path.startsWith('/auth/sign-up')) {
             resHeaders.delete('Set-Cookie');
         }
+        // Supprimer les en-têtes de compression qui ne correspondent plus
+        // (response.text() décompresse automatiquement le corps)
+        resHeaders.delete('Content-Encoding');
+        resHeaders.delete('Content-Length');
 
         return new NextResponse(data, {
             status: response.status,
