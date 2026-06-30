@@ -14,9 +14,9 @@ export async function handler(req: NextRequest, context: any) {
         'Content-Type': 'application/json',
     };
 
-    // Forward auth cookies
+    // Forward auth cookies (sauf pour l'inscription)
     const cookies = req.headers.get('cookie');
-    if (cookies) {
+    if (cookies && !path.startsWith('/auth/sign-up')) {
         headersInit['Cookie'] = cookies;
     }
 
