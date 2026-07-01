@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AdminLoginPage() {
   const { login, user, role, isLoading } = useAuth();
@@ -123,9 +124,9 @@ export default function AdminLoginPage() {
             <div className="field">
               <div className="field-row">
                 <label>Mot de passe</label>
-                <a className="forgot" href="#" style={{ color: '#a13d63' }}>
+                <Link className="forgot" href="/forgot-password" style={{ color: '#a13d63' }}>
                   Mot de passe oublié ?
-                </a>
+                </Link>
               </div>
               <input
                 type="password"

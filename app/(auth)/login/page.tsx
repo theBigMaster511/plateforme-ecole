@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const { login, isLoading } = useAuth();
@@ -108,9 +109,9 @@ export default function LoginPage() {
             <div className="field">
               <div className="field-row">
                 <label>Mot de passe</label>
-                <a className="forgot" href="#">
+                <Link className="forgot" href="/forgot-password">
                   Mot de passe oublié ?
-                </a>
+                </Link>
               </div>
               <input
                 type="password"
